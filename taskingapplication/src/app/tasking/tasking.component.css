@@ -1,0 +1,145 @@
+/* Overall Dashboard Styling */
+.task-dashboard {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px auto;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+  
+  /* Animation for the entire page loading */
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  header h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 15px;
+    opacity: 0;
+    animation: slideIn 0.5s ease-out forwards;
+    animation-delay: 0.2s;
+  }
+  
+  /* Animation for filter section appearing */
+  @keyframes slideIn {
+    0% { transform: translateY(-20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  
+  .filters label {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  .filters select {
+    padding: 8px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: border 0.3s ease, transform 0.3s ease;
+  }
+  
+  .filters select:focus {
+    border-color: #4CAF50;
+    transform: scale(1.05);
+  }
+  
+  table.task-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeInTable 0.5s ease-in-out forwards;
+    animation-delay: 0.4s;
+  }
+  
+  /* Animation for the task table */
+  @keyframes fadeInTable {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  table.task-list th, table.task-list td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+  }
+  
+  table.task-list th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: 600;
+  }
+  
+  table.task-list td {
+    background-color: #fff;
+  }
+  
+  table.task-list tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  table.task-list tbody tr:hover {
+    background-color: #f1f1f1;
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+  }
+  
+  button.view-details {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s;
+  }
+  
+  button.view-details:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  button.view-details:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+  }
+  
+  button.view-details:active {
+    transform: translateY(1px);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    table.task-list th, table.task-list td {
+      padding: 8px 10px;
+    }
+  
+    button.view-details {
+      padding: 6px 12px;
+    }
+  }
+  
