@@ -11,8 +11,13 @@ import { CommonModule } from '@angular/common';
 })
 export class SidenavComponent {
   showSignoutModal: boolean = false;
+  isMinimized = false;
 
   constructor(private router: Router) {}
+
+  toggleSidebar() {
+    this.isMinimized = !this.isMinimized;
+  }
 
   openSignoutModal() {
     this.showSignoutModal = true;

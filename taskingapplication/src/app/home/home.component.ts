@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { SidenavComponent } from "../sidenav/sidenav.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   imports: [SidenavComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-getStatusClass(arg0: any) {
-throw new Error('Method not implemented.');
-}
+  constructor(private router: Router) {
+  }
 
+  getStatusClass(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
 }

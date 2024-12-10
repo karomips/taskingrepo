@@ -1,46 +1,57 @@
 <app-sidenav></app-sidenav>
 
 <div class="task-dashboard">
-    <header>
-      <h1>Task Dashboard</h1>
-      <div class="filters">
-        <label for="employeeFilter">Employee:</label>
-        <select id="employeeFilter">
-          <option value="all">All</option>
-          <!-- Dynamically populated with employee names -->
-        </select>
-        
-        <label for="statusFilter">Status:</label>
-        <select id="statusFilter">
-          <option value="all">All</option>
-          <option value="pending">Pending</option>
-          <option value="in-progress">In Progress</option>
-          <option value="completed">Completed</option>
-        </select>
-      </div>
-    </header>
-  
-    <table class="task-list">
-      <thead>
-        <tr>
-          <th>Task Name</th>
-          <th>Assigned Employee</th>
-          <th>Status</th>
-          <th>Due Date</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Dynamic rows populated with task data -->
-        <tr>
-          <td>Task 1</td>
-          <td>John Doe</td>
-          <td>In Progress</td>
-          <td>2024-12-10</td>
-          <td><button class="view-details">View</button></td>
-        </tr>
-        <!-- More rows -->
-      </tbody>
-    </table>
+  <header>
+    <h1>Task Dashboard</h1>
+    <div class="filters">
+      <label for="employeeFilter">Employee:</label>
+      <select id="employeeFilter">
+        <option value="all">All</option>
+        <!-- Dynamically populated with employee names -->
+      </select>
+      
+      <label for="statusFilter">Status:</label>
+      <select id="statusFilter">
+        <option value="all">All</option>
+        <option value="pending">Pending</option>
+        <option value="in-progress">In Progress</option>
+        <option value="completed">Completed</option>
+      </select>
+    </div>
+  </header>
+
+  <table class="task-list">
+    <thead>
+      <tr>
+        <th>Task Name</th>
+        <th>Assigned Employee</th>
+        <th>Status</th>
+        <th>Due Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dynamic rows populated with task data -->
+      <tr>
+        <td>Task 1</td>
+        <td>John Doe</td>
+        <td>In Progress</td>
+        <td>2024-12-10</td>
+        <td><button class="view-details" (click)="openModal()">View</button></td>
+      </tr>
+      <!-- More rows -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="showModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-content">
+    <h2 id="modal-title">Task Description</h2>
+    <p>{{ taskDescription }}</p> <!-- Dynamic description content -->
+    <div class="modal-buttons">
+      <button class="btn-primary" (click)="closeModal()">Close</button>
+    </div>
   </div>
-  
+</div>
+

@@ -1,4 +1,8 @@
-<nav class="sidenav" aria-label="Main Navigation">
+<nav class="sidenav" [class.minimized]="isMinimized" aria-label="Main Navigation">
+    <div class="sidenav-header">
+        <i class="fas fa-cogs sidenav-logo"></i> <!-- App Logo/Icon -->
+        <span class="brand-name">Company Logo</span>
+    </div>
     <ul class="sidenav-links">
         <li>
             <a href="/home" class="sidenav-link" aria-label="Navigate to Home">
@@ -15,7 +19,7 @@
     </ul>
     <div class="sidenav-footer">
         <div class="button-container">
-            <button class="sidenav-button" (click)="openSignoutModal()" aria-label="Sign Out">
+            <button *ngIf="!isMinimized" class="sidenav-button" (click)="openSignoutModal()" aria-label="Sign Out">
                 <i class="fas fa-sign-out-alt"></i> <!-- Sign Out Icon -->
                 <span class="button-text">Sign Out</span>
             </button>
@@ -29,16 +33,14 @@
         <h2 id="signout-modal-title">Sign Out</h2>
         <p>Are you sure you want to sign out?</p>
         <div class="modal-buttons">
-            <div class="button-container">
-                <button class="btn-primary" (click)="confirmSignout()">
-                    <i class="fas fa-check"></i> <!-- Confirm Icon -->
-                    Yes, Sign Out
-                </button>
-                <button class="btn-secondary" (click)="closeSignoutModal()">
-                    <i class="fas fa-times"></i> <!-- Cancel Icon -->
-                    Cancel
-                </button>
-            </div>
+            <button class="btn-primary" (click)="confirmSignout()">
+                <i class="fas fa-check"></i> <!-- Confirm Icon -->
+                Yes, Sign Out
+            </button>
+            <button class="btn-secondary" (click)="closeSignoutModal()">
+                <i class="fas fa-times"></i> <!-- Cancel Icon -->
+                Cancel
+            </button>
         </div>
     </div>
 </div>

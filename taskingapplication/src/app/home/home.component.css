@@ -1,36 +1,28 @@
 /* Overall Dashboard Wrapper */
-.dashboard-wrapper {
+.main-container {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 40px;
-  background-color: #f4f6f9;
-  min-height: 100vh;
-  animation: fadeIn 0.5s ease-in-out forwards;
-  opacity: 0;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Full viewport height */
+  padding-left: 80px; /* Adjust for sidenav width */
+  box-sizing: border-box;
+  background: #f4f6f9; /* Subtle background color for the page */
+  overflow: hidden; /* Hide overflow to avoid scrollbars */
 }
 
 /* Dashboard Container */
 .dashboard-container {
-  max-width: 1200px;
+  max-width: 1000px;
   width: 100%;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Lato', sans-serif; /* More modern font */
   color: #333;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  padding: 40px;
+  padding: 30px; /* Reduced padding */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-left: 30px; /* More consistent spacing */
+  margin-left: 30px;
+  background: linear-gradient(135deg, #ffffff 60%, #f1f8ff); /* Soft gradient background */
 }
 
 .dashboard-container:hover {
@@ -40,35 +32,32 @@
 
 /* Title and Section Headers */
 h1 {
-  font-size: 40px;
+  font-size: 35px;
   color: #2c3e50;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   border-bottom: 4px solid #3498db;
   display: inline-block;
   padding-bottom: 8px;
-  transition: color 0.3s ease, border-color 0.3s ease;
   font-weight: 600;
-}
-
-h1:hover {
-  color: #1abc9c;
-  border-color: #1abc9c;
+  text-transform: capitalize; /* Adds a more refined touch */
 }
 
 h2 {
-  font-size: 30px;
-  margin-bottom: 30px;
+  font-size: 24px;
+  margin-bottom: 20px;
   color: #34495e;
   font-weight: 500;
   padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0; /* Light divider */
 }
 
 /* Task Grid */
 .task-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
+  display: flex; /* Aligns items horizontally */
+  flex-wrap: wrap; /* Allow tasks to wrap to the next line if needed */
+  gap: 15px; /* Reduced gap between task cards */
   margin-top: 20px;
+  justify-content: flex-start; /* Align tasks to the left */
 }
 
 /* Task Card Styling */
@@ -76,36 +65,36 @@ h2 {
   background: #ffffff;
   border: 1px solid #e1e8f0;
   border-radius: 12px;
-  padding: 25px;
+  padding: 15px; /* Reduced padding */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  border-left: 6px solid #3498db;
+  flex-shrink: 0; /* Prevent shrinking */
+  min-width: 220px; /* Set minimum width */
+  max-width: 280px; /* Limit the max width of cards */
 }
 
 .task-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   background: #f9f9fb;
+  border-left: 6px solid #1abc9c;
 }
 
 .task-card h3 {
-  font-size: 24px;
-  color: #1e90ff;
-  margin-bottom: 18px;
-  border-bottom: 3px solid #dcdde1;
-  padding-bottom: 8px;
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.task-card h3:hover {
-  color: #2980b9;
-  border-color: #2980b9;
+  font-size: 18px; /* Reduced font size */
+  color: #2c3e50;
+  margin-bottom: 10px; /* Reduced margin */
+  border-bottom: 2px solid #dcdde1;
+  padding-bottom: 6px;
+  font-weight: 600;
 }
 
 .task-card p {
-  margin: 12px 0;
-  line-height: 1.7;
-  font-size: 16px;
+  margin: 8px 0; /* Reduced margin */
+  line-height: 1.4; /* Reduced line height */
+  font-size: 12px; /* Smaller font size */
   color: #7f8c8d;
 }
 
@@ -114,27 +103,48 @@ h2 {
   font-weight: 600;
 }
 
+/* Section for Each Team Member */
+.assigned-section {
+  margin-top: 30px;
+}
+
+.assigned-section h2 {
+  font-size: 26px; /* Slightly smaller section header */
+  color: #2c3e50;
+  margin-bottom: 15px;
+  border-bottom: 3px solid #3498db;
+}
+
+.assigned-section .task-grid {
+  display: flex; /* Align tasks horizontally */
+  flex-wrap: wrap; /* Allow tasks to wrap to the next line if needed */
+  gap: 15px; /* Reduced gap */
+  justify-content: flex-start; /* Align tasks beside each other */
+}
+
+.assigned-section .task-card {
+  padding: 12px; /* Further reduced padding */
+}
+
+.assigned-section .task-card h3 {
+  font-size: 16px; /* Smaller header font size */
+}
+
+.assigned-section .task-card p {
+  font-size: 12px; /* Consistent font size */
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   h1 {
-    font-size: 32px;
-    margin-bottom: 20px;
+    font-size: 28px; /* Smaller title size */
   }
 
   h2 {
-    font-size: 24px;
-    margin-bottom: 25px;
-  }
-
-  .dashboard-container {
-    padding: 25px;
+    font-size: 22px; /* Smaller subtitle size */
   }
 
   .task-card {
-    padding: 20px;
-  }
-
-  .task-card h3 {
-    font-size: 22px;
+    min-width: 180px; /* Even smaller task cards on mobile */
   }
 }
