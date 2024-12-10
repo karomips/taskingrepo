@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from "../navbar/navbar.component";
+import { SidenavComponent } from "../sidenav/sidenav.component";
 
 @Component({
   selector: 'app-tasking',
-  imports: [NavbarComponent],
+  imports: [SidenavComponent],
   templateUrl: './tasking.component.html',
   styleUrl: './tasking.component.css'
 })
