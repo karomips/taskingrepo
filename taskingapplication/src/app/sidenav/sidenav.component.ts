@@ -14,9 +14,10 @@ export class SidenavComponent {
   isMinimized = false;
 
   constructor(private router: Router) {}
-
+  
   toggleSidebar() {
     this.isMinimized = !this.isMinimized;
+    
   }
 
   openSignoutModal() {

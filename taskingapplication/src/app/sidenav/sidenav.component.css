@@ -43,19 +43,48 @@ html, body {
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+  text-align: center; /* Center align text */
 }
 
 .sidenav-logo {
-  font-size: 2rem;
-  color: #ffffff;
-  margin-right: 10px;
+  font-size: 1rem; /* Adjust font size for visibility */
+  color: #ffffff; /* White text */
+  display: flex;
+  flex-direction: column; /* Arrange letters vertically */
+  align-items: center;
+  justify-content: center;
+  transition: font-size 0.3s ease, flex-direction 0.3s ease; /* Smooth transition */
 }
 
 .brand-name {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #ffffff;
+  transition: font-size 0.3s ease; /* Smooth font size change */
 }
+
+.sidenav.minimized .brand-name {
+  display: none; /* Hide full name when minimized */
+}
+
+.sidenav.minimized .sidenav-logo {
+  font-size: 0.8rem; /* Smaller font size for minimized sidenav */
+  flex-direction: column; /* Display letters vertically */
+  text-align: center; /* Center align each letter */
+  margin: 0 auto; /* Center logo vertically */
+}
+
+.sidenav:hover .sidenav-logo {
+  font-size: 1.5rem; /* Increase font size when expanded */
+  flex-direction: row; /* Switch back to horizontal layout */
+  max-width: none; /* Allow full width when expanded */
+}
+
+.sidenav:hover .brand-name {
+  font-size: 1.2rem; /* Increase brand name size when expanded */
+}
+
+
 
 /* Links */
 .sidenav-links {
@@ -113,6 +142,8 @@ html, body {
   margin-top: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding-bottom: 20px; /* Add space at the bottom */
 }
 
 .button-container {
@@ -121,10 +152,15 @@ html, body {
 }
 
 .sidenav-button {
-  padding: 15px;
-  font-size: 1.5rem;
+  padding: 10px; /* Smaller padding */
+  font-size: 1rem; /* Smaller font size */
   color: white;
-  background-color: transparent;
+  background-color: #5a9bd3; /* Lighter shade of blue */
+  width: 40px; /* Cube shape */
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s ease;
@@ -132,8 +168,12 @@ html, body {
 }
 
 .sidenav-button:hover {
-  background-color: #4a5568;
+  background-color: #82b8e8; /* Hover effect for lighter blue */
   transform: scale(1.05);
+}
+
+.sidenav:not(:hover) .sidenav-button {
+  margin-right: 10px; /* Space on the right side in minimized mode */
 }
 
 /* Modal Styles */
@@ -220,18 +260,6 @@ html, body {
   width: 100%; /* Underline effect on hover */
 }
 
-/* Footer buttons */
-.sidenav-button {
-  background-color: #007BFF; /* Primary button color */
-  border-radius: 5px;
-  color: white;
-  transition: background-color 0.3s, transform 0.2s ease;
-}
-
-.sidenav-button:hover {
-  background-color: #0056b3;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .sidenav {
@@ -249,18 +277,13 @@ html, body {
   .sidenav-link {
     font-size: 1.2rem; /* Adjust font size for mobile */
   }
+}
 
-  .sidenav.minimized {
-    width: 70px;
+.sidenav.minimized {
+  width: 70px;
 }
 
 .sidenav-footer .button-container {
-    display: flex;
-    justify-content: center;
-}
-
-/* Button disappears when minimized */
-.sidenav.minimized .sidenav-button {
-    display: none;
-}
+  display: flex;
+  justify-content: center;
 }
