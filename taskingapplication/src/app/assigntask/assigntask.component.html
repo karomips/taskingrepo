@@ -1,1 +1,116 @@
-<p>assigntask works!</p>
+<app-sidenav></app-sidenav>
+
+<div class="task-container">
+  <header>
+    <h1>Assign New Task</h1>
+  </header>
+
+  <!-- Form for assigning tasks -->
+  <form (ngSubmit)="submitTask()">
+    <div class="form-group">
+      <label for="employeeName">Employee Name:</label>
+      <input
+        type="text"
+        id="employeeName"
+        [(ngModel)]="task.employeeName"
+        name="employeeName"
+        required
+      />
+      <div *ngIf="!task.employeeName && showFailureModal" class="form-error">
+        Employee Name is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="taskName">Task Name:</label>
+      <input
+        type="text"
+        id="taskName"
+        [(ngModel)]="task.taskName"
+        name="taskName"
+        required
+      />
+      <div *ngIf="!task.taskName && showFailureModal" class="form-error">
+        Task Name is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="taskDescription">Task Description:</label>
+      <textarea
+        id="taskDescription"
+        [(ngModel)]="task.taskDescription"
+        name="taskDescription"
+        required
+      ></textarea>
+      <div *ngIf="!task.taskDescription && showFailureModal" class="form-error">
+        Task Description is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="taskInstructions">Instructions:</label>
+      <textarea
+        id="taskInstructions"
+        [(ngModel)]="task.taskInstructions"
+        name="taskInstructions"
+        required
+      ></textarea>
+      <div *ngIf="!task.taskInstructions && showFailureModal" class="form-error">
+        Instructions are required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dueDate">Due Date:</label>
+      <input
+        type="date"
+        id="dueDate"
+        [(ngModel)]="task.dueDate"
+        name="dueDate"
+        required
+      />
+      <div *ngIf="!task.dueDate && showFailureModal" class="form-error">
+        Due Date is required.
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Assign Task</button>
+  </form>
+</div>
+
+<!-- Success Modal -->
+<div
+  class="modal"
+  *ngIf="showSuccessModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+  aria-live="assertive"
+>
+  <div class="modal-content">
+    <h2 id="modal-title">Task Assigned Successfully!</h2>
+    <p>The task has been successfully assigned to {{ task.employeeName }}.</p>
+    <div class="modal-buttons">
+      <button class="btn-primary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Failure Modal -->
+<div
+  class="modal"
+  *ngIf="showFailureModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+  aria-live="assertive"
+>
+  <div class="modal-content">
+    <h2 id="modal-title">Task Assignment Failed</h2>
+    <p>There was an issue assigning the task. Please try again.</p>
+    <div class="modal-buttons">
+      <button class="btn-primary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>

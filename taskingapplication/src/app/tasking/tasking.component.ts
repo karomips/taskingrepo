@@ -1,16 +1,23 @@
 import { Component } from '@angular/core';
 import { SidenavComponent } from "../sidenav/sidenav.component";
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tasking',
-  imports: [SidenavComponent, CommonModule],
+  imports: [SidenavComponent, CommonModule, RouterModule], // Add RouterModule here
   templateUrl: './tasking.component.html',
-  styleUrl: './tasking.component.css'
+  styleUrls: ['./tasking.component.css']
 })
 export class TaskingComponent {
   showModal = false;
   taskDescription: string = '';
+
+  constructor(private router: Router) {}
+
+  navigateToAssignTask(): void {
+    this.router.navigate(['/assigntask']);
+  }
 
   openModal() {
     // Set the description dynamically based on the clicked task
@@ -22,5 +29,3 @@ export class TaskingComponent {
     this.showModal = false;
   }
 }
-
-

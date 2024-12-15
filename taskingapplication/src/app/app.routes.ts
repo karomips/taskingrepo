@@ -6,9 +6,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthGuard } from './auth.guard';  // Import the AuthGuard
 import { AssigntaskComponent } from './assigntask/assigntask.component';
+import { FormsModule } from '@angular/forms';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },  // Default route
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'tasking', component: TaskingComponent },
@@ -16,7 +17,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), CommonModule],
+  imports: [RouterModule.forRoot(routes), CommonModule, FormsModule,],
   exports: [RouterModule, CommonModule]
 })
 export class AppRoutingModule { }

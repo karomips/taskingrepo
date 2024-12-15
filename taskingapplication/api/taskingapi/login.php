@@ -9,21 +9,25 @@ $postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 
 if (isset($postdata) && !empty($postdata)) {
-    $email = trim($request->email);
+    $admin_id = trim($request->admin_id);  // Use admin_id for login
     $pwd = trim($request->password);
 
     try {
-        $sql = "SELECT * FROM users WHERE email = :email";
+        // Assuming the admin data is stored in a table 'admins'
+        $sql = "SELECT * FROM admins WHERE admin_id = :admin_id";  // Check for admin login
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':admin_id', $admin_id);
         $stmt->execute();
         
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($user && password_verify($pwd, $user['password'])) {
-            echo json_encode([$user]); // Return user data as JSON
+        if ($admin && password_verify($pwd, $admin['password'])) {
+            // Remove the password before sending
+            unset($admin['password']);
+            echo json_encode([$admin]); // Return admin data as JSON
         } else {
             http_response_code(404);  // Invalid credentials
+            echo json_encode(['error' => 'Invalid admin credentials']);
         }
     } catch (PDOException $e) {
         http_response_code(500);

@@ -1,20 +1,22 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  // Define the properties to bind to the form input
+  email: string = '';
+  password: string = '';
+  responseMessage: string = ''; // To display messages to the user
+
   constructor(private router: Router) {}
 
   async onSubmit(event: Event) {
     event.preventDefault(); // Prevent default form submission
-
-    const email = (document.getElementById('username') as HTMLInputElement).value;
-    const password = (document.getElementById('password') as HTMLInputElement).value;
 
     try {
       const response = await fetch('login.php', {
@@ -22,23 +24,27 @@ export class LoginComponent {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: this.email, password: this.password }), // Send form data
       });
 
       if (response.ok) {
         const data = await response.json();
-        
-        // Assuming 'data' contains an authentication token or user info
-        localStorage.setItem('authToken', 'your-token-here'); // Store token in localStorage
 
-        this.router.navigate(['/home']); // Redirect to the Home page after successful login
+        if (data[0]) {
+          // Assuming data[0] contains user info
+          localStorage.setItem('authToken', 'your-token-here'); // Store token in localStorage
+
+          this.router.navigate(['/home']); // Redirect to Home page after successful login
+        } else {
+          this.responseMessage = 'Invalid credentials. Please try again.';
+        }
       } else if (response.status === 404) {
-        document.getElementById('responseMessage')!.textContent = 'Invalid credentials. Please try again.';
+        this.responseMessage = 'Invalid credentials. Please try again.';
       } else {
-        document.getElementById('responseMessage')!.textContent = 'An error occurred. Please try again later.';
+        this.responseMessage = 'An error occurred. Please try again later.';
       }
     } catch (error) {
-      document.getElementById('responseMessage')!.textContent = 'An error occurred while connecting to the server.';
+      this.responseMessage = 'An error occurred while connecting to the server.';
     }
   }
 }

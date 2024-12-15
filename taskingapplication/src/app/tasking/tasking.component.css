@@ -142,20 +142,32 @@
       padding: 6px 12px;
     }
 
-    .assign-task-btn {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    
-    .assign-task-btn:hover {
-      background-color: #45a049;
-    }
-    
+/* Assign Task Button */
+.btn-assign-task {
+  padding: 8px 16px;
+  background-color: #007BFF;
+  color: white;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s;
+}
+
+.btn-assign-task:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.btn-assign-task:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+}
+
+.btn-assign-task:active {
+  transform: translateY(1px);
+}
+
     .modal {
       position: fixed;
       top: 0;

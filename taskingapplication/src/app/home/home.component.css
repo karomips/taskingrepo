@@ -1,62 +1,54 @@
 /* Overall Dashboard Wrapper */
 .main-container {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  justify-content: center;
+  align-items: flex-start; /* Align at the top */
   height: 100vh; /* Full viewport height */
   padding-left: 80px; /* Adjust for sidenav width */
   box-sizing: border-box;
   background: #f4f6f9; /* Subtle background color for the page */
-  overflow: hidden; /* Hide overflow to avoid scrollbars */
+  overflow: auto; /* Allow scroll for small screens */
 }
 
 /* Dashboard Container */
 .dashboard-container {
-  max-width: 1000px;
-  width: 100%;
+  max-width: 1200px; /* Increased width */
+  width: 90%; /* Responsive width */
   font-family: 'Lato', sans-serif; /* More modern font */
   color: #333;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  padding: 30px; /* Reduced padding */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-left: 30px;
+  padding: 20px; /* Reduced padding */
+  margin-top: 20px;
   background: linear-gradient(135deg, #ffffff 60%, #f1f8ff); /* Soft gradient background */
-}
-
-.dashboard-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Title and Section Headers */
 h1 {
-  font-size: 35px;
+  font-size: 30px; /* Slightly reduced font size */
   color: #2c3e50;
   margin-bottom: 20px;
-  border-bottom: 4px solid #3498db;
+  border-bottom: 3px solid #3498db;
   display: inline-block;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
   font-weight: 600;
-  text-transform: capitalize; /* Adds a more refined touch */
 }
 
 h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 22px;
+  margin-bottom: 15px;
   color: #34495e;
   font-weight: 500;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #e0e0e0; /* Light divider */
+  border-bottom: 2px solid #e0e0e0;
 }
 
 /* Task Grid */
 .task-grid {
-  display: flex; /* Aligns items horizontally */
-  flex-wrap: wrap; /* Allow tasks to wrap to the next line if needed */
-  gap: 15px; /* Reduced gap between task cards */
-  margin-top: 20px;
+  display: flex; /* Align items horizontally */
+  flex-wrap: wrap; /* Allow wrapping for tasks */
+  gap: 20px; /* Spaced cards horizontally */
+  margin-top: 10px;
   justify-content: flex-start; /* Align tasks to the left */
 }
 
@@ -65,14 +57,14 @@ h2 {
   background: #ffffff;
   border: 1px solid #e1e8f0;
   border-radius: 12px;
-  padding: 15px; /* Reduced padding */
+  padding: 15px; /* Adjusted padding */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0; /* Prevent shrinking */
+  flex-basis: calc(33.333% - 20px); /* Three cards per row with gap */
+  max-width: calc(33.333% - 20px); /* Matches flex-basis */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   border-left: 6px solid #3498db;
-  flex-shrink: 0; /* Prevent shrinking */
-  min-width: 220px; /* Set minimum width */
-  max-width: 280px; /* Limit the max width of cards */
 }
 
 .task-card:hover {
@@ -83,68 +75,56 @@ h2 {
 }
 
 .task-card h3 {
-  font-size: 18px; /* Reduced font size */
+  font-size: 16px;
   color: #2c3e50;
-  margin-bottom: 10px; /* Reduced margin */
+  margin-bottom: 10px;
   border-bottom: 2px solid #dcdde1;
   padding-bottom: 6px;
   font-weight: 600;
 }
 
 .task-card p {
-  margin: 8px 0; /* Reduced margin */
-  line-height: 1.4; /* Reduced line height */
-  font-size: 12px; /* Smaller font size */
+  margin: 5px 0;
+  line-height: 1.4;
+  font-size: 14px;
   color: #7f8c8d;
-}
-
-.task-card strong {
-  color: #2c3e50;
-  font-weight: 600;
 }
 
 /* Section for Each Team Member */
 .assigned-section {
-  margin-top: 30px;
+  margin-top: 20px; /* Reduced spacing between sections */
 }
 
 .assigned-section h2 {
-  font-size: 26px; /* Slightly smaller section header */
+  font-size: 20px;
   color: #2c3e50;
-  margin-bottom: 15px;
-  border-bottom: 3px solid #3498db;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #3498db;
 }
 
 .assigned-section .task-grid {
-  display: flex; /* Align tasks horizontally */
-  flex-wrap: wrap; /* Allow tasks to wrap to the next line if needed */
-  gap: 15px; /* Reduced gap */
-  justify-content: flex-start; /* Align tasks beside each other */
-}
-
-.assigned-section .task-card {
-  padding: 12px; /* Further reduced padding */
-}
-
-.assigned-section .task-card h3 {
-  font-size: 16px; /* Smaller header font size */
-}
-
-.assigned-section .task-card p {
-  font-size: 12px; /* Consistent font size */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Consistent spacing */
+  justify-content: flex-start;
 }
 
 /* Responsive Styles */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 28px; /* Smaller title size */
-  }
-
-  h2 {
-    font-size: 22px; /* Smaller subtitle size */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    max-width: 100%;
+    padding: 15px; /* Adjust padding for smaller screens */
   }
 
   .task-card {
-    min-width: 180px; /* Even smaller task cards on mobile */
+    flex-basis: calc(50% - 20px); /* Two cards per row */
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .task-card {
+    flex-basis: 100%; /* Single card per row on mobile */
+    max-width: 100%;
   }
 }
