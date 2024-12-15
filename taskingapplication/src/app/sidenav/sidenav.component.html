@@ -1,36 +1,47 @@
 <nav class="sidenav" [class.minimized]="isMinimized" aria-label="Main Navigation">
-    <div class="sidenav-header">
-<<<<<<< HEAD
-        <i class="fas fa-cogs sidenav-logo"></i> <!-- App Logo/Icon -->
-        <span class="brand-name"></span>
-=======
-      <!-- Only show the logo in minimized state -->
-      <i class="fas fa-cogs sidenav-logo" aria-label="App Logo"></i>
-      <span class="brand-name" *ngIf="!isMinimized">Company Logo</span>
->>>>>>> 610abc94ee8f414589dbb8607cad0dcafa4a399b
+  <div class="sidenav-header">
+    <i class="fas fa-cogs sidenav-logo"></i>
+    <span class="brand-name"></span>
+  </div>
+  <ul class="sidenav-links">
+    <li>
+      <a href="/home" class="sidenav-link" aria-label="Navigate to Home">
+        <i class="fas fa-home"></i>
+        <span class="link-text" *ngIf="!isMinimized">Home</span>
+      </a>
+    </li>
+    <li>
+      <a href="/tasking" class="sidenav-link" aria-label="Navigate to Tasking">
+        <i class="fas fa-tasks"></i>
+        <span class="link-text" *ngIf="!isMinimized">Tasking</span>
+      </a>
+    </li>
+  </ul>
+  <div class="sidenav-footer">
+    <div class="button-container">
+      <button
+        class="sidenav-button"
+        (click)="openSignoutModal()"
+        aria-label="Sign Out"
+      >
+        <i class="fas fa-sign-out-alt"></i>
+        <span class="button-text" *ngIf="!isMinimized">Sign Out</span>
+      </button>
     </div>
-    <ul class="sidenav-links">
-      <li>
-        <a href="/home" class="sidenav-link" aria-label="Navigate to Home">
-          <i class="fas fa-home"></i>
-          <span class="link-text" *ngIf="!isMinimized">Home</span>
-        </a>
-      </li>
-      <li>
-        <a href="/tasking" class="sidenav-link" aria-label="Navigate to Tasking">
-          <i class="fas fa-tasks"></i>
-          <span class="link-text" *ngIf="!isMinimized">Tasking</span>
-        </a>
-      </li>
-    </ul>
-    <div class="sidenav-footer">
-      <div class="button-container">
-        <!-- Only show the icon when minimized -->
-        <button class="sidenav-button" (click)="openSignoutModal()" aria-label="Sign Out">
-          <i class="fas fa-sign-out-alt"></i>
-          <span class="button-text" *ngIf="!isMinimized">Sign Out</span>
-        </button>
-      </div>
+  </div>
+</nav>
+
+<!-- Signout Modal -->
+<div *ngIf="showSignoutModal" class="modal-backdrop">
+  <div class="modal">
+    <h3>Are you sure you want to sign out?</h3>
+    <div class="modal-actions">
+      <button (click)="confirmSignout()" class="modal-button confirm">
+        Yes
+      </button>
+      <button (click)="closeSignoutModal()" class="modal-button cancel">
+        No
+      </button>
     </div>
-  </nav>
-  
+  </div>
+</div>

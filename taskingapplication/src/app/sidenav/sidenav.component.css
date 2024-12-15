@@ -149,54 +149,38 @@ html, body {
   transform: scale(1.05);
 }
 
-.modal {
-  position: fixed; /* Ensures the modal is positioned relative to the viewport */
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000; /* Higher than sidenav */
-  visibility: hidden; /* Initially hidden */
-  opacity: 0; /* Initially transparent */
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 2000; /* Ensure it's above the sidenav */
 }
 
-/* Make modal visible when `*ngIf` toggles it */
-.modal[aria-modal="true"] {
-  visibility: visible;
-  opacity: 1;
-}
-
-.modal-content {
-  background-color: #fff;
+/* Modal */
+.modal {
+  background: #ffffff;
   padding: 20px;
-  border-radius: 8px;
-  width: 400px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 300px;
 }
 
-.modal h2 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
-.modal p {
-  font-size: 1rem;
-  margin-bottom: 20px;
-}
-
-.modal-buttons {
+/* Modal Actions */
+.modal-actions {
+  margin-top: 20px;
   display: flex;
-  justify-content: space-around;
-  gap: 10px;
+  justify-content: space-between;
 }
 
-.modal-buttons button {
+.modal-button {
   padding: 10px 20px;
   font-size: 1rem;
   border: none;
@@ -204,12 +188,13 @@ html, body {
   cursor: pointer;
 }
 
-.btn-primary {
+.modal-button.confirm {
   background-color: #38b2ac;
-  color: #fff;
+  color: white;
 }
 
-.btn-secondary {
-  background-color: #e2e8f0;
-  color: #2d3748;
+.modal-button.cancel {
+  background-color: #e53e3e;
+  color: white;
 }
+
