@@ -1,47 +1,20 @@
 <div class="auth-wrapper">
   <div class="auth-container">
-    <h1>Login</h1>
-    <form class="auth-form" id="loginForm">
+    <h2 class="text-center">Login</h2>
+    <form class="auth-form" [formGroup]="angForm" (ngSubmit)="postdata(angForm)" autocomplete="off">
       <div class="form-group">
-        <label for="username">Email</label>
-        <input type="text" id="username" placeholder="Enter your email" required />
+        <label for="admin_username">Username</label>
+        <input type="text" id="admin_username" formControlName="admin_username" class="form-control input-sm" placeholder="Enter your username" autocomplete="off" required />
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter your password" required />
+        <input type="password" id="password" formControlName="password" class="form-control input-sm" placeholder="Enter your password" autocomplete="off" required />
       </div>
-      <button type="submit" class="btn-primary">Login</button>
+      <button type="submit" class="btn btn-success">Login</button>
+      <div id="responseMessage"></div>
     </form>
+    
+    
     <div id="responseMessage"></div>
   </div>
 </div>
-
-<script>
-  document.getElementById('loginForm').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevent default form submission
-
-    const email = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    try {
-      const response = await fetch('login.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        document.getElementById('responseMessage').textContent = `Welcome, ${data[0].email}!`;
-      } else if (response.status === 404) {
-        document.getElementById('responseMessage').textContent = 'Invalid credentials. Please try again.';
-      } else {
-        document.getElementById('responseMessage').textContent = 'An error occurred. Please try again later.';
-      }
-    } catch (error) {
-      document.getElementById('responseMessage').textContent = 'An error occurred while connecting to the server.';
-    }
-  });
-</script>

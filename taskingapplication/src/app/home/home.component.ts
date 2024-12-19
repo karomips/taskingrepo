@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [SidenavComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']

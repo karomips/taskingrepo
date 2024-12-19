@@ -1,50 +1,60 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DataService } from '../data.service';
+import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  // Define the properties to bind to the form input
-  email: string = '';
-  password: string = '';
-  responseMessage: string = ''; // To display messages to the user
 
-  constructor(private router: Router) {}
+  angForm: FormGroup;
+  isLoading: boolean = false;  // Add the 'isLoading' property
 
-  async onSubmit(event: Event) {
-    event.preventDefault(); // Prevent default form submission
+  constructor(
+    private fb: FormBuilder,
+    private dataService: DataService,
+    private router: Router
+  ) {
+    // Initialize the form
+    this.angForm = this.fb.group({
+      admin_username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
 
-    try {
-      const response = await fetch('login.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+  postdata(formValue: FormGroup): void {
+    if (formValue.valid) {
+      const admin_username = formValue.value.admin_username;
+      const password = formValue.value.password;
+  
+      this.isLoading = true;  // Start loading
+      this.dataService.adminlogin(admin_username, password).subscribe(
+        (response) => {
+          console.log('Login successful:', response);
+          this.router.navigate(['/home']);  // Redirect to home
         },
-        body: JSON.stringify({ email: this.email, password: this.password }), // Send form data
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-
-        if (data[0]) {
-          // Assuming data[0] contains user info
-          localStorage.setItem('authToken', 'your-token-here'); // Store token in localStorage
-
-          this.router.navigate(['/home']); // Redirect to Home page after successful login
-        } else {
-          this.responseMessage = 'Invalid credentials. Please try again.';
+        (error) => {
+          console.error('Login failed:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: error.error?.message || 'Invalid username or password',
+          });  // Show Swal alert with the error
+        },
+        () => {
+          this.isLoading = false;  // End loading
         }
-      } else if (response.status === 404) {
-        this.responseMessage = 'Invalid credentials. Please try again.';
-      } else {
-        this.responseMessage = 'An error occurred. Please try again later.';
-      }
-    } catch (error) {
-      this.responseMessage = 'An error occurred while connecting to the server.';
+      );
+    } else {
+      alert('Please fill in both fields.');
     }
   }
-}
+  
+}  

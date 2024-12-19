@@ -1,26 +1,33 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router) {}
+  constructor(private dataService: DataService, private router: Router) {}
 
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    
-    // Check if the user is authenticated (you can store a token in localStorage/sessionStorage)
-    const isAuthenticated = localStorage.getItem('authToken') ? true : false;
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    const routeurl: string = state.url;
+    return this.isLogin(routeurl);
+  }
 
-    if (isAuthenticated) {
-      return true; // Allow access
-    } else {
-      this.router.navigate(['/login']); // Redirect to login if not authenticated
-      return false;
+  // Check if the user is logged in
+  isLogin(routeurl: string): boolean {
+    if (this.dataService.isLoggedIn()) {
+      return true;  // User is logged in, allow access
     }
+
+    // If not logged in, store the attempted URL and redirect to login page
+    this.dataService.redirectUrl = routeurl;
+    this.router.navigate(['/login'], { queryParams: { returnUrl: routeurl } });
+    
+    return false;  // Block access to the route
   }
 }

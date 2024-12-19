@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tasking',
+  standalone: true,
   imports: [SidenavComponent, CommonModule, RouterModule], // Add RouterModule here
   templateUrl: './tasking.component.html',
   styleUrls: ['./tasking.component.css']
