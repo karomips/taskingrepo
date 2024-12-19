@@ -2,17 +2,25 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 
+interface User {
+  user_id: number;
+  fullname: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
   public redirectUrl: string = '';  // Set a default empty string or any URL you'd like
-  private baseUrl: string = "http://localhost/taskingrepo/taskingapplication/api/taskingapi";
+  private baseUrl: string = "http://localhost/4ward/taskingrepo/taskingapplication/api/taskingapi";
 
   @Output() getLoggedInName: EventEmitter<boolean> = new EventEmitter();  // EventEmitter with Output decorator
 
   constructor(private httpClient: HttpClient) { }
+
+
+  
 
   // Login method
   public adminlogin(admin_username: string, password: string): Observable<any> {
@@ -31,9 +39,25 @@ export class DataService {
         catchError(this.handleError)  // Catch any errors
       );
   }
-  
-  
-  
+
+  // Method to assign a task
+  public assignTask(task: { taskName: string, taskDescription: string, taskInstructions: string, dueDate: string, assignedTo: number, createdBy: number }): Observable<any> {
+    return this.httpClient.post<any>(`${this.baseUrl}/assigntask.php`, task)
+      .pipe(
+        map(response => {
+          if (response.success) {
+            return response;  // Return the response on success
+          } else {
+            throw new Error(response.message);  // Throw error if assignment fails
+          }
+        }),
+        catchError(this.handleError)  // Catch any errors
+      );
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.httpClient.get<User[]>(`${this.baseUrl}/getUsers.php`);
+  }
 
   // Set token
   setToken(token: string): void {

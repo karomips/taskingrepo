@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import { SidenavComponent } from "../sidenav/sidenav.component";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DataService } from '../data.service';
+
+interface User {
+  user_id: number;
+  fullname: string;
+}
 
 @Component({
   selector: 'app-assigntask',
@@ -10,39 +16,52 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./assigntask.component.css']
 })
 export class AssigntaskComponent {
-  task = {
-    employeeName: '',
+
+  users: any[] = [];
+  task: any = {
     taskName: '',
     taskDescription: '',
     taskInstructions: '',
-    dueDate: ''
+    dueDate: '',
+    assignedTo: null,
+    createdBy: null
   };
-
-  // Flags for success and failure modals
   showSuccessModal = false;
   showFailureModal = false;
 
-  submitTask() {
-    // Simulate task assignment (could be saving to a database or calling an API)
-    if (this.task.employeeName && this.task.taskName && this.task.taskDescription && this.task.taskInstructions && this.task.dueDate) {
-      // Task assignment is successful
-      console.log('Task Assigned:', this.task);
-      this.showSuccessModal = true;
-      this.showFailureModal = false; // Hide failure modal
-    } else {
-      // Show failure modal if any required field is missing
-      this.showFailureModal = true;
-      this.showSuccessModal = false; // Hide success modal
-    }
+  constructor(private dataService: DataService) {}
 
-    // Reset the form after submission (optional based on requirement)
-    this.task = {
-      employeeName: '',
-      taskName: '',
-      taskDescription: '',
-      taskInstructions: '',
-      dueDate: ''
-    };
+  ngOnInit(): void {
+    this.loadUsers();
+    this.setCreatedBy(); // Automatically set the admin user ID
+  }
+
+  loadUsers() {
+    // Assume you have a service to load the list of users
+    this.dataService.getUsers().subscribe((response) => {
+      this.users = response;
+    });
+  }
+
+  setCreatedBy() {
+    // Fetch the logged-in admin ID (this can be from session storage, a service, or other means)
+    const loggedInAdminId = 1; // Replace with actual logic to fetch admin's ID
+    this.task.createdBy = loggedInAdminId;
+  }
+
+  submitTask() {
+    this.dataService.assignTask(this.task).subscribe(
+      (response) => {
+        if (response.success) {
+          this.showSuccessModal = true;
+        } else {
+          this.showFailureModal = true;
+        }
+      },
+      (error) => {
+        this.showFailureModal = true;
+      }
+    );
   }
 
   closeModal() {

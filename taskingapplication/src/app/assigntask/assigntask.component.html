@@ -9,14 +9,18 @@
   <form (ngSubmit)="submitTask()">
     <div class="form-group">
       <label for="employeeName">Employee Name:</label>
-      <input
-        type="text"
+      <select
         id="employeeName"
-        [(ngModel)]="task.employeeName"
+        [(ngModel)]="task.assignedTo"
         name="employeeName"
         required
-      />
-      <div *ngIf="!task.employeeName && showFailureModal" class="form-error">
+      >
+        <option value="" disabled>Select an Employee</option>
+        <option *ngFor="let user of users" [value]="user.user_id">
+          {{ user.fullname }}
+        </option>
+      </select>
+      <div *ngIf="!task.assignedTo && showFailureModal" class="form-error">
         Employee Name is required.
       </div>
     </div>
@@ -74,6 +78,13 @@
         Due Date is required.
       </div>
     </div>
+
+    <!-- Hidden field for createdBy (logged-in admin) -->
+    <input
+      type="hidden"
+      [(ngModel)]="task.createdBy"
+      name="createdBy"
+    />
 
     <button type="submit" class="btn-submit">Assign Task</button>
   </form>
