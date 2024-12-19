@@ -28,6 +28,7 @@ export class AssigntaskComponent {
   };
   showSuccessModal = false;
   showFailureModal = false;
+  isSidenavHovered = false;
 
   constructor(private dataService: DataService) {}
 
@@ -67,5 +68,8 @@ export class AssigntaskComponent {
   closeModal() {
     this.showSuccessModal = false;
     this.showFailureModal = false;
+  }
+  onHoverStateChanged(isHovered: boolean) {
+    this.isSidenavHovered = isHovered;
   }
 }

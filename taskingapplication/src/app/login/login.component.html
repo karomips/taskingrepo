@@ -4,17 +4,23 @@
     <form class="auth-form" [formGroup]="angForm" (ngSubmit)="postdata(angForm)" autocomplete="off">
       <div class="form-group">
         <label for="admin_username">Username</label>
-        <input type="text" id="admin_username" formControlName="admin_username" class="form-control input-sm" placeholder="Enter your username" autocomplete="off" required />
+        <div class="input-wrapper">
+          <i class="fas fa-user"></i>
+          <input type="text" id="admin_username" formControlName="admin_username" class="form-control" placeholder="Enter your username" autocomplete="off" required />
+        </div>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" formControlName="password" class="form-control input-sm" placeholder="Enter your password" autocomplete="off" required />
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" formControlName="password" class="form-control" placeholder="Enter your password" autocomplete="off" required />
+        </div>
       </div>
-      <button type="submit" class="btn btn-success">Login</button>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
       <div id="responseMessage"></div>
     </form>
-    
-    
-    <div id="responseMessage"></div>
+    <p class="text-center mt-3">
+
+    </p>
   </div>
 </div>

@@ -7,6 +7,19 @@ interface User {
   fullname: string;
 }
 
+interface Task {
+  id: number;
+  task_name: string;
+  task_description: string;
+  task_instructions: string;
+  due_date: string;
+  status: string;
+  assigned_to: number;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -92,4 +105,28 @@ export class DataService {
     }
     return throwError(() => new Error(errorMessage));  // Throw the error to be handled by the calling function
   }
+  getTasks(): Observable<Task[]> {
+    return this.httpClient.get<Task[]>(`${this.baseUrl}/getTasks.php`)
+      .pipe(
+        map(response => {
+          // If response is empty or null, return empty array
+          if (!response) return [];
+          return response;
+        }),
+        catchError(error => {
+          console.error('API Error:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+  
+
+  // Get tasks for specific user
+  fetchUserTasks(userId: number): Observable<Task[]> {
+    return this.httpClient.get<Task[]>(`${this.baseUrl}/getTasks.php?user_id=${userId}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
 }

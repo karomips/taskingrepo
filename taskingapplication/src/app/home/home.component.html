@@ -1,43 +1,81 @@
-<app-sidenav></app-sidenav>
+
 
 <div class="main-container">
-  <div class="dashboard-container">
-    <h1>Dashboard</h1>
-
-    <div class="assigned-section">
-      <h2>Jessica's Tasks</h2>
-      <div class="task-grid">
-        <div class="task-card">
-          <h3>Prepare Presentation</h3>
-          <p><strong>Description:</strong> Prepare the slides for the Q1 review.</p>
-          <p><strong>Assigned By:</strong> Manager</p>
-          <p><strong>Deadline:</strong> December 15, 2024</p>
+  <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
+  
+  <div class="dashboard-container" [class.sidenav-hovered]="isSidenavHovered">
+    <header class="dashboard-header">
+      <h1>Dashboard</h1>
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <span class="stat-number">{{ tasks.length }}</span>
+          <span class="stat-label">Total Tasks</span>
         </div>
+        <div class="stat-card">
+          <span class="stat-number">{{ getCompletedTasksCount() }}</span>
+          <span class="stat-label">Completed</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">{{ getInProgressTasksCount() }}</span>
+          <span class="stat-label">In Progress</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="filter-section">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          placeholder="Search tasks..." 
+          class="search-input">
+      </div>
+      <div class="filter-buttons">
+        <button 
+          class="filter-btn" 
+          [ngClass]="{'active': selectedFilter === 'all'}"
+          (click)="setFilter('all')">All</button>
+        <button 
+          class="filter-btn" 
+          [ngClass]="{'active': selectedFilter === 'pending'}"
+          (click)="setFilter('pending')">Pending</button>
+        <button 
+          class="filter-btn" 
+          [ngClass]="{'active': selectedFilter === 'in progress'}"
+          (click)="setFilter('in progress')">In Progress</button>
+        <button 
+          class="filter-btn" 
+          [ngClass]="{'active': selectedFilter === 'completed'}"
+          (click)="setFilter('completed')">Completed</button>
       </div>
     </div>
 
-    <!-- Section for John -->
     <div class="assigned-section">
-      <h2>John's Tasks</h2>
+      <h2>Tasks</h2>
       <div class="task-grid">
-        <div class="task-card">
-          <h3>Update Website</h3>
-          <p><strong>Description:</strong> Make necessary updates to the company website.</p>
-          <p><strong>Assigned By:</strong> Head of IT</p>
-          <p><strong>Deadline:</strong> December 20, 2024</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Section for Alex -->
-    <div class="assigned-section">
-      <h2>Alex's Tasks</h2>
-      <div class="task-grid">
-        <div class="task-card">
-          <h3>Team Meeting</h3>
-          <p><strong>Description:</strong> Schedule and conduct a team meeting.</p>
-          <p><strong>Assigned By:</strong> Manager</p>
-          <p><strong>Deadline:</strong> December 12, 2024</p>
+        <div 
+          class="task-card" 
+          *ngFor="let task of getFilteredTasks()" 
+          [ngClass]="getStatusClass(task.status)"
+          (click)="navigateToTask(task.id)">
+          <div class="task-header">
+            <h3>{{ task.task_name }}</h3>
+            <span class="task-status" [ngClass]="getStatusClass(task.status)">
+              {{ task.status }}
+            </span>
+          </div>
+          <div class="task-content">
+            <p class="task-description">{{ task.task_description }}</p>
+            <div class="task-meta">
+              <div class="due-date">
+                <i class="far fa-calendar"></i>
+                <span>{{ task.due_date | date:'mediumDate' }}</span>
+              </div>
+              <div class="assigned-to">
+                <div class="avatar">{{ getAssigneeInitial(task.assigned_to) }}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

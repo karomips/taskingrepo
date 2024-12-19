@@ -1,8 +1,10 @@
-<nav class="sidenav" [class.minimized]="isMinimized" aria-label="Main Navigation">
-  <div class="sidenav-header">
-    <i class="fas fa-cogs sidenav-logo"></i>
-    <span class="brand-name"></span>
-  </div>
+<nav class="sidenav" 
+     [class.minimized]="isMinimized" 
+     aria-label="Main Navigation" 
+     (mouseenter)="onHover(true)" 
+     (mouseleave)="onHover(false)">
+  ...
+
   <ul class="sidenav-links">
     <li>
       <a href="/home" class="sidenav-link" aria-label="Navigate to Home">

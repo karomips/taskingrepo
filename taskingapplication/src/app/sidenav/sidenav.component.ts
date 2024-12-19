@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -10,14 +10,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent {
+  @Output() hoverStateChanged = new EventEmitter<boolean>();
   showSignoutModal: boolean = false;
   isMinimized = false;
 
   constructor(private router: Router) {}
-  
+
   toggleSidebar() {
     this.isMinimized = !this.isMinimized;
-    
   }
 
   openSignoutModal() {
@@ -31,5 +31,9 @@ export class SidenavComponent {
   confirmSignout() {
     this.showSignoutModal = false;
     this.router.navigate(['/login']);
+  }
+
+  onHover(isHovered: boolean) {
+    this.hoverStateChanged.emit(isHovered);
   }
 }
