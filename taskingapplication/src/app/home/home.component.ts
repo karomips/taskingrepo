@@ -15,6 +15,11 @@ interface Task {
   created_by: number;
 }
 
+interface User {
+  user_id: number;
+  fullname: string;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -24,7 +29,9 @@ interface Task {
 })
 export class HomeComponent implements OnInit {
   tasks: Task[] = [];
+  users: User[] = [];
   searchQuery: string = '';
+  userMap: { [key: number]: string } = {};
   selectedFilter: string = 'all';
   isSidenavHovered = false;
 
@@ -35,6 +42,23 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.loadTasks();
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.dataService.getUsers().subscribe({
+      next: (data) => {
+        this.users = data;
+        this.userMap = this.users.reduce((map, user) => {
+          map[user.user_id] = user.fullname;
+          return map;
+        }, {} as { [key: number]: string });
+        this.loadTasks(); // Load tasks after users
+      },
+      error: (error) => {
+        console.error('Error fetching users:', error);
+      }
+    });
   }
 
   loadTasks() {
@@ -47,6 +71,11 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  getAssigneeName(assigned_to: number): string {
+    return this.userMap[assigned_to] || 'Unknown';
+  }
+  
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
