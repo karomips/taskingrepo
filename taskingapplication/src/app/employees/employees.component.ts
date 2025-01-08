@@ -2,17 +2,24 @@ import { Component } from '@angular/core';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Task {
-    id: number;
-    task_name: string;
-    task_description: string;
-    due_date: string;
-    status: string;
-    assigned_to: number;
-    created_by: number;
-
+  id: number;
+  task_name: string;
+  task_description: string;
+  task_instructions: string;
+  due_date: string;
+  status: string;
+  assigned_to: number;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+  progress?: string;  // Optional field
+  file_attachment?: string;  // Optional field
+  admin_comments?: string;  // Optional field
 }
+
 
 interface User {
   user_id: number;
@@ -28,83 +35,134 @@ interface User {
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [SidenavComponent, CommonModule],
+  imports: [
+    SidenavComponent,
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.css'
 })
 export class EmployeesComponent {
 
-  users: User[] = [];  // Array to store user data
-  modalVisible: boolean = false;  // Flag to control modal visibility
-  selectedUser: User | null = null;  // Object to hold selected user data
-  selectedUserTasks: Task[] = [];  // Array to store tasks assigned to the selected user
-  selectedUserDocuments: any[] = [];  // Array to store documents for the selected user
+  users: User[] = [];
+  modalVisible: boolean = false;
+  selectedUser: User | null = null;
+  selectedUserTasks: Task[] = [];
+  selectedUserDocuments: any[] = [];
 
+  taskModalVisible: boolean = false;
+  selectedTask: Task | null = null;
+  newComment: string = '';
+  taskComments: string[] = [];
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.loadUsers();  // Load users when component initializes
+    this.loadUsers();
   }
 
-  // Load users from the DataService
   loadUsers(): void {
     this.dataService.getUsers().subscribe(
       (users: User[]) => {
-        console.log('Fetched users:', users); // Check the full URLs
-        this.users = users; // Now it will accept users without 'tasks'
+        this.users = users;
       },
       error => {
         console.error('Error loading users:', error);
       }
     );
   }
-  
 
-  // Method to open the modal with the selected user's details
+  getStatusClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return 'task-status pending';
+      case 'in progress':
+        return 'task-status in-progress';
+      case 'completed':
+        return 'task-status completed';
+      default:
+        return 'task-status unknown';
+    }
+  }
+
   openModal(user: User): void {
-    console.log("Opening modal for user:", user);
     this.selectedUser = user;
     this.modalVisible = true;
-    
-    // Fetch tasks and documents for the selected user
+
     this.fetchTasksForUser(user.user_id);
     this.fetchDocumentsForUser(user.user_id);
   }
-  
+
   fetchDocumentsForUser(userId: number): void {
     this.dataService.fetchUserDocuments(userId).subscribe(
       (documents) => {
-        console.log('Documents for user', userId, ':', documents);  // Log documents fetched
-        this.selectedUserDocuments = documents;  // Store documents
+        this.selectedUserDocuments = documents;
       },
       (error) => {
         console.error('Error fetching documents:', error);
-        this.selectedUserDocuments = [];  // Clear documents in case of an error
+        this.selectedUserDocuments = [];
       }
     );
   }
-  
 
-  // Fetch tasks assigned to the selected user
   fetchTasksForUser(userId: number): void {
     this.dataService.fetchUserTasks(userId).subscribe(
-      (tasks) => {
-        this.selectedUserTasks = tasks;  // Store the tasks in the selectedUserTasks array
+      (tasks: Task[]) => {
+        // TypeScript will now correctly infer the types
+        this.selectedUserTasks = tasks;
       },
       (error) => {
         console.error('Error fetching tasks:', error);
-        this.selectedUserTasks = [];  // Clear tasks in case of an error
+        this.selectedUserTasks = [];
       }
     );
+}
+
+
+  openTaskModal(task: Task): void {
+    this.selectedTask = task;
+    this.taskComments = task.admin_comments ? task.admin_comments.split('\n') : [];
+    this.taskModalVisible = true;
   }
 
-  // Method to close the modal
   closeModal(): void {
-    this.modalVisible = false;  // Hide the modal
-    this.selectedUser = null;   // Clear the selected user
-    this.selectedUserTasks = [];  // Clear tasks for the user
+    this.modalVisible = false;
+    this.selectedUser = null;
+    this.selectedUserTasks = [];
   }
+
+  closeTaskModal(): void {
+    this.taskModalVisible = false;
+    this.selectedTask = null;
+    this.newComment = '';
+  }
+
+  submitComment(): void {
+    if (this.newComment.trim()) {
+      const updatedComments = [...this.taskComments, this.newComment];
+      const updatedAdminComments = updatedComments.join('\n'); // Join comments with newline
+  
+      // Get the admin ID from the current user or any logic you have for identifying the admin
+      const adminId = 1; // You can fetch this dynamically based on logged-in admin
+  
+      // Update the task's admin_comments field on the server (via the DataService)
+      if (this.selectedTask) {
+        this.dataService.updateTaskAdminComments(this.selectedTask.id, adminId, this.newComment).subscribe(
+          () => {
+            // Update the local task object with new admin comments
+            this.selectedTask!.admin_comments = updatedAdminComments;
+            this.taskComments = updatedComments;
+            this.newComment = '';  // Reset the comment input
+          },
+          (error) => {
+            console.error('Error updating admin comments:', error);
+          }
+        );
+      }
+    }
+  }
+  
 
   onSidenavHover(isHovered: boolean): void {
     console.log('Sidenav hover state changed:', isHovered);

@@ -10,11 +10,10 @@ html, body {
 .main-container {
     display: flex;
     height: 100vh; /* Ensures it doesn't exceed the viewport height */
-    overflow: hidden; /* Prevents child elements from overflowing */
     background: #e0f7fa; /* Light background color for the page */
 }
 
-app-sidenav {
+.app-sidenav {
     width: 250px; /* Fixed width for sidenav */
     flex-shrink: 0; /* Prevent the sidenav from shrinking */
     background: #f8fafc; /* Darker green background for sidenav */
@@ -24,12 +23,14 @@ app-sidenav {
 
 .content {
     flex: 1; /* Content will take the remaining space */
-    padding: 2rem;
+    padding: 3rem;
     background: #f8fafc;
     overflow-y: auto; /* Allows scrolling for the content only if it overflows */
-    height: 100%; /* Ensures the content fills the remaining height */
+    height: 100vh; /* Ensures the content fills the viewport height */
     box-sizing: border-box; /* Ensures padding is included in the height calculation */
     color: #333;
+    margin-left: 30px;
+    padding-top: 0;
 }
 
 h1 {
@@ -165,8 +166,6 @@ h1 {
     color: #555;
 }
 
-
-
 /* Scrollbar Styling */
 .task-container::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
@@ -235,42 +234,41 @@ h1 {
   color: #555;
 }
 
-  
-  .document-card {
+.document-card {
     background-color: #f9f9f9;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .document-header {
+}
+
+.document-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .document-header h4 {
+}
+
+.document-header h4 {
     margin: 0;
     font-size: 1.2em;
-  }
-  
-  .document-type {
+}
+
+.document-type {
     font-size: 0.9em;
     padding: 5px 10px;
     border-radius: 5px;
     color: white;
     background-color: #00796b;
-  }
-  
-  .document-body {
-    margin-top: 10px;
-  }
-  
-  .document-body p {
-    margin: 5px 0;
-  }
+}
 
-  .user-details {
+.document-body {
+    margin-top: 10px;
+}
+
+.document-body p {
+    margin: 5px 0;
+}
+
+.user-details {
     display: flex; /* Enable flexbox for side-by-side layout */
     gap: 2rem; /* Add spacing between the containers */
     margin-top: 20px;
@@ -287,11 +285,23 @@ h1 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-  .task-container .task-card,
+.task-container .task-card,
 .document-container .document-card {
     margin-bottom: 1rem; /* Add spacing between cards inside each container */
 }
-  
+
+.task-status-pending {
+    background-color: orange;
+}
+.task-status.in-progress {
+    background-color: blue; /* Customize the color for in-progress tasks */
+}
+.task-status-completed {
+    background-color: green;
+}
+.task-status-unknown {
+    background-color: gray;
+}
 
 /* Task Card Responsiveness */
 @media (max-width: 1200px) {

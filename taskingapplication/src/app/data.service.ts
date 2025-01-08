@@ -20,7 +20,11 @@ interface Task {
   created_by: number;
   created_at: string;
   updated_at: string;
+  progress?: string;  // Marking as optional
+  file_attachment?: string;  // Marking as optional
+  admin_comments?: string;  // Marking as optional
 }
+
 
 interface User_documents {
   id: number;
@@ -164,6 +168,20 @@ fetchUserDocuments(userId: number): Observable<any[]> {
         })
       );
   }
+  
+  updateTaskAdminComments(taskId: number, adminId: number, adminComment: string): Observable<any> {
+    const commentData = {
+      task_id: taskId,
+      admin_id: adminId,
+      admin_comment: adminComment,
+    };
+  
+    return this.httpClient.put<any>(
+      `${this.baseUrl}/update_task_comment.php`,  // Ensure this URL points to your PHP file
+      commentData
+    );
+  }
+  
   
 
   // Get tasks for specific user
