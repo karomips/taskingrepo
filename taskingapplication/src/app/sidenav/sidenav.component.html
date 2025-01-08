@@ -1,10 +1,11 @@
-<nav class="sidenav" 
-     [class.minimized]="isMinimized" 
-     aria-label="Main Navigation" 
-     (mouseenter)="onHover(true)" 
-     (mouseleave)="onHover(false)">
-  ...
+<nav 
+  class="sidenav" 
+  [class.minimized]="isMinimized" 
+  aria-label="Main Navigation">
+  
+  <!-- Toggle Button -->
 
+  <!-- Navigation Links -->
   <ul class="sidenav-links">
     <li>
       <a href="/home" class="sidenav-link" aria-label="Navigate to Home">
@@ -18,14 +19,21 @@
         <span class="link-text" *ngIf="!isMinimized">Tasking</span>
       </a>
     </li>
+    <li>
+      <a href="/employees" class="sidenav-link" aria-label="Navigate to Employees">
+        <i class="fas fa-users"></i>
+        <span class="link-text" *ngIf="!isMinimized">Employees</span>
+      </a>
+    </li>
   </ul>
+
+  <!-- Footer Section -->
   <div class="sidenav-footer">
     <div class="button-container">
-      <button
-        class="sidenav-button"
-        (click)="openSignoutModal()"
-        aria-label="Sign Out"
-      >
+      <button 
+        class="sidenav-button" 
+        (click)="openSignoutModal()" 
+        aria-label="Sign Out">
         <i class="fas fa-sign-out-alt"></i>
         <span class="button-text" *ngIf="!isMinimized">Sign Out</span>
       </button>

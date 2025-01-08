@@ -20,6 +20,10 @@ export class SidenavComponent {
     this.isMinimized = !this.isMinimized;
   }
 
+  toggleSidenav() {
+    this.isMinimized = !this.isMinimized;
+  }
+
   openSignoutModal() {
     this.showSignoutModal = true;
   }
