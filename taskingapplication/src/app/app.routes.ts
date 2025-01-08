@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'tasking', component: TaskingComponent, canActivate: [AuthGuard] },  // Protected route
   { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] },  // Protected route
-  { path: 'employees', component: EmployeesComponent },
+  { path: 'employees', component: EmployeesComponent, canActivate: [AuthGuard] }, // Protected route
 ];
 
 @NgModule({

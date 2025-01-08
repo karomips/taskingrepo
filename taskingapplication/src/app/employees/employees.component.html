@@ -1,0 +1,73 @@
+<div class="main-container">
+    <app-sidenav (hoverStateChanged)="onSidenavHover($event)"></app-sidenav>
+    <div class="content">
+      <h1>Employees</h1>
+  
+      <!-- Profile Container for Employees -->
+      <div class="profile-container">
+        <div class="profile-card" *ngFor="let user of users" (click)="openModal(user)">
+          <div class="profile-image">
+            <img [src]="user.profile_picture || 'assets/default-profile.png'" alt="{{ user.fullname }}'s profile picture">
+          </div>
+          <div class="profile-details">
+            <h2>{{ user.fullname }}</h2>
+            <p><strong>Department:</strong> {{ user.department }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Modal for User Details -->
+      <div *ngIf="modalVisible" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h2>{{ selectedUser?.fullname }}</h2>
+            <button (click)="closeModal()">X</button>
+          </div>
+  
+          <div class="user-details">
+            <!-- Task Assigned Section -->
+            <div class="task-container">
+              <h3>Assigned Tasks</h3>
+              <div *ngFor="let task of selectedUserTasks" class="task-card">
+                <div class="task-header">
+                  <h4>{{ task.task_name }}</h4>
+                  <span class="task-status" [ngClass]="{'completed': task.status === 'completed', 'pending': task.status === 'pending'}">
+                    {{ task.status }}
+                  </span>
+                </div>
+                <div class="task-body">
+                  <p><strong>Description:</strong> {{ task.task_description }}</p>
+                  <p><strong>Due Date:</strong> {{ task.due_date }}</p>
+                </div>
+              </div>
+            </div>
+          
+            <!-- User Documents Section -->
+            <div class="document-container">
+              <h3>Uploaded Documents</h3>
+              <div *ngFor="let doc of selectedUserDocuments" class="document-card">
+                <div class="document-header">
+                  <h4>{{ doc.filename }}</h4>
+                  <span class="document-type">{{ doc.docstype }}</span>
+                </div>
+                <div class="document-body">
+                  <p><strong>Upload Date:</strong> {{ doc.upload_date }}</p>
+                  <p><strong>File Path:</strong> <a [href]="doc.filepath" target="_blank">Download</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+  
+          <!-- Fallback Messages -->
+          <div *ngIf="!selectedUserTasks || selectedUserTasks.length === 0">
+            <p>No tasks assigned yet.</p>
+          </div>
+          <div *ngIf="!selectedUserDocuments || selectedUserDocuments.length === 0">
+            <p>No documents uploaded yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

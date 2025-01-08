@@ -1,0 +1,308 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling */
+    font-family: 'Arial', sans-serif; /* Modern font */
+}
+
+.main-container {
+    display: flex;
+    height: 100vh; /* Ensures it doesn't exceed the viewport height */
+    overflow: hidden; /* Prevents child elements from overflowing */
+    background: #e0f7fa; /* Light background color for the page */
+}
+
+app-sidenav {
+    width: 250px; /* Fixed width for sidenav */
+    flex-shrink: 0; /* Prevent the sidenav from shrinking */
+    background: #f8fafc; /* Darker green background for sidenav */
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.content {
+    flex: 1; /* Content will take the remaining space */
+    padding: 2rem;
+    background: #f8fafc;
+    overflow-y: auto; /* Allows scrolling for the content only if it overflows */
+    height: 100%; /* Ensures the content fills the remaining height */
+    box-sizing: border-box; /* Ensures padding is included in the height calculation */
+    color: #333;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #00796b;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    justify-content: center; /* Centers the profiles */
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Larger shadow for a floating effect */
+    flex: 1 1 220px;
+    min-width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer; /* Make the profile card clickable */
+}
+
+.profile-card:hover {
+    transform: translateY(-5px); /* Slight lift effect on hover */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.profile-details h2 {
+    font-size: 1.4rem;
+    color: #333;
+    margin: 0;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.profile-details p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.profile-image {
+    width: 100px; /* Slightly larger circular image */
+    height: 100px; /* Same as width for a perfect circle */
+    overflow: hidden; /* Hide overflow */
+    border-radius: 50%; /* Make the image round */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Center the image */
+    border: 3px solid #00796b; /* Add a border around the profile image */
+    transition: transform 0.3s ease; /* Smooth effect for scaling image */
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-image:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.profile-card p {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    width: 80%;  /* Increase width */
+    max-width: 1000px;  /* Set a max width for larger screens */
+    margin: 5% auto;  /* Center the modal */
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.modal-header button {
+    padding: 5px 10px;
+    font-size: 1.2em;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s ease;
+}
+
+.modal-header button:hover {
+    color: #333;
+}
+
+.modal-body {
+    margin-top: 15px;
+}
+
+.modal-body p {
+    font-size: 1rem;
+    color: #555;
+}
+
+
+
+/* Scrollbar Styling */
+.task-container::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.task-container::-webkit-scrollbar-thumb {
+  background-color: #00796b; /* Color of the scrollbar thumb */
+  border-radius: 10px;
+}
+
+.task-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Light background for the scrollbar track */
+}
+
+/* Individual Task Cards */
+.task-card {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for each task card */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  cursor: pointer; /* Make it clickable */
+}
+
+.task-card:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.task-header h4 {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #00796b; /* Greenish color for task titles */
+}
+
+.task-status {
+  font-size: 0.9em;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+.task-status.completed {
+  background-color: green;
+}
+
+.task-status.pending {
+  background-color: orange;
+}
+
+.task-body {
+  margin-top: 10px;
+}
+
+.task-body p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+  
+  .document-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .document-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .document-header h4 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  
+  .document-type {
+    font-size: 0.9em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: #00796b;
+  }
+  
+  .document-body {
+    margin-top: 10px;
+  }
+  
+  .document-body p {
+    margin: 5px 0;
+  }
+
+  .user-details {
+    display: flex; /* Enable flexbox for side-by-side layout */
+    gap: 2rem; /* Add spacing between the containers */
+    margin-top: 20px;
+}
+
+.task-container,
+.document-container {
+    flex: 1; /* Ensure both containers take up equal width */
+    max-height: 400px; /* Set a maximum height */
+    overflow-y: auto; /* Enable scrolling if the content exceeds the height */
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #fafafa; /* Light background for both containers */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+  .task-container .task-card,
+.document-container .document-card {
+    margin-bottom: 1rem; /* Add spacing between cards inside each container */
+}
+  
+
+/* Task Card Responsiveness */
+@media (max-width: 1200px) {
+  .task-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+  }
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+    .user-details {
+        flex-direction: column; /* Stack the containers vertically on smaller screens */
+    }
+}

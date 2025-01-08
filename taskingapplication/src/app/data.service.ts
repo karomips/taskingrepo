@@ -5,6 +5,8 @@ import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 interface User {
   user_id: number;
   fullname: string;
+  profile_picture: string;  // Include the profile picture field
+  department: string;
 }
 
 interface Task {
@@ -19,6 +21,16 @@ interface Task {
   created_at: string;
   updated_at: string;
 }
+
+interface User_documents {
+  id: number;
+  user_id: number;
+  filename: string;
+  filepath: string;
+  upload_date: string;
+  docstype: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -68,9 +80,42 @@ export class DataService {
       );
   }
 
-  getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.baseUrl}/getUsers.php`);
+  getEmployees(): Observable<any[]> {
+    return this.httpClient.get<any[]>('/api/users');  // Endpoint to get users' data
   }
+
+// Change the profile_picture path logic
+getUsers(): Observable<User[]> {
+  return this.httpClient.get<User[]>(`${this.baseUrl}/getUsers.php`).pipe(
+    map((users: User[]) => {
+      // Assuming the images are served from a folder outside taskingapplication
+      const profileImageBaseUrl = "http://localhost/4ward/eoportal/eoportalapi/"; // Path to the eoportal folder
+      return users.map(user => {
+        user.profile_picture = profileImageBaseUrl + user.profile_picture;  // Prepend the base URL to the profile picture
+        return user;
+      });
+    })  
+  );
+}
+
+fetchUserDocuments(userId: number): Observable<any[]> {
+  console.log(`Fetching documents for user_id: ${userId}`);
+  return this.httpClient.get<any[]>(`${this.baseUrl}/getUser_documents.php?user_id=${userId}`).pipe(
+    catchError(this.handleError),
+    map((documents) => {
+      if (!documents || documents.length === 0) {
+        return [];  // Return empty array if no documents are found
+      }
+      const documentBaseUrl = "http://localhost/4ward/eoportal/eoportalapi/uploads/files/";
+      return documents.map(doc => {
+        doc.filepath = doc.filepath ? documentBaseUrl + doc.filepath : '';  // Handle missing filepath
+        return doc;
+      });
+    })
+  );
+}
+
+
 
   // Set token
   setToken(token: string): void {
