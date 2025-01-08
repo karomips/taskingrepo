@@ -1,83 +1,42 @@
-
-
 <div class="main-container">
   <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
-  
+
   <div class="dashboard-container" [class.sidenav-hovered]="isSidenavHovered">
     <header class="dashboard-header">
       <h1>Dashboard</h1>
       <div class="dashboard-stats">
-        <div class="stat-card">
+        <button class="stat-card" (click)="openTaskModal()">
           <span class="stat-number">{{ tasks.length }}</span>
           <span class="stat-label">Total Tasks</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number">{{ getCompletedTasksCount() }}</span>
-          <span class="stat-label">Completed</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number">{{ getInProgressTasksCount() }}</span>
-          <span class="stat-label">In Progress</span>
-        </div>
+        </button>
       </div>
     </header>
 
-    <div class="filter-section">
-      <div class="search-box">
-        <input 
-          type="text" 
-          [(ngModel)]="searchQuery" 
-          placeholder="Search tasks..." 
-          class="search-input">
-      </div>
-      <div class="filter-buttons">
-        <button 
-          class="filter-btn" 
-          [ngClass]="{'active': selectedFilter === 'all'}"
-          (click)="setFilter('all')">All</button>
-        <button 
-          class="filter-btn" 
-          [ngClass]="{'active': selectedFilter === 'pending'}"
-          (click)="setFilter('pending')">Pending</button>
-        <button 
-          class="filter-btn" 
-          [ngClass]="{'active': selectedFilter === 'in progress'}"
-          (click)="setFilter('in progress')">In Progress</button>
-        <button 
-          class="filter-btn" 
-          [ngClass]="{'active': selectedFilter === 'completed'}"
-          (click)="setFilter('completed')">Completed</button>
+    <div class="chart-section">
+      <h2>Tasks Overview</h2>
+      <div class="chart-container">
+        <canvas id="taskChart"></canvas>
       </div>
     </div>
 
-    <div class="assigned-section">
-      <h2>Tasks</h2>
-      <div class="task-grid">
-        <div 
-          class="task-card" 
-          *ngFor="let task of getFilteredTasks()" 
-          [ngClass]="getStatusClass(task.status)"
-          (click)="navigateToTask(task.id)">
-          <div class="task-header">
-            <h3>{{ task.task_name }}</h3>
-            <span class="task-status" [ngClass]="getStatusClass(task.status)">
-              {{ task.status }}
-            </span>
-          </div>
-          <div class="task-content">
-            <p class="task-description">{{ task.task_description }}</p>
-            <div class="task-meta">
-              <div class="due-date">
-                <i class="far fa-calendar"></i>
-                <span>{{ task.due_date | date:'mediumDate' }}</span>
+    <!-- Modal Component -->
+    <div class="modal-backdrop" [class.show]="showModal" (click)="closeModal()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2 class="modal-title">Task List</h2>
+          <button class="close-button" (click)="closeModal()">&times;</button>
+        </div>
+        <div class="modal-content">
+          <ul class="task-list">
+            <li class="task-item" *ngFor="let task of getFilteredTasks()">
+              <div class="task-name">{{ task.task_name }}</div>
+              <div class="task-description">{{ task.task_description }}</div>
+              <div class="task-meta">
+                <span class="task-assignee">Assigned to: {{ getAssigneeName(task.assigned_to) }}</span>
+                <span class="task-status" [class]="getStatusClass(task.status)">{{ task.status }}</span>
               </div>
-              <div class="assigned-to">
-                <div class="avatar">{{ getAssigneeName(task.assigned_to) }}</div>
-              </div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-  </div>
-</div>

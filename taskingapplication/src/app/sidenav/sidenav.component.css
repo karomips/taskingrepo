@@ -144,10 +144,11 @@ body.with-sidenav-expanded .main-content {
 }
 
 .sidenav-button {
+  font-family: 'Poppins', sans-serif;
   padding: 12px 16px;
   font-size: 1.2rem;
   color: #ffffff;
-  background: linear-gradient(135deg, #3498db, #2c3e50);
+  background: #3498db;
   border: none;
   cursor: pointer;
   border-radius: 8px;
@@ -182,12 +183,11 @@ body.with-sidenav-expanded .main-content {
 .modal {
   font-family: 'Poppins', sans-serif;
   background: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 30px;  /* Increased padding */
+  border-radius: 12px;  /* Slightly larger border-radius */
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);  /* Slightly increased shadow intensity */
   text-align: center;
-  width: 300px;
- 
+  width: 400px;  /* Increased width */
 }
 
 /* Modal Actions */
