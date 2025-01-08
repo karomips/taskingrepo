@@ -7,13 +7,15 @@ import { CommonModule } from '@angular/common';
 import { AuthGuard } from './auth.guard';  // Import the AuthGuard
 import { AssigntaskComponent } from './assigntask/assigntask.component';
 import { FormsModule } from '@angular/forms';
+import { EmployeesComponent } from './employees/employees.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },  // Protected route
   { path: 'login', component: LoginComponent },
   { path: 'tasking', component: TaskingComponent, canActivate: [AuthGuard] },  // Protected route
-  { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] }  // Protected route
+  { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] },  // Protected route
+  { path: 'employees', component: EmployeesComponent },
 ];
 
 @NgModule({
