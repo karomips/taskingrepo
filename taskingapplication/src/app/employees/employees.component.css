@@ -8,6 +8,7 @@ html, body {
 }
 
 .main-container {
+    font-family: 'Poppins', sans-serif;
     display: flex;
     height: 100vh; /* Ensures it doesn't exceed the viewport height */
     background: #e0f7fa; /* Light background color for the page */
@@ -302,6 +303,29 @@ h1 {
 .task-status-unknown {
     background-color: gray;
 }
+
+.add-comment {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between textarea and button */
+    margin-top: 20px;
+}
+
+.submit-comment {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4568da;
+    color: white;
+  }
 
 /* Task Card Responsiveness */
 @media (max-width: 1200px) {

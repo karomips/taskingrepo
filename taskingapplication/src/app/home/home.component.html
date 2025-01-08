@@ -33,7 +33,7 @@
               <div class="task-description">{{ task.task_description }}</div>
               <div class="task-meta">
                 <span class="task-assignee">Assigned to: {{ getAssigneeName(task.assigned_to) }}</span>
-                <span class="task-status" [class]="getStatusClass(task.status)">{{ task.status }}</span>
+                <span class="task-status" [class]="getStatusClass(task.status)"><br>{{ task.status }}</span>
               </div>
             </li>
           </ul>
