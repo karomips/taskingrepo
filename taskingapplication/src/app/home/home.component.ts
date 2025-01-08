@@ -40,7 +40,8 @@ throw new Error('Method not implemented.');
   userMap: { [key: number]: string } = {};
   selectedFilter: string = 'all';
   isSidenavHovered = false;
-  showModal = false; // Modal visibility state
+  showModal = false;
+
 
   constructor(
     private router: Router,
@@ -183,9 +184,11 @@ throw new Error('Method not implemented.');
 
   openTaskModal() {
     this.showModal = true;
+    console.log('Modal opened:', this.showModal); // Debug log
   }
-  
+
   closeModal() {
     this.showModal = false;
+    console.log('Modal closed:', this.showModal); // Debug log
   }
 }
