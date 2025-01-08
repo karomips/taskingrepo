@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 interface Task {
   id: number;
@@ -28,12 +31,16 @@ interface User {
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+onSidenavHoverChanged($event: boolean) {
+throw new Error('Method not implemented.');
+}
   tasks: Task[] = [];
   users: User[] = [];
   searchQuery: string = '';
   userMap: { [key: number]: string } = {};
   selectedFilter: string = 'all';
   isSidenavHovered = false;
+  showModal = false; // Modal visibility state
 
   constructor(
     private router: Router,
@@ -65,11 +72,44 @@ export class HomeComponent implements OnInit {
     this.dataService.getTasks().subscribe({
       next: (data) => {
         this.tasks = data;
+        this.initializeChart();
       },
       error: (error) => {
         console.error('Error fetching tasks:', error);
       }
     });
+  }
+
+  initializeChart() {
+    const canvas = document.getElementById('taskChart') as HTMLCanvasElement;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Completed', 'In Progress', 'Pending'],
+            datasets: [{
+              label: '# of Tasks',
+              data: [
+                this.getCompletedTasksCount(),
+                this.getInProgressTasksCount(),
+                this.tasks.length - (this.getCompletedTasksCount() + this.getInProgressTasksCount())
+              ],
+              backgroundColor: ['#4CAF50', '#FFC107', '#F44336']
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true
+              }
+            }
+          }
+        });
+      }
+    }
   }
 
   getAssigneeName(assigned_to: number): string {
@@ -140,7 +180,12 @@ export class HomeComponent implements OnInit {
   navigateToTask(taskId: number) {
     this.router.navigate(['/task', taskId]);
   }
-  onSidenavHoverChanged(isHovered: boolean) {
-    this.isSidenavHovered = isHovered;
+
+  openTaskModal() {
+    this.showModal = true;
+  }
+  
+  closeModal() {
+    this.showModal = false;
   }
 }

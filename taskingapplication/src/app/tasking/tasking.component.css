@@ -5,27 +5,21 @@ th, td, label, button, select, h1{
 
 }
 .main-container {
-  display: flex;
+  justify-content: center;
+  display: 1500px;
   min-height: 100vh;
   transition: margin-left 0.3s ease, width 0.3s ease;
   background: #f8fafc;
 }
 
-.main-container.sidenav-open {
-  margin-left: 250px; /* Adjust this width to match your sidenav's width */
-}
-
-.task-dashboard.sidenav-hovered {
-  margin-left: 290px; /* Matches the expanded sidenav width */
-  padding-left: 10px; /* Optional: adjust padding if needed */
-}
 
 /* Overall Dashboard Styling */
 .task-dashboard {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  justify-content: center;
   margin: 20px auto;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 1500px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
