@@ -1,57 +1,57 @@
-<nav 
-  class="sidenav" 
-  [class.minimized]="isMinimized" 
-  aria-label="Main Navigation">
-  
-  <!-- Toggle Button -->
+<div class="main-layout">
+  <nav 
+    class="sidenav" 
+    [class.minimized]="isMinimized" 
+    aria-label="Main Navigation">
+    
+    <h1>Tasking</h1>
 
-  <!-- Navigation Links -->
-  <ul class="sidenav-links">
-    <li>
-      <a href="/home" class="sidenav-link" aria-label="Navigate to Home">
-        <i class="fas fa-home"></i>
-        <span class="link-text" *ngIf="!isMinimized">Home</span>
-      </a>
-    </li>
-    <li>
-      <a href="/assigntask" class="sidenav-link" aria-label="Navigate to Tasking">
-        <i class="fas fa-tasks"></i>
-        <span class="link-text" *ngIf="!isMinimized">Tasking</span>
-      </a>
-    </li>
-    <li>
-      <a href="/employees" class="sidenav-link" aria-label="Navigate to Employees">
-        <i class="fas fa-users"></i>
-        <span class="link-text" *ngIf="!isMinimized">Employees</span>
-      </a>
-    </li>
-  </ul>
+    <ul class="sidenav-links">
+      <li>
+        <a routerLink="/home" routerLinkActive="active-link" class="sidenav-link" aria-label="Navigate to Home">
+          <i class="fas fa-home"></i>
+          <span class="link-text">Home</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/assigntask" routerLinkActive="active-link" class="sidenav-link" aria-label="Navigate to Tasking">
+          <i class="fas fa-tasks"></i>
+          <span class="link-text">Tasking</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/employees" routerLinkActive="active-link" class="sidenav-link" aria-label="Navigate to Employees">
+          <i class="fas fa-users"></i>
+          <span class="link-text">Employees</span>
+        </a>
+      </li>
+    </ul>
 
-  <!-- Footer Section -->
-  <div class="sidenav-footer">
-    <div class="button-container">
-      <button 
-        class="sidenav-button" 
-        (click)="openSignoutModal()" 
-        aria-label="Sign Out">
-        <i class="fas fa-sign-out-alt"></i>
-        <span class="button-text" *ngIf="!isMinimized">Sign Out</span>
-      </button>
+    <div class="sidenav-footer">
+      <div class="button-container">
+        <button 
+          class="sidenav-button" 
+          (click)="openSignoutModal()" 
+          aria-label="Sign Out">
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="link-text">Sign Out</span>
+        </button>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<!-- Signout Modal -->
-<div *ngIf="showSignoutModal" class="modal-backdrop">
-  <div class="modal">
-    <h3>Are you sure you want to sign out?</h3>
-    <div class="modal-actions">
-      <button (click)="confirmSignout()" class="modal-button confirm">
-        Yes
-      </button>
-      <button (click)="closeSignoutModal()" class="modal-button cancel">
-        No
-      </button>
+
+    <router-outlet></router-outlet>
+
+
+  <!-- Signout Modal -->
+  <div *ngIf="showSignoutModal" class="modal-backdrop">
+    <div class="modal">
+      <h3>Are you sure you want to sign out?</h3>
+      <div class="modal-actions">
+        <button (click)="confirmSignout()" class="modal-button confirm">Yes</button>
+        <button (click)="closeSignoutModal()" class="modal-button cancel">No</button>
+      </div>
     </div>
   </div>
 </div>

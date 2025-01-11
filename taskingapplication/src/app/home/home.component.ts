@@ -41,6 +41,7 @@ throw new Error('Method not implemented.');
   selectedFilter: string = 'all';
   isSidenavHovered = false;
   showModal = false;
+  timelineChart: any;
 
 
   constructor(
@@ -51,6 +52,7 @@ throw new Error('Method not implemented.');
   ngOnInit() {
     this.loadTasks();
     this.loadUsers();
+    this.initializeTimelineChart(); // Add this
   }
 
   loadUsers() {
@@ -104,7 +106,15 @@ throw new Error('Method not implemented.');
             responsive: true,
             plugins: {
               legend: {
-                display: true
+                display: true,
+                position: 'top',
+                labels: {
+                  color: 'white',
+                  font: {
+                    size: 16  // Bigger legend text
+                  },
+                  padding: 20  // More spacing between legend items
+                }
               }
             }
           }
@@ -112,6 +122,7 @@ throw new Error('Method not implemented.');
       }
     }
   }
+  
 
   getAssigneeName(assigned_to: number): string {
     return this.userMap[assigned_to] || 'Unknown';
@@ -191,4 +202,102 @@ throw new Error('Method not implemented.');
     this.showModal = false;
     console.log('Modal closed:', this.showModal); // Debug log
   }
+
+  initializeTimelineChart() {
+    this.dataService.getTasksByDate().subscribe(data => {
+      const canvas = document.getElementById('tasksTimelineChart') as HTMLCanvasElement;
+      if (canvas && data.length > 0) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          if (this.timelineChart) {
+            this.timelineChart.destroy();
+          }
+  
+          this.timelineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: data.map(item => {
+                const date = new Date(item.date);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              }),
+              datasets: [{
+                label: 'Tasks Created',
+                data: data.map(item => item.count),
+                fill: true,
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                tension: 0.4,
+                borderWidth: 3,  // Thicker lines
+                pointBackgroundColor: '#2563eb',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 3,  // Bigger points
+                pointRadius: 6,       // Bigger points
+                pointHoverRadius: 8   // Bigger hover points
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'top',
+                  labels: {
+                    color: 'white',
+                    font: {
+                      size: 16,    // Bigger legend text
+                      weight: 'bold'  // Fixed: Using valid font weight
+                    },
+                    padding: 20    // More spacing
+                  }
+                },
+                title: {
+                  display: true,
+                  text: 'Tasks Created (Last 7 Days)',
+                  color: 'white',
+                  font: {
+                    size: 20,      // Bigger title
+                    family: 'Poppins',
+                    weight: 'bold'  // Fixed: Using valid font weight
+                  },
+                  padding: 20
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize: 1,
+                    color: 'white',
+                    font: {
+                      size: 14     // Bigger axis labels
+                    },
+                    padding: 10
+                  },
+                  grid: {
+                    color: 'rgba(255, 255, 255, 0.1)',
+                    lineWidth: 1
+                  }
+                },
+                x: {
+                  ticks: {
+                    color: 'white',
+                    font: {
+                      size: 14     // Bigger axis labels
+                    },
+                    padding: 10
+                  },
+                  grid: {
+                    color: 'rgba(255, 255, 255, 0.1)',
+                    lineWidth: 1
+                  }
+                }
+              }
+            }
+          });
+        }
+      }
+    });
+  
+}
 }

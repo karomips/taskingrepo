@@ -191,5 +191,23 @@ fetchUserDocuments(userId: number): Observable<any[]> {
         catchError(this.handleError)
       );
   }
+  getTasksByDate(): Observable<any[]> {
+    return this.getTasks().pipe(
+      map(tasks => {
+        // Group tasks by date
+        const groupedTasks = tasks.reduce((acc: { [key: string]: number }, task) => {
+          const date = new Date(task.created_at).toISOString().split('T')[0];
+          acc[date] = (acc[date] || 0) + 1;
+          return acc;
+        }, {});
+
+        // Convert to array and sort by date
+        return Object.entries(groupedTasks)
+          .map(([date, count]) => ({ date, count }))
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          .slice(-7); // Get last 7 days
+      })
+    );
+  }
 
 }

@@ -1,23 +1,50 @@
 <div class="main-container">
+  <div class="floating-object floating-object-1"></div>
+  <div class="floating-object floating-object-2"></div>
+  <div class="floating-object floating-object-3"></div>
+  <div class="floating-object floating-object-4"></div>
+  <div class="floating-object floating-object-5"></div>
+  <div class="floating-object floating-object-6"></div>
+  <div class="floating-object floating-object-7"></div>
+  <div class="floating-object floating-object-8"></div>
+  <div class="floating-object floating-object-9"></div>
+  <div class="floating-object floating-object-10"></div>
   <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
 
   <div class="dashboard-container" [class.sidenav-hovered]="isSidenavHovered">
     <header class="dashboard-header">
       <h1>Dashboard</h1>
       <div class="dashboard-stats">
+      <button class="stat-card">
+        <span class="stat-number">{{ users.length }}</span>
+        <span class="stat-label">Total Employees</span>
+      </button>
+
+    
         <button class="stat-card" (click)="openTaskModal()">
           <span class="stat-number">{{ tasks.length }}</span>
           <span class="stat-label">Total Tasks</span>
         </button>
       </div>
     </header>
-
+    
+  <div class="charts-row">
+    <!-- Task Overview Chart -->
     <div class="chart-section">
       <h2>Tasks Overview</h2>
       <div class="chart-container">
         <canvas id="taskChart"></canvas>
       </div>
     </div>
+
+    <!-- Timeline Chart -->
+    <div class="chart-section">
+      <h2>Tasks Timeline</h2>
+      <div class="chart-container">
+        <canvas id="tasksTimelineChart"></canvas>
+      </div>
+    </div>
+  </div>
 
     <!-- Modal Component -->
     <div class="modal-backdrop" [class.show]="showModal" (click)="closeModal()">
@@ -40,3 +67,5 @@
         </div>
       </div>
     </div>
+
+   

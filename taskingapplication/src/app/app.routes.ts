@@ -8,6 +8,7 @@ import { AuthGuard } from './auth.guard';  // Import the AuthGuard
 import { AssigntaskComponent } from './assigntask/assigntask.component';
 import { FormsModule } from '@angular/forms';
 import { EmployeesComponent } from './employees/employees.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
