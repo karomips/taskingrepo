@@ -11,32 +11,170 @@ html, body {
     font-family: 'Poppins', sans-serif;
     display: flex;
     height: 100vh; /* Ensures it doesn't exceed the viewport height */
-    background: #e0f7fa; /* Light background color for the page */
+    background: linear-gradient(135deg, #1a202c, #2d3748);
+    margin-left: 220px;
 }
 
-.app-sidenav {
-    width: 250px; /* Fixed width for sidenav */
-    flex-shrink: 0; /* Prevent the sidenav from shrinking */
-    background: #f8fafc; /* Darker green background for sidenav */
-    color: white;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+/* Floating Object Animations */
+.floating-object {
+  position: absolute;
+  opacity: 0.5;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.floating-object-1 {
+  width: 50px;
+  height: 50px;
+  top: 10%;
+  left: 5%;
+  animation: float1 4s infinite alternate;
+}
+
+.floating-object-2 {
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  right: 10%;
+  animation: float2 6s infinite alternate-reverse;
+}
+
+.floating-object-3 {
+  width: 75px;
+  height: 75px;
+  bottom: 20%;
+  left: 50%;
+  animation: float3 5s infinite alternate;
+}
+
+.floating-object-4 {
+  width: 30px;
+  height: 30px;
+  bottom: 5%;
+  right: 15%;
+  animation: float4 3s infinite alternate-reverse;
+}
+
+.floating-object-5 {
+  width: 120px;
+  height: 120px;
+  top: 20%;
+  left: 30%;
+  animation: float5 8s infinite alternate;
+}
+
+.floating-object-6 {
+  width: 60px;
+  height: 60px;
+  top: 70%;
+  right: 40%;
+  animation: float6 4s infinite alternate-reverse;
+}
+
+.floating-object-7 {
+  width: 40px;
+  height: 40px;
+  top: 40%;
+  left: 10%;
+  animation: float7 2s infinite alternate;
+}
+
+.floating-object-8 {
+  width: 90px;
+  height: 90px;
+  bottom: 10%;
+  right: 25%;
+  animation: float8 7s infinite alternate-reverse;
+}
+
+.floating-object-9 {
+  width: 50px;
+  height: 50px;
+  top: 15%;
+  left: 70%;
+  animation: float9 5s infinite alternate;
+}
+
+.floating-object-10 {
+  width: 110px;
+  height: 110px;
+  bottom: 30%;
+  right: 5%;
+  animation: float10 6s infinite alternate;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float1 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-50px) rotate(360deg); }
+}
+
+@keyframes float2 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-60px) rotate(-360deg); }
+}
+
+@keyframes float3 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(70px) rotate(180deg); }
+}
+
+@keyframes float4 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-30px) rotate(-90deg); }
+}
+
+@keyframes float5 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(90px) rotate(270deg); }
+}
+
+@keyframes float6 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-40px) rotate(90deg); }
+}
+
+@keyframes float7 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-30px) rotate(180deg); }
+}
+
+@keyframes float8 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-50px) rotate(-360deg); }
+}
+
+@keyframes float9 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(80px) rotate(360deg); }
+}
+
+@keyframes float10 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-70px) rotate(360deg); }
 }
 
 .content {
     flex: 1; /* Content will take the remaining space */
     padding: 3rem;
-    background: #f8fafc;
+    background: linear-gradient(135deg, #1a202c, #2d3748);
     overflow-y: auto; /* Allows scrolling for the content only if it overflows */
     height: 100vh; /* Ensures the content fills the viewport height */
     box-sizing: border-box; /* Ensures padding is included in the height calculation */
-    color: #333;
+    color: #000000;
     margin-left: 30px;
     padding-top: 0;
 }
 
 h1 {
     font-size: 2rem;
-    color: #00796b;
+    color: #ffffff;
     text-align: center;
     margin-bottom: 1rem;
 }
@@ -50,13 +188,15 @@ h1 {
 }
 
 .profile-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Larger shadow for a floating effect */
     flex: 1 1 220px;
     min-width: 250px;
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     text-align: center;
     overflow: hidden;
     cursor: pointer; /* Make the profile card clickable */
@@ -69,7 +209,7 @@ h1 {
 
 .profile-details h2 {
     font-size: 1.4rem;
-    color: #333;
+    color: #ffffff;
     margin: 0;
     font-weight: bold;
     margin-top: 1rem;
@@ -77,7 +217,7 @@ h1 {
 
 .profile-details p {
     font-size: 1rem;
-    color: #555;
+    color: #ffffff;
 }
 
 .profile-image {
@@ -107,7 +247,7 @@ h1 {
 .profile-card p {
     margin-top: 0.5rem;
     font-size: 0.9rem;
-    color: #777;
+    color: #dfc5c5;
 }
 
 /* Modal Styling */
@@ -128,6 +268,7 @@ h1 {
     max-width: 1000px;  /* Set a max width for larger screens */
     margin: 5% auto;  /* Center the modal */
     padding: 20px;
+    max-height: 70vh;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -159,7 +300,11 @@ h1 {
 }
 
 .modal-body {
-    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    height: 400px; /* Set a fixed height for better scroll control */
+    overflow: auto;
+    padding: 1rem;
 }
 
 .modal-body p {
@@ -167,6 +312,15 @@ h1 {
     color: #555;
 }
 
+.left-column, .right-column {
+    width: 48%;
+    padding: 1rem;
+    overflow-y: auto; /* Enable vertical scroll if needed */
+}
+
+.left-column .task-card, .right-column .document-card {
+    margin-bottom: 1rem;
+}
 /* Scrollbar Styling */
 .task-container::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
@@ -196,147 +350,100 @@ h1 {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
 }
 
-.task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+.document-container {
+    margin-top: 1rem;
 }
 
-.task-header h4 {
-  margin: 0;
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #00796b; /* Greenish color for task titles */
-}
-
-.task-status {
-  font-size: 0.9em;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: white;
-}
-
-.task-status.completed {
-  background-color: green;
-}
-
-.task-status.pending {
-  background-color: orange;
-}
-
-.task-body {
-  margin-top: 10px;
-}
-
-.task-body p {
-  margin: 5px 0;
-  font-size: 0.9rem;
-  color: #555;
+.document-card-container {
+    margin-bottom: 1rem;
 }
 
 .document-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
     background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .document-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-}
-
-.document-header h4 {
-    margin: 0;
-    font-size: 1.2em;
-}
-
-.document-type {
-    font-size: 0.9em;
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: white;
-    background-color: #00796b;
-}
-
-.document-body {
-    margin-top: 10px;
+    margin-bottom: 0.5rem;
 }
 
 .document-body p {
-    margin: 5px 0;
+    margin: 0.5rem 0;
 }
 
-.user-details {
-    display: flex; /* Enable flexbox for side-by-side layout */
-    gap: 2rem; /* Add spacing between the containers */
-    margin-top: 20px;
-}
-
-.task-container,
-.document-container {
-    flex: 1; /* Ensure both containers take up equal width */
-    max-height: 400px; /* Set a maximum height */
-    overflow-y: auto; /* Enable scrolling if the content exceeds the height */
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #fafafa; /* Light background for both containers */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-.task-container .task-card,
-.document-container .document-card {
-    margin-bottom: 1rem; /* Add spacing between cards inside each container */
-}
-
-.task-status-pending {
-    background-color: orange;
-}
-.task-status.in-progress {
-    background-color: blue; /* Customize the color for in-progress tasks */
-}
-.task-status-completed {
-    background-color: green;
-}
-.task-status-unknown {
-    background-color: gray;
-}
-
-.add-comment {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
+.document-image {
+    max-width: 100%;
+    height: auto;
     border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
+}
+
+.document-card-container {
+    margin-bottom: 1rem;
+}
+
+.document-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    background-color: #f9f9f9;
+}
+
+.document-header {
     display: flex;
-    flex-direction: column;
-    gap: 10px; /* Space between textarea and button */
-    margin-top: 20px;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
 }
 
-.submit-comment {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #4568da;
-    color: white;
-  }
-
-/* Task Card Responsiveness */
-@media (max-width: 1200px) {
-  .task-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
-  }
+.document-body p {
+    margin: 0.5rem 0;
 }
 
-/* Adjust for smaller screens */
-@media (max-width: 768px) {
-    .user-details {
-        flex-direction: column; /* Stack the containers vertically on smaller screens */
-    }
+
+/* Utility Classes */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.floating-object-7 {
+  animation-duration: 3s;
+}
+
+@keyframes float7 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-30px) rotate(180deg); }
 }

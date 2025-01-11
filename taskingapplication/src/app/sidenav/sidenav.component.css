@@ -123,14 +123,17 @@ h1{
 }
 
 .modal {
-  background: white;
+  font-family: 'Poppins', sans-serif;
+  background: rgb(206, 186, 186);
   padding: 2rem;
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   width: 400px;
   color: #2d3748;
 }
 
 .modal-actions {
+  font-family: 'Poppins', sans-serif;
   margin-top: 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -138,6 +141,7 @@ h1{
 }
 
 .modal-button {
+  font-family: 'Poppins', sans-serif;
   padding: 0.5rem 1.5rem;
   border: none;
   border-radius: 4px;
@@ -147,11 +151,13 @@ h1{
 }
 
 .modal-button.confirm {
+  font-family: 'Poppins', sans-serif;
   background-color: #38b2ac;
   color: white;
 }
 
 .modal-button.cancel {
+  font-family: 'Poppins', sans-serif;
   background-color: #e53e3e;
   color: white;
 }

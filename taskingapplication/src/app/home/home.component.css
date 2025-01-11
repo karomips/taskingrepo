@@ -13,7 +13,7 @@ p, h2, h3, span, button{
   min-height: 100vh;
   transition: margin-left 0.3s ease, width 0.3s ease;
   background: linear-gradient(135deg, #1a202c, #2d3748);
-  margin-left:240px;
+  margin-left:170px;
 }
 
 .main-container.sidenav-open {
@@ -175,6 +175,7 @@ p, h2, h3, span, button{
 
 .modal {
   background-color: white;
+  font-size: .5 rem;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -240,11 +241,13 @@ p, h2, h3, span, button{
 }
 
 .modal-content {
+  font-family: 'Poppins', sans-serif;
   max-height: 70vh;
   overflow-y: auto;
 }
 
 .task-list {
+  font-size: 1rem;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -252,15 +255,16 @@ p, h2, h3, span, button{
 
 .task-item {
   padding: 1rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #000000;
 }
 .task-item:last-child {
   border-bottom: none;
 }
 
 .task-name {
+  font-size: 1.7rem;
   font-weight: 600;
-  color: #2563eb;
+  color: #000000;
   margin-bottom: 0.25rem;
 }
 

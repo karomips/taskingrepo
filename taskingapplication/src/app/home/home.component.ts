@@ -31,6 +31,9 @@ interface User {
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+openEmployeeTaskModal() {
+throw new Error('Method not implemented.');
+}
 onSidenavHoverChanged($event: boolean) {
 throw new Error('Method not implemented.');
 }

@@ -137,6 +137,9 @@ export class EmployeesComponent {
     this.selectedTask = null;
     this.newComment = '';
   }
+  viewDocument(filepath: string): void {
+    window.open(filepath, '_blank');  // Opens the document in a new tab
+}
 
   submitComment(): void {
     if (this.newComment.trim()) {

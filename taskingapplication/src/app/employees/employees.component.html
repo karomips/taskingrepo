@@ -1,4 +1,14 @@
 <div class="main-container">
+      <div class="floating-object floating-object-1"></div>
+  <div class="floating-object floating-object-2"></div>
+  <div class="floating-object floating-object-3"></div>
+  <div class="floating-object floating-object-4"></div>
+  <div class="floating-object floating-object-5"></div>
+  <div class="floating-object floating-object-6"></div>
+  <div class="floating-object floating-object-7"></div>
+  <div class="floating-object floating-object-8"></div>
+  <div class="floating-object floating-object-9"></div>
+  <div class="floating-object floating-object-10"></div>
     <app-sidenav (hoverStateChanged)="onSidenavHover($event)"></app-sidenav>
     <div class="content">
         <h1>Employees</h1>
@@ -19,14 +29,16 @@
         <!-- Modal for User Details -->
         <div *ngIf="modalVisible" class="modal-overlay">
             <div class="modal">
+                <!-- Modal Header -->
                 <div class="modal-header">
                     <h2>{{ selectedUser?.fullname }}</h2>
                     <button (click)="closeModal()">X</button>
                 </div>
-
-                <div class="user-details">
-                    <!-- Task Assigned Section -->
-                    <div class="task-container">
+        
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Left Column: Assigned Tasks -->
+                    <div class="left-column">
                         <h3>Assigned Tasks</h3>
                         <div *ngFor="let task of selectedUserTasks" class="task-card" (click)="openTaskModal(task)">
                             <div class="task-header">
@@ -40,47 +52,39 @@
                             </div>
                         </div>
                     </div>
-
+        
+                    <!-- Right Column: Uploaded Documents -->
                     <!-- User Documents Section -->
-                    <div class="document-container">
-                        <h3>Uploaded Documents</h3>
-                        <div *ngFor="let doc of selectedUserDocuments" class="document-card">
-                            <div class="document-header">
-                                <h4>{{ doc.filename }}</h4>
-                                <span class="document-type">{{ doc.docstype }}</span>
-                            </div>
-                            <div class="document-body">
-                                <p><strong>Upload Date:</strong> {{ doc.upload_date }}</p>
-                                <p><strong>File Path:</strong> <a [href]="doc.filepath" target="_blank">Download</a></p>
-                            </div>
-                        </div>
-                    </div>
+<div class="document-container">
+    <h3>Uploaded Documents</h3>
+    <div *ngFor="let doc of selectedUserDocuments" class="document-card-container">
+        <div class="document-card">
+            <div class="document-header">
+                <h4>{{ doc.filename }}</h4>
+                <span class="document-type">{{ doc.docstype }}</span>
+            </div>
+            <div class="document-body">
+                <p><strong>Upload Date:</strong> {{ doc.upload_date }}</p>
+                <div *ngIf="doc.filetype === 'image'">
+                    <img [src]="doc.filepath" alt="{{ doc.filename }}" class="document-image">
                 </div>
-
-                <!-- Fallback Messages -->
-                <div *ngIf="!selectedUserTasks || selectedUserTasks.length === 0">
-                    <p>No tasks assigned yet.</p>
-                </div>
-                <div *ngIf="!selectedUserDocuments || selectedUserDocuments.length === 0">
-                    <p>No documents uploaded yet.</p>
+                <div *ngIf="doc.filetype !== 'image'">
+                    <p><strong>File Path:</strong> <button (click)="viewDocument(doc.filepath)">View Document</button></p>
                 </div>
             </div>
         </div>
-
-<!-- Task Detail Modal -->
-<div *ngIf="taskModalVisible" class="modal-overlay">
-    <div class="modal">
-      <div class="modal-header">
-        <h2>{{ selectedTask?.task_name }}</h2>
-        <button (click)="closeTaskModal()">X</button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Task Description:</strong> {{ selectedTask?.task_description }}</p>
-  
-        <!-- Comment Section -->
-        <div class="add-comment">
-          <textarea [(ngModel)]="newComment" placeholder="Add your comment..."></textarea>
-          <button (click)="submitComment()" class="submit-comment">Submit Comment</button>
-        </div>
-      </div>
     </div>
+</div>
+
+        
+                    <!-- Fallback Messages -->
+                    <div *ngIf="!selectedUserTasks || selectedUserTasks.length === 0">
+                        <p>No tasks assigned yet.</p>
+                    </div>
+                    <div *ngIf="!selectedUserDocuments || selectedUserDocuments.length === 0">
+                        <p>No documents uploaded yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
