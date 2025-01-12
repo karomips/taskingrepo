@@ -99,8 +99,13 @@
                                         </div>
                                         <div class="task-file-body">
                                             <a [href]="file.filepath" target="_blank" class="btn-view">View</a>
+                                            <button (click)="downloadTaskFile(file.id, file.filename)" class="btn-download">
+                                                Download
+                                            </button>
                                         </div>
                                     </div>
+                                </div>
+                                
                                 </div>
                             </div>
 
@@ -118,4 +123,3 @@
             </div>
         </div>
     </div>
-</div>

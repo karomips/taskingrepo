@@ -333,7 +333,8 @@ h1 {
   width: 8px; /* Width of the scrollbar */
 }
 
-.document-actions .btn-view, .document-actions .btn-download {
+.document-actions .btn-view, .document-actions .btn-download,
+.task-file-body .btn-view, .task-file-body .btn-download {
   background-color: #00796b;
   color: white;
   padding: 8px 15px;
@@ -341,6 +342,15 @@ h1 {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 3px;
+}
+
+.task-file-body .btn-download {
+  margin-left: 10px; /* Optional, adds some space between buttons */
+}
+
+.task-file-body .btn-view:hover, .task-file-body .btn-download:hover {
+  background-color: #004d40; /* Darker shade for hover effect */
 }
 
 .task-status, .document-type {

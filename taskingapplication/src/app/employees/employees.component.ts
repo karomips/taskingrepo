@@ -213,4 +213,32 @@ export class EmployeesComponent {
       }
     });
   }
+
+  downloadTaskFile(fileId: number, filename: string): void {
+    this.dataService.downloadTaskFile(fileId).subscribe({
+      next: (blob: Blob) => {
+        // Create a URL for the blob and set up the download link
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        
+        // Encode the filename to handle any special characters/spaces
+        link.download = encodeURIComponent(filename);
+  
+        // Append the link to the document, trigger the click event, then remove it
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Revoke the object URL to free up memory
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error downloading task file:', error);
+        alert(`Failed to download task file: ${error.message}`);
+      }
+    });
+  }
+  
+  
 }
