@@ -20,6 +20,14 @@ interface Task {
   admin_comments?: string;  // Optional field
 }
 
+interface TaskFile {
+  id: number;
+  task_id: number;
+  filename: string;
+  filepath: string;
+  upload_date: string;
+}
+
 
 interface User {
   user_id: number;
@@ -50,6 +58,7 @@ export class EmployeesComponent {
   selectedUser: User | null = null;
   selectedUserTasks: Task[] = [];
   selectedUserDocuments: any[] = [];
+  selectedUserTaskFiles: any[] = [];
 
   taskModalVisible: boolean = false;
   selectedTask: Task | null = null;
@@ -92,6 +101,7 @@ export class EmployeesComponent {
 
     this.fetchTasksForUser(user.user_id);
     this.fetchDocumentsForUser(user.user_id);
+    this.fetchTaskFilesForUser(user.user_id);
   }
 
   fetchDocumentsForUser(userId: number): void {
@@ -102,6 +112,18 @@ export class EmployeesComponent {
       (error) => {
         console.error('Error fetching documents:', error);
         this.selectedUserDocuments = [];
+      }
+    );
+  }
+
+  fetchTaskFilesForUser(userId: number): void {
+    this.dataService.fetchUserTaskFiles(userId).subscribe(
+      (taskFiles) => {
+        this.selectedUserTaskFiles = taskFiles;  // Store the fetched task files
+      },
+      (error) => {
+        console.error('Error fetching task files:', error);
+        this.selectedUserTaskFiles = [];  // Fallback to empty array
       }
     );
   }

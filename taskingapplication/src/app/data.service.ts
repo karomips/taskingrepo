@@ -1,6 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
+import { of } from 'rxjs';
+
 
 interface User {
   user_id: number;
@@ -23,6 +25,14 @@ interface Task {
   progress?: string;  // Marking as optional
   file_attachment?: string;  // Marking as optional
   admin_comments?: string;  // Marking as optional
+}
+
+interface TaskFile {
+  id: number;
+  task_id: number;
+  filename: string;
+  filepath: string;
+  upload_date: string;
 }
 
 
@@ -168,6 +178,34 @@ fetchUserDocuments(userId: number): Observable<any[]> {
         })
       );
   }
+
+
+  fetchUserTaskFiles(userId: number): Observable<any[]> {
+    console.log(`Fetching task files for user_id: ${userId}`);
+    return this.httpClient.get<any[]>(`${this.baseUrl}/getTaskFiles.php?user_id=${userId}`).pipe(
+      catchError(this.handleError),
+      map((taskFiles) => {
+        if (!taskFiles || taskFiles.length === 0) {
+          return [];  // Return empty array if no task files are found
+        }
+  
+        // Base URL for task files
+        const taskFilesBaseUrl = "http://localhost/4ward/eoportal/eoportalapi/uploads/task_files/";
+  
+        // Construct the full file path for each task file
+        return taskFiles.map(file => {
+          if (file.filepath) {
+            // If the filepath is relative, adjust it to the correct path based on userId and file structure
+            file.filepath = `${taskFilesBaseUrl}task_${userId}/${file.filepath.replace(/^..\//, '')}`;
+          } else {
+            file.filepath = '';  // Handle missing filepath
+          }
+          return file;
+        });
+      })
+    );
+  }
+  
   
   updateTaskAdminComments(taskId: number, adminId: number, adminComment: string): Observable<any> {
     const commentData = {

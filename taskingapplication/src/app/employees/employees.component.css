@@ -300,11 +300,17 @@ h1 {
 }
 
 .modal-body {
-    display: flex;
-    justify-content: space-between;
-    height: 400px; /* Set a fixed height for better scroll control */
-    overflow: auto;
-    padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem; /* Adds space between the two sections */
+  height: 400px; /* Set a fixed height for better scroll control */
+  overflow: auto;
+  padding: 1rem;
+}
+
+.new-comment-section, .task-files-container {
+  width: 48%; /* Each section takes up roughly half the available space */
+  margin-top: 1rem;
 }
 
 .modal-body p {
@@ -316,6 +322,7 @@ h1 {
     width: 48%;
     padding: 1rem;
     overflow-y: auto; /* Enable vertical scroll if needed */
+    margin-top: 1rem;
 }
 
 .left-column .task-card, .right-column .document-card {
@@ -324,6 +331,22 @@ h1 {
 /* Scrollbar Styling */
 .task-container::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
+}
+
+.document-actions .btn-view, .document-actions .btn-download {
+  background-color: #00796b;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.task-status, .document-type {
+  font-size: 0.9rem;
+  color: #00796b;
+  margin-left: 0.5rem;
 }
 
 .task-container::-webkit-scrollbar-thumb {
@@ -335,6 +358,52 @@ h1 {
   background-color: #f1f1f1; /* Light background for the scrollbar track */
 }
 
+.task-status {
+  font-size: 0.9rem;
+  color: #00796b;
+  margin-left: 0.5rem;
+}
+
+/* Task Modal */
+.task-files-container {
+  margin-top: 1rem;
+}
+
+.task-file-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-file-header h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.task-file-body a {
+  text-decoration: none;
+  color: #00796b;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.task-file-body a:hover {
+  color: #004d40;
+}
+
+/* Scrollbar Styling */
+.modal-body::-webkit-scrollbar {
+width: 8px;
+background-color: #f1f1f1; /* Light background for the scrollbar track */
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+background-color: #00796b; /* Color of the scrollbar thumb */
+border-radius: 10px;
+}
+
 /* Individual Task Cards */
 .task-card {
   background-color: white;
@@ -343,6 +412,23 @@ h1 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for each task card */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
   cursor: pointer; /* Make it clickable */
+}
+
+.fixed-size {
+  width: 100%; /* Set the width to fit the parent container */
+  height: 150px; /* Increase the height to make the field larger */
+  resize: none; /* Disable resizing */
+  padding: 12px; /* Add some padding for better usability */
+  font-size: 16px; /* Adjust font size for readability */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Optional: rounded corners */
+  box-sizing: border-box; /* Include padding in width/height */
+  outline: none; /* Remove focus outline */
+}
+
+.fixed-size:focus {
+  border-color: #007bff; /* Optional: change border color on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional: add focus shadow */
 }
 
 .task-card:hover {

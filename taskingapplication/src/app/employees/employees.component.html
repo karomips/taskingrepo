@@ -1,14 +1,14 @@
 <div class="main-container">
-      <div class="floating-object floating-object-1"></div>
-  <div class="floating-object floating-object-2"></div>
-  <div class="floating-object floating-object-3"></div>
-  <div class="floating-object floating-object-4"></div>
-  <div class="floating-object floating-object-5"></div>
-  <div class="floating-object floating-object-6"></div>
-  <div class="floating-object floating-object-7"></div>
-  <div class="floating-object floating-object-8"></div>
-  <div class="floating-object floating-object-9"></div>
-  <div class="floating-object floating-object-10"></div>
+    <div class="floating-object floating-object-1"></div>
+    <div class="floating-object floating-object-2"></div>
+    <div class="floating-object floating-object-3"></div>
+    <div class="floating-object floating-object-4"></div>
+    <div class="floating-object floating-object-5"></div>
+    <div class="floating-object floating-object-6"></div>
+    <div class="floating-object floating-object-7"></div>
+    <div class="floating-object floating-object-8"></div>
+    <div class="floating-object floating-object-9"></div>
+    <div class="floating-object floating-object-10"></div>
     <app-sidenav (hoverStateChanged)="onSidenavHover($event)"></app-sidenav>
     <div class="content">
         <h1>Employees</h1>
@@ -34,7 +34,7 @@
                     <h2>{{ selectedUser?.fullname }}</h2>
                     <button (click)="closeModal()">X</button>
                 </div>
-        
+
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <!-- Left Column: Assigned Tasks -->
@@ -52,9 +52,8 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <!-- Right Column: Uploaded Documents -->
-                    <!-- User Documents Section -->
                     <div class="document-container">
                         <h3>Uploaded Documents</h3>
                         <div *ngFor="let doc of selectedUserDocuments" class="document-card-container">
@@ -74,7 +73,40 @@
                         </div>
                     </div>
 
-        
+                    <!-- Task Modal for Adding Comments and Task Files -->
+                    <div *ngIf="taskModalVisible" class="modal-overlay">
+                        <div class="modal">
+                            <div class="modal-header">
+                                <h2>Task: {{ selectedTask?.task_name }}</h2>
+                                <button (click)="closeTaskModal()">X</button>
+                            </div>
+
+                            <div class="modal-body">
+                                <!-- Add New Comment Section -->
+                                <div class="new-comment-section">
+                                    <h3>Add a Comment</h3>
+                                    <textarea [(ngModel)]="newComment" rows="3" class="fixed-size" placeholder="Write your comment here"></textarea>
+                                    <button (click)="submitComment()" [disabled]="!newComment.trim()">Submit</button>
+                                </div>
+
+                                <!-- Task Files Section -->
+                                <div class="task-files-container">
+                                    <h3>Submitted Task Files</h3>
+                                    <div *ngFor="let file of selectedUserTaskFiles" class="task-file-card">
+                                        <div class="task-file-header">
+                                            <h4>{{ file.filename }}</h4>
+                                            <span class="task-file-date">{{ file.upload_date }}</span>
+                                        </div>
+                                        <div class="task-file-body">
+                                            <a [href]="file.filepath" target="_blank" class="btn-view">View</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <!-- Fallback Messages -->
                     <div *ngIf="!selectedUserTasks || selectedUserTasks.length === 0">
                         <p>No tasks assigned yet.</p>
@@ -85,4 +117,5 @@
                 </div>
             </div>
         </div>
-        
+    </div>
+</div>
