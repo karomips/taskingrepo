@@ -170,4 +170,25 @@ export class EmployeesComponent {
   onSidenavHover(isHovered: boolean): void {
     console.log('Sidenav hover state changed:', isHovered);
   }
+  downloadDocument(fileId: number, filename: string): void {
+    this.dataService.downloadDocument(fileId).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error downloading document:', error);
+        // Add this line to show error to user
+        alert(`Failed to download document: ${error.message}`);
+      }
+    });
+  }
 }

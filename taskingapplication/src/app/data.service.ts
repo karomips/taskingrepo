@@ -209,5 +209,39 @@ fetchUserDocuments(userId: number): Observable<any[]> {
       })
     );
   }
-
+  downloadDocument(fileId: number): Observable<Blob> {
+    const url = `${this.baseUrl}/download_document.php?file_id=${fileId}`;
+    
+    return this.httpClient.get(url, {
+      responseType: 'blob',
+      observe: 'response'
+    }).pipe(
+      map(response => {
+        if (!response.body) {
+          throw new Error('No content received');
+        }
+        return response.body;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Download error:', error);
+        
+        if (error.error instanceof Blob) {
+          return new Observable<never>(observer => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              try {
+                const errorResponse = JSON.parse(reader.result as string);
+                observer.error(new Error(errorResponse.details || 'Download failed'));
+              } catch {
+                observer.error(new Error('Failed to parse error response'));
+              }
+            };
+            reader.readAsText(error.error);
+          });
+        }
+        
+        return throwError(() => new Error('Failed to download file. Please check if the file exists.'));
+      })
+    );
+  }
 }

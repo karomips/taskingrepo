@@ -55,26 +55,24 @@
         
                     <!-- Right Column: Uploaded Documents -->
                     <!-- User Documents Section -->
-<div class="document-container">
-    <h3>Uploaded Documents</h3>
-    <div *ngFor="let doc of selectedUserDocuments" class="document-card-container">
-        <div class="document-card">
-            <div class="document-header">
-                <h4>{{ doc.filename }}</h4>
-                <span class="document-type">{{ doc.docstype }}</span>
-            </div>
-            <div class="document-body">
-                <p><strong>Upload Date:</strong> {{ doc.upload_date }}</p>
-                <div *ngIf="doc.filetype === 'image'">
-                    <img [src]="doc.filepath" alt="{{ doc.filename }}" class="document-image">
-                </div>
-                <div *ngIf="doc.filetype !== 'image'">
-                    <p><strong>File Path:</strong> <button (click)="viewDocument(doc.filepath)">View Document</button></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="document-container">
+                        <h3>Uploaded Documents</h3>
+                        <div *ngFor="let doc of selectedUserDocuments" class="document-card-container">
+                            <div class="document-card">
+                                <div class="document-header">
+                                    <h4>{{ doc.filename }}</h4>
+                                    <span class="document-type">{{ doc.docstype }}</span>
+                                </div>
+                                <div class="document-body">
+                                    <p><strong>Upload Date:</strong> {{ doc.upload_date }}</p>
+                                    <div class="document-actions">
+                                        <button (click)="viewDocument(doc.filepath)" class="btn-view">View</button>
+                                        <button (click)="downloadDocument(doc.id, doc.filename)" class="btn-download">Download</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
         
                     <!-- Fallback Messages -->
