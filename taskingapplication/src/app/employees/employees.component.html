@@ -65,7 +65,7 @@
                                 <div class="document-body">
                                     <p><strong>Upload Date:</strong> {{ doc.upload_date }}</p>
                                     <div class="document-actions">
-                                        <button (click)="viewDocument(doc.filepath)" class="btn-view">View</button>
+                                        <!-- <button (click)="viewDocument(doc.filepath)" class="btn-view">View</button> -->
                                         <button (click)="downloadDocument(doc.id, doc.filename)" class="btn-download">Download</button>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@
                                             <span class="task-file-date">{{ file.upload_date }}</span>
                                         </div>
                                         <div class="task-file-body">
-                                            <a [href]="file.filepath" target="_blank" class="btn-view">View</a>
+                                            <!-- <a [href]="file.filepath" target="_blank" class="btn-view">View</a> -->
                                             <button (click)="downloadTaskFile(file.id, file.filename)" class="btn-download">
                                                 Download
                                             </button>
