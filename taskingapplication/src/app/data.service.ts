@@ -45,6 +45,33 @@ interface User_documents {
   docstype: string;
 }
 
+interface Applicant {
+  applicant_id: number;
+  last_name: string;
+  first_name: string;
+  middle_name: string | null;
+  suffix: string | null;
+  contact_number: string;
+  email: string;
+  date_of_birth: string;
+  place_of_birth: string;
+  nationality: string;
+  civil_status: 'Single' | 'Married' | 'Divorced' | 'Widowed';
+  gender: 'Male' | 'Female' | 'Other';
+  created_at: string;
+  status: 'Pending' | 'Under Review' | 'Approved' | 'Rejected';
+}
+
+interface ApplicantDocument {
+  document_id: number;
+  applicant_id: number;
+  document_type: 'Resume' | 'Government ID' | 'Birth Certificate' | 'Diploma' | 'Training Certificates' | 'Other';
+  filename: string;
+  filepath: string;
+  upload_date: string;
+  status: 'Pending' | 'Verified' | 'Rejected';
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -318,6 +345,14 @@ fetchUserDocuments(userId: number): Observable<any[]> {
       })
     );
   }
-  
+  getApplicants(): Observable<Applicant[]> {
+    return this.httpClient.get<Applicant[]>(`${this.baseUrl}/getApplicants.php`);
+  }
+
+  getApplicantDocuments(applicantId: number): Observable<ApplicantDocument[]> {
+    return this.httpClient.get<ApplicantDocument[]>(
+      `${this.baseUrl}/getApplicantDocuments.php?applicant_id=${applicantId}`
+    );
+  }
 
 }

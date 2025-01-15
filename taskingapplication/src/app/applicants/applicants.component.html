@@ -1,0 +1,73 @@
+<div class="main-container">
+    <div class="floating-objects">
+        <div class="floating-object floating-object-1"></div>
+        <div class="floating-object floating-object-2"></div>
+        <div class="floating-object floating-object-3"></div>
+        <div class="floating-object floating-object-4"></div>
+        <div class="floating-object floating-object-5"></div>
+        <div class="floating-object floating-object-6"></div>
+        <div class="floating-object floating-object-7"></div>
+        <div class="floating-object floating-object-8"></div>
+        <div class="floating-object floating-object-9"></div>
+        <div class="floating-object floating-object-10"></div>
+    </div>
+    
+    <app-sidenav (hoverStateChanged)="onSidenavHover($event)"></app-sidenav>
+
+    <div class="content-container">
+        <h2>Applicants List</h2>
+        
+        @if (loading) {
+            <div class="loading">Loading applicants...</div>
+        }
+
+        @if (applicants.length === 0 && !loading) {
+            <div class="no-data">No applicants found</div>
+        }
+
+        <div class="applicants-grid">
+            @for (applicant of applicants; track applicant.applicant_id) {
+                <div class="applicant-card" [class.selected]="selectedApplicant?.applicant_id === applicant.applicant_id">
+                    <div class="applicant-header">
+                        <h3>{{ applicant.last_name }}, {{ applicant.first_name }}</h3>
+                        <span class="status-badge" [class]="applicant.status.toLowerCase()">
+                            {{ applicant.status }}
+                        </span>
+                    </div>
+                    
+                    <div class="applicant-details">
+                        <p><strong>Email:</strong> {{ applicant.email }}</p>
+                        <p><strong>Contact:</strong> {{ applicant.contact_number }}</p>
+                        <p><strong>Nationality:</strong> {{ applicant.nationality }}</p>
+                        <p><strong>Applied:</strong> {{ applicant.created_at | date }}</p>
+                    </div>
+
+                    <button class="view-docs-btn" (click)="loadApplicantDocuments(applicant)">
+                        View Documents
+                    </button>
+
+                    @if (selectedApplicant && selectedApplicant.applicant_id === applicant.applicant_id) {
+                        <div class="documents-section">
+                            <h4>Documents</h4>
+                            @if (selectedApplicant.documents && selectedApplicant.documents.length > 0) {
+                                <div class="documents-grid">
+                                    @for (doc of selectedApplicant.documents; track doc.document_id) {
+                                        <div class="document-card">
+                                            <span class="doc-type">{{ doc.document_type }}</span>
+                                            <span class="doc-status" [class]="doc.status.toLowerCase()">
+                                                {{ doc.status }}
+                                            </span>
+                                            <span class="doc-name">{{ doc.filename }}</span>
+                                        </div>
+                                    }
+                                </div>
+                            } @else {
+                                <p>No documents found</p>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

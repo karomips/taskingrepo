@@ -9,6 +9,7 @@ import { AssigntaskComponent } from './assigntask/assigntask.component';
 import { FormsModule } from '@angular/forms';
 import { EmployeesComponent } from './employees/employees.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { ApplicantsComponent } from './applicants/applicants.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,6 +18,8 @@ export const routes: Routes = [
   { path: 'tasking', component: TaskingComponent, canActivate: [AuthGuard] },  // Protected route
   { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] },  // Protected route
   { path: 'employees', component: EmployeesComponent, canActivate: [AuthGuard] }, // Protected route
+  { path: 'applicants', component: ApplicantsComponent, canActivate: [AuthGuard] }, // Protected route
+
 ];
 
 @NgModule({
