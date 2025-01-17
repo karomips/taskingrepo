@@ -2,7 +2,7 @@
 require 'database.php'; // Make sure to include your database connection
 
 // Allow CORS and specific methods
-header("Access-Control-Allow-Origin: http://localhost:4200"); // Allow specific origin (localhost:4200 for Angular)
+header("Access-Control-Allow-Origin: http://localhost:57175"); // Allow specific origin (localhost:4200 for Angular)
 header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS"); // Allow specific methods, including PUT
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept"); // Allow specific headers
 header('Content-Type: application/json');

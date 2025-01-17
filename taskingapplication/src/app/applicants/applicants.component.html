@@ -25,49 +25,153 @@
             <div class="no-data">No applicants found</div>
         }
 
-        <div class="applicants-grid">
-            @for (applicant of applicants; track applicant.applicant_id) {
-                <div class="applicant-card" [class.selected]="selectedApplicant?.applicant_id === applicant.applicant_id">
-                    <div class="applicant-header">
-                        <h3>{{ applicant.last_name }}, {{ applicant.first_name }}</h3>
-                        <span class="status-badge" [class]="applicant.status.toLowerCase()">
-                            {{ applicant.status }}
-                        </span>
-                    </div>
-                    
-                    <div class="applicant-details">
-                        <p><strong>Email:</strong> {{ applicant.email }}</p>
-                        <p><strong>Contact:</strong> {{ applicant.contact_number }}</p>
-                        <p><strong>Nationality:</strong> {{ applicant.nationality }}</p>
-                        <p><strong>Applied:</strong> {{ applicant.created_at | date }}</p>
-                    </div>
+        <div class="table-container">
+            <table class="applicants-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Department</th>
+                        <th>Position</th>
+                        <th>Nationality</th>
+                        <th>Applied Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (applicant of applicants; track applicant.applicant_id) {
+                        <tr [class.selected]="selectedApplicant?.applicant_id === applicant.applicant_id"
+                            (click)="selectApplicant(applicant)">
+                        >
+                            <td>{{ applicant.last_name }}, {{ applicant.first_name }} {{applicant.middle_name }}</td>
+                            <td>{{ applicant.email }}</td>
+                            <td>{{ applicant.contact_number }}</td>
+                            <td>{{ applicant.department || 'Not specified' }}</td>
+                            <td>{{ applicant.position || 'Not specified' }}</td>
+                            <td>{{ applicant.nationality }}</td>
+                            <td>{{ applicant.created_at | date }}</td>
+                            <td>
+                                <span class="status-badge" [class]="getStatusClass(applicant.status)">
+                                    {{ applicant.status }}
+                                </span>
+                            </td>
+                            <td class="actions-cell">
+                                @if (applicant.status !== 'Approved' && applicant.status !== 'Rejected') {
+                                    <button 
+                                        class="action-btn accept"
+                                        (click)="acceptApplicant($event, applicant.applicant_id)"
+                                        title="Accept Applicant"
+                                    >
+                                        ✓
+                                    </button>
+                                    <button 
+                                        class="action-btn decline"
+                                        (click)="declineApplicant($event, applicant.applicant_id)"
+                                        title="Decline Applicant"
+                                    >
+                                        ✕
+                                    </button>
+                                } @else {
+                                    {{ applicant.status === 'Approved' ? '✓' : '✕' }}
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-                    <button class="view-docs-btn" (click)="loadApplicantDocuments(applicant)">
-                        View Documents
-                    </button>
+        @if (showDetails && selectedApplicant) {
+            <div class="details-panel">
+                <h3>Applicant Details</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <label>Full Name:</label>
+                        <span>{{ selectedApplicant.last_name }}, {{ selectedApplicant.first_name }}
+                            {{ selectedApplicant.middle_name }} {{ selectedApplicant.suffix }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Department:</label>
+                        <span>{{ selectedApplicant.department || 'Not specified' }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Position:</label>
+                        <span>{{ selectedApplicant.position || 'Not specified' }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Date of Birth:</label>
+                        <span>{{ selectedApplicant.date_of_birth | date }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Place of Birth:</label>
+                        <span>{{ selectedApplicant.place_of_birth }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Civil Status:</label>
+                        <span>{{ selectedApplicant.civil_status }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Gender:</label>
+                        <span>{{ selectedApplicant.gender }}</span>
+                    </div>
+                </div>
 
-                    @if (selectedApplicant && selectedApplicant.applicant_id === applicant.applicant_id) {
-                        <div class="documents-section">
-                            <h4>Documents</h4>
-                            @if (selectedApplicant.documents && selectedApplicant.documents.length > 0) {
-                                <div class="documents-grid">
-                                    @for (doc of selectedApplicant.documents; track doc.document_id) {
-                                        <div class="document-card">
-                                            <span class="doc-type">{{ doc.document_type }}</span>
-                                            <span class="doc-status" [class]="doc.status.toLowerCase()">
+                <div class="documents-section">
+                    <h4>Documents</h4>
+                    @if (selectedApplicant.documents && selectedApplicant.documents.length > 0) {
+                        <table class="documents-table">
+                            <thead>
+                                <tr>
+                                    <th>Document Type</th>
+                                    <th>Filename</th>
+                                    <th>Upload Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (doc of selectedApplicant.documents; track doc.document_id) {
+                                    <tr>
+                                        <td>{{ doc.document_type }}</td>
+                                        <td>{{ doc.filename }}</td>
+                                        <td>{{ doc.upload_date | date }}</td>
+                                        <td>
+                                            <span class="doc-status" [class]="getStatusClass(doc.status)">
                                                 {{ doc.status }}
                                             </span>
-                                            <span class="doc-name">{{ doc.filename }}</span>
-                                        </div>
-                                    }
-                                </div>
-                            } @else {
-                                <p>No documents found</p>
-                            }
-                        </div>
+                                        </td>
+                                        <td>
+                                            <button 
+                                                class="action-btn view"
+                                                (click)="viewDocument(doc.document_id)"
+                                                title="View Document">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button 
+                                                class="action-btn download"
+                                                (click)="downloadDocument(doc.document_id)"
+                                                title="Download Document">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    } @else {
+                        <p>No documents found</p>
                     }
                 </div>
-            }
-        </div>
+            </div>
+        }
+
+        @if (showModal) {
+            <app-confirmation-modal
+                (confirm)="onModalConfirm($event)"
+                (cancel)="closeModal()"
+            ></app-confirmation-modal>
+        }
     </div>
 </div>

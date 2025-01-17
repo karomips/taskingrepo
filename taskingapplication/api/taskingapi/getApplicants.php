@@ -1,5 +1,4 @@
 <?php
-
 require 'database.php';
 
 header("Access-Control-Allow-Origin: *");
@@ -12,7 +11,27 @@ try {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     
-    $query = "SELECT * FROM applicants ORDER BY created_at DESC";
+    // Updated query to include department and position
+    $query = "SELECT 
+        applicant_id,
+        last_name,
+        first_name,
+        middle_name,
+        suffix,
+        contact_number,
+        email,
+        date_of_birth,
+        place_of_birth,
+        nationality,
+        civil_status,
+        gender,
+        department,
+        position,
+        created_at,
+        status
+    FROM applicants 
+    ORDER BY created_at DESC";
+    
     $stmt = $pdo->prepare($query);
     
     if (!$stmt->execute()) {
@@ -37,7 +56,4 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    error_log('JSON encoding error: ' . json_last_error_msg());
-}
+?>

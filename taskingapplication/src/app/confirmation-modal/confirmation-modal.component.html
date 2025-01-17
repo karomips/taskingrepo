@@ -1,0 +1,24 @@
+<div class="modal-backdrop" (click)="onCancel()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>Accept Applicant</h3>
+      <p>Are you sure you want to accept this applicant?</p>
+      
+      <div class="form-group">
+        <label for="additionalMessage">Additional Message:</label>
+        <textarea
+          id="additionalMessage"
+          [(ngModel)]="customMessage"
+          rows="4"
+          placeholder="Enter additional message for the acceptance email..."
+          class="message-input"
+        ></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="onCancel()">Cancel</button>
+        <button class="btn-confirm btn-accept" (click)="onConfirm()">
+          Accept
+        </button>
+      </div>
+    </div>
+  </div>

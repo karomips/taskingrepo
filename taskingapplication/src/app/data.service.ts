@@ -45,7 +45,7 @@ interface User_documents {
   docstype: string;
 }
 
-interface Applicant {
+export interface Applicant {
   applicant_id: number;
   last_name: string;
   first_name: string;
@@ -58,11 +58,13 @@ interface Applicant {
   nationality: string;
   civil_status: 'Single' | 'Married' | 'Divorced' | 'Widowed';
   gender: 'Male' | 'Female' | 'Other';
+  department: string;  // Added this
+  position: string;    // Added this
   created_at: string;
   status: 'Pending' | 'Under Review' | 'Approved' | 'Rejected';
 }
 
-interface ApplicantDocument {
+export interface ApplicantDocument {
   document_id: number;
   applicant_id: number;
   document_type: 'Resume' | 'Government ID' | 'Birth Certificate' | 'Diploma' | 'Training Certificates' | 'Other';
@@ -70,8 +72,8 @@ interface ApplicantDocument {
   filepath: string;
   upload_date: string;
   status: 'Pending' | 'Verified' | 'Rejected';
+  mime_type?: string;
 }
-
 
 @Injectable({
   providedIn: 'root'
@@ -274,8 +276,8 @@ fetchUserDocuments(userId: number): Observable<any[]> {
       })
     );
   }
-  downloadDocument(fileId: number): Observable<Blob> {
-    const url = `${this.baseUrl}/download_document.php?file_id=${fileId}`;
+  downloadDocument(documentId: number): Observable<Blob> {
+    const url = `${this.baseUrl}/download_document.php?document_id=${documentId}`; // Changed from file_id to document_id
     
     return this.httpClient.get(url, {
       responseType: 'blob',
@@ -298,14 +300,14 @@ fetchUserDocuments(userId: number): Observable<any[]> {
                 const errorResponse = JSON.parse(reader.result as string);
                 observer.error(new Error(errorResponse.details || 'Download failed'));
               } catch {
-                observer.error(new Error('Failed to parse error response'));
+                observer.error(new Error('Download failed: Unknown error'));
               }
             };
             reader.readAsText(error.error);
           });
         }
         
-        return throwError(() => new Error('Failed to download file. Please check if the file exists.'));
+        return throwError(() => new Error('Failed to download file'));
       })
     );
   }
@@ -355,4 +357,36 @@ fetchUserDocuments(userId: number): Observable<any[]> {
     );
   }
 
+  updateApplicantStatus(applicantId: number, status: 'Approved' | 'Rejected'): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+  
+    return this.httpClient.put<any>(
+      `${this.baseUrl}/updateApplicantStatus.php`,
+      { applicant_id: applicantId, status: status },
+      { headers: headers }
+    ).pipe(
+      map(response => {
+        if (!response.success) {
+          throw new Error(response.error || 'Failed to update status');
+        }
+        return response;
+      }),
+      catchError(error => {
+        console.error('Error updating applicant status:', error);
+        return throwError(() => new Error(error.message || 'Failed to update applicant status'));
+      })
+    );
+  }
+  viewDocument(documentId: number): Observable<any> {
+    const url = `${this.baseUrl}/view_document.php?document_id=${documentId}`;
+    
+    // For PDF and image files, we'll open them in a new window
+    window.open(url, '_blank');
+    
+    // Return an observable that completes immediately
+    return of(null);
+  }
+  
 }

@@ -1,0 +1,5 @@
+[17-Jan-2025 05:20:51 Europe/Berlin] PHP Warning:  require(vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampppp\htdocs\4ward\taskingrepo\taskingapplication\api\taskingapi\send-email.php on line 17
+[17-Jan-2025 05:20:51 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'vendor/autoload.php' (include_path='C:\xampppp\php\PEAR') in C:\xampppp\htdocs\4ward\taskingrepo\taskingapplication\api\taskingapi\send-email.php:17
+Stack trace:
+#0 {main}
+  thrown in C:\xampppp\htdocs\4ward\taskingrepo\taskingapplication\api\taskingapi\send-email.php on line 17

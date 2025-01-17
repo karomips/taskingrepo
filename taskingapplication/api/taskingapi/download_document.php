@@ -10,31 +10,32 @@ header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 try {
-    if (!isset($_GET['file_id'])) {
-        throw new Exception('File ID is required');
+    if (!isset($_GET['document_id'])) {
+        throw new Exception('Document ID is required');
     }
 
-    $fileId = intval($_GET['file_id']);
+    $documentId = intval($_GET['document_id']);
     
-    // Get file information from database
-    $stmt = $pdo->prepare("SELECT id, filepath, filename FROM user_documents WHERE id = :file_id");
-    $stmt->bindParam(':file_id', $fileId, PDO::PARAM_INT);
+    // Get document information from database
+    $stmt = $pdo->prepare("SELECT ad.document_id, ad.filepath, ad.filename, ad.document_type, a.applicant_id 
+                          FROM applicant_documents ad
+                          JOIN applicants a ON ad.applicant_id = a.applicant_id
+                          WHERE ad.document_id = :document_id");
+    $stmt->bindParam(':document_id', $documentId, PDO::PARAM_INT);
     $stmt->execute();
-    $file = $stmt->fetch(PDO::FETCH_ASSOC);
+    $document = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    if (!$file) {
-        throw new Exception("File record not found for ID: $fileId");
+    if (!$document) {
+        throw new Exception("Document not found");
     }
 
-    // Construct the absolute path to the file
-    // Update this path to match your server's directory structure
-    $baseUploadPath = $_SERVER['DOCUMENT_ROOT'] . '/4ward/eoportal/eoportalapi/uploads/files/';
-    $filePath = $baseUploadPath . basename($file['filepath']);
-    
-    error_log("Attempting to access file at: " . $filePath);
+    // Construct the correct file path
+    $baseUploadPath = $_SERVER['DOCUMENT_ROOT'] . '/4ward/eoportal/eoportalapi/uploads/documents/' . $document['applicant_id'] . '/';
+    $filePath = $baseUploadPath . basename($document['filepath']);
     
     if (!file_exists($filePath)) {
-        throw new Exception("File does not exist at path: $filePath");
+        error_log("File not found at: " . $filePath);
+        throw new Exception("File not found");
     }
 
     // Get file mime type
@@ -42,10 +43,11 @@ try {
     $mimeType = finfo_file($finfo, $filePath);
     finfo_close($finfo);
 
-    // Set headers for download
+    // Set appropriate headers
     header('Content-Type: ' . $mimeType);
-    header('Content-Disposition: attachment; filename="' . basename($file['filename']) . '"');
+    header('Content-Disposition: attachment; filename="' . basename($document['filename']) . '"');
     header('Content-Length: ' . filesize($filePath));
+    header('Cache-Control: must-revalidate');
     header('Pragma: public');
     
     // Clear output buffer
@@ -53,17 +55,24 @@ try {
         ob_end_clean();
     }
     
-    // Read and output file
-    if (!readfile($filePath)) {
-        throw new Exception("Failed to read file: $filePath");
+    // Read file in chunks to handle large files
+    if ($fp = fopen($filePath, 'rb')) {
+        while (!feof($fp) && connection_status() == 0) {
+            echo fread($fp, 8192);
+            flush();
+        }
+        fclose($fp);
+    } else {
+        throw new Exception("Cannot read file");
     }
     exit;
 
 } catch (Exception $e) {
-    error_log("Error: " . $e->getMessage());
+    error_log("Download error: " . $e->getMessage());
     http_response_code(500);
+    header('Content-Type: application/json');
     echo json_encode([
-        'error' => 'Error processing download request',
+        'error' => true,
         'details' => $e->getMessage()
     ]);
 }
