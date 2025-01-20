@@ -10,116 +10,153 @@
     <div class="floating-object floating-object-9"></div>
     <div class="floating-object floating-object-10"></div>
     <app-sidenav (hoverStateChanged)="onSidenavHover($event)"></app-sidenav>
-    <div class="content">
-        <h1>Employees</h1>
-
-        <!-- Profile Container for Employees -->
-        <div class="profile-container">
-            <div class="profile-card" *ngFor="let user of users" (click)="openModal(user)">
-                <div class="profile-image">
-                    <img [src]="user.profile_picture || 'assets/default-profile.png'" alt="{{ user.fullname }}'s profile picture">
+    <div class="messenger-layout">
+        <!-- Left sidebar with employee list -->
+        <div class="employee-list">
+            <div class="list-header">
+                <h2>Employees</h2>
+                <div class="filters-container">
+                    <!-- Search box -->
+                    <div class="search-box">
+                        <input 
+                            type="text" 
+                            placeholder="Search employees..." 
+                            [(ngModel)]="searchTerm"
+                            (input)="filterEmployees()">
+                    </div>
+                    
+                    <!-- Status filter -->
+                    <div class="filter-select">
+                        <select [(ngModel)]="statusFilter" (change)="filterEmployees()">
+                            <option value="all">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+            
+                    <!-- Department filter -->
+                    <div class="filter-select">
+                        <select [(ngModel)]="departmentFilter" (change)="filterEmployees()">
+                            <option value="all">All Departments</option>
+                            <option *ngFor="let dept of departments" [value]="dept">
+                                {{dept}}
+                            </option>
+                        </select>
+                    </div>
                 </div>
-                <div class="profile-details">
-                    <h2>{{ user.fullname }}</h2>
-                    <p><strong>Department:</strong> {{ user.department }}</p>
+            </div>
+            
+            <div class="employee-items">
+                <div class="employee-item" 
+                     *ngFor="let user of filteredUsers" 
+                     (click)="selectEmployee(user)"
+                     [class.active]="selectedUser?.user_id === user.user_id">
+                    <div class="employee-avatar">
+                        <div class="employee-avatar">
+                            <img [src]="getProfileImage(user)" [alt]="user.fullname">
+                            <span class="status-indicator" [class.online]="user.status === 'Active'"></span>
+                        </div>
+                        
+                    </div>
+                    <div class="employee-info">
+                        <p>{{ user.fullname }}</p>
+                        <p>{{ user.position }}</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal for User Details -->
-        <div *ngIf="modalVisible" class="modal-overlay">
-            <div class="modal">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h2>{{ selectedUser?.fullname }}</h2>
-                    <button (click)="closeModal()">X</button>
+        <!-- Right side with employee details -->
+        <div class="employee-details" *ngIf="selectedUser">
+            <div class="details-header">
+               <div class="employee-profile" *ngIf="selectedUser">
+    <img [src]="getProfileImage(selectedUser)" [alt]="selectedUser.fullname">
+                    <div class="profile-text">
+                        <h2>{{ selectedUser.fullname }}</h2>
+                        <p>{{ selectedUser.position }} • {{ selectedUser.department }}</p>
+                    </div>
+                </div>
+                <button class="status-toggle" 
+                        [class.active]="selectedUser.status === 'Active'"
+                        (click)="updateStatus(selectedUser.user_id, selectedUser.status === 'Active' ? 'Inactive' : 'Active')">
+                    {{ selectedUser.status }}
+                </button>
+            </div>
+
+            <div class="details-content">
+                <div class="info-section">
+                    <h3>Personal Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Email</label>
+                            <p>{{ selectedUser.email }}</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Contact</label>
+                            <p>{{ selectedUser.contact_number }}</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Date of Birth</label>
+                            <p>{{ selectedUser.date_of_birth | date }}</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Nationality</label>
+                            <p>{{ selectedUser.nationality }}</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Civil Status</label>
+                            <p>{{ selectedUser.civil_status }}</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Gender</label>
+                            <p>{{ selectedUser.gender }}</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <!-- Left Column: Assigned Tasks -->
-                    <div class="left-column">
-                        <h3>Assigned Tasks</h3>
-                        <div *ngFor="let task of selectedUserTasks" class="task-card" (click)="openTaskModal(task)">
+                <!-- Tasks Section -->
+                <div class="tasks-section">
+                    <h3>Assigned Tasks</h3>
+                    <div class="task-list">
+                        <div class="task-item" *ngFor="let task of selectedUserTasks" (click)="openTaskModal(task)">
                             <div class="task-header">
                                 <h4>{{ task.task_name }}</h4>
-                                <span class="task-status" [ngClass]="getStatusClass(task.status)">
+                                <span class="task-status" [class]="getStatusClass(task.status)">
                                     {{ task.status }}
                                 </span>
                             </div>
-                            <div class="task-body">
-                                <p><strong>Due Date:</strong> {{ task.due_date }}</p>
-                            </div>
+                            <p class="task-due">Due: {{ task.due_date | date }}</p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Right Column: Uploaded Documents -->
-                    <div class="document-container">
-                        <h3>Uploaded Documents</h3>
-                        <div *ngFor="let doc of selectedUserDocuments" class="document-card-container">
-                            <div class="document-card">
-                                <div class="document-header">
-                                    <h4>{{ doc.filename }}</h4>
-                                    <span class="document-type">{{ doc.docstype }}</span>
-                                </div>
-                                <div class="document-body">
-                                    <p><strong>Upload Date:</strong> {{ doc.upload_date }}</p>
-                                    <div class="document-actions">
-                                        <!-- <button (click)="viewDocument(doc.filepath)" class="btn-view">View</button> -->
-                                        <button (click)="downloadDocument(doc.id, doc.filename)" class="btn-download">Download</button>
-                                    </div>
-                                </div>
+                <!-- Documents Section -->
+                <div class="documents-section">
+                    <h3>Documents</h3>
+                    <div class="document-list">
+                        <div class="document-item" *ngFor="let doc of selectedUserDocuments">
+                            <div class="document-icon">
+                                <i class="fas fa-file"></i>
                             </div>
+                            <div class="document-info">
+                                <h4>{{ doc.filename }}</h4>
+                                <p>{{ doc.upload_date | date }}</p>
+                            </div>
+                            <button class="download-btn" (click)="downloadDocument(doc.id, doc.filename)">
+                                Download
+                            </button>
                         </div>
-                    </div>
-
-                    <!-- Task Modal for Adding Comments and Task Files -->
-                    <div *ngIf="taskModalVisible" class="modal-overlay">
-                        <div class="modal">
-                            <div class="modal-header">
-                                <h2>Task: {{ selectedTask?.task_name }}</h2>
-                                <button (click)="closeTaskModal()">X</button>
-                            </div>
-
-                            <div class="modal-body">
-                                <!-- Add New Comment Section -->
-                                <div class="new-comment-section">
-                                    <h3>Add a Comment</h3>
-                                    <textarea [(ngModel)]="newComment" rows="3" class="fixed-size" placeholder="Write your comment here"></textarea>
-                                    <button (click)="submitComment()" [disabled]="!newComment.trim()">Submit</button>
-                                </div>
-
-                                <!-- Task Files Section -->
-                                <div class="task-files-container">
-                                    <h3>Submitted Task Files</h3>
-                                    <div *ngFor="let file of selectedUserTaskFiles" class="task-file-card">
-                                        <div class="task-file-header">
-                                            <h4>{{ file.filename }}</h4>
-                                            <span class="task-file-date">{{ file.upload_date }}</span>
-                                        </div>
-                                        <div class="task-file-body">
-                                            <!-- <a [href]="file.filepath" target="_blank" class="btn-view">View</a> -->
-                                            <button (click)="downloadTaskFile(file.id, file.filename)" class="btn-download">
-                                                Download
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Fallback Messages -->
-                    <div *ngIf="!selectedUserTasks || selectedUserTasks.length === 0">
-                        <p>No tasks assigned yet.</p>
-                    </div>
-                    <div *ngIf="!selectedUserDocuments || selectedUserDocuments.length === 0">
-                        <p>No documents uploaded yet.</p>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Empty state when no employee is selected -->
+        <div class="empty-state" *ngIf="!selectedUser">
+            <div class="empty-content">
+                <i class="fas fa-users"></i>
+                <h2>Select an employee to view details</h2>
+            </div>
+        </div>
     </div>
+</div>

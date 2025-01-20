@@ -3,14 +3,22 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import { of } from 'rxjs';
 
-
-interface User {
+export interface User {
   user_id: number;
   fullname: string;
-  profile_picture: string;  // Include the profile picture field
+  email: string;
+  contact_number: string;
+  date_of_birth: string;
+  place_of_birth: string;
+  nationality: string;
+  civil_status: 'Single' | 'Married' | 'Divorced' | 'Widowed';
+  gender: 'Male' | 'Female' | 'Other';
   department: string;
+  position: string;
+  profile_picture: string;
+  created_at: string;
+  status: 'Active' | 'Inactive';
 }
-
 interface Task {
   id: number;
   task_name: string;
@@ -79,6 +87,7 @@ export interface ApplicantDocument {
   providedIn: 'root'
 })
 export class DataService {
+  
 
   public redirectUrl: string = '';  // Set a default empty string or any URL you'd like
   private baseUrl: string = "http://localhost/4ward/taskingrepo/taskingapplication/api/taskingapi";
@@ -131,13 +140,13 @@ export class DataService {
 getUsers(): Observable<User[]> {
   return this.httpClient.get<User[]>(`${this.baseUrl}/getUsers.php`).pipe(
     map((users: User[]) => {
-      // Assuming the images are served from a folder outside taskingapplication
-      const profileImageBaseUrl = "http://localhost/4ward/eoportal/eoportalapi/"; // Path to the eoportal folder
-      return users.map(user => {
-        user.profile_picture = profileImageBaseUrl + user.profile_picture;  // Prepend the base URL to the profile picture
-        return user;
-      });
-    })  
+      const profileImageBaseUrl = "http://localhost/4ward/eoportal/eoportalapi/";
+      return users.map(user => ({
+        ...user,
+        profile_picture: user.profile_picture ? profileImageBaseUrl + user.profile_picture : ''
+      }));
+    }),
+    catchError(this.handleError)
   );
 }
 
@@ -388,5 +397,12 @@ fetchUserDocuments(userId: number): Observable<any[]> {
     // Return an observable that completes immediately
     return of(null);
   }
-  
+  updateUserStatus(userId: number, status: 'Active' | 'Inactive'): Observable<any> {
+    return this.httpClient.put<any>(`${this.baseUrl}/updateUserStatus.php`, {
+      user_id: userId,
+      status: status
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

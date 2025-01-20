@@ -32,10 +32,18 @@ interface TaskFile {
 interface User {
   user_id: number;
   fullname: string;
-  profile_picture: string;
+  email: string;
+  contact_number: string;
+  date_of_birth: string;
+  place_of_birth: string;
+  nationality: string;
+  civil_status: 'Single' | 'Married' | 'Divorced' | 'Widowed';
+  gender: 'Male' | 'Female' | 'Other';
   department: string;
-  // Remove the tasks field here if it's not part of the fetched user data
-  tasks?: Task[];  // Mark tasks as optional
+  position: string;
+  profile_picture: string;
+  created_at: string;
+  status: 'Active' | 'Inactive';
 }
 
 
@@ -64,6 +72,21 @@ export class EmployeesComponent {
   selectedTask: Task | null = null;
   newComment: string = '';
   taskComments: string[] = [];
+  defaultProfileImage: string = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+CiAgPGNpcmNsZSBjeD0iNTAiIGN5PSIzNSIgcj0iMjUiIGZpbGw9IiNlMWUxZTEiLz4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjEwMCIgcj0iNDUiIGZpbGw9IiNlMWUxZTEiLz4KPC9zdmc+';
+
+  searchTerm: string = '';
+  statusFilter: string = 'all';
+  departmentFilter: string = 'all';
+  filteredUsers: User[] = [];
+
+  departments: string[] = [
+    'Human Resources',
+    'Information Technology',
+    'Marketing',
+    'Finance',
+    'Operations',
+    'Sales'
+];
 
   constructor(private dataService: DataService) {}
 
@@ -71,16 +94,63 @@ export class EmployeesComponent {
     this.loadUsers();
   }
 
-  loadUsers(): void {
-    this.dataService.getUsers().subscribe(
+  selectEmployee(user: User): void {
+    this.selectedUser = user;
+    this.fetchTasksForUser(user.user_id);
+    this.fetchDocumentsForUser(user.user_id);
+}
+
+
+loadUsers(): void {
+  this.dataService.getUsers().subscribe(
       (users: User[]) => {
-        this.users = users;
+          this.users = users;
+          this.filterEmployees(); // Apply filters immediately
       },
       error => {
-        console.error('Error loading users:', error);
+          console.error('Error loading users:', error);
       }
-    );
+  );
+}
+
+filterEmployees(): void {
+  let filtered = [...this.users];
+
+  // Apply search filter
+  if (this.searchTerm) {
+      const searchLower = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(user => 
+          user.fullname.toLowerCase().includes(searchLower) ||
+          user.email.toLowerCase().includes(searchLower) ||
+          user.position.toLowerCase().includes(searchLower)
+      );
   }
+
+  // Apply status filter
+  if (this.statusFilter !== 'all') {
+      filtered = filtered.filter(user => user.status === this.statusFilter);
+  }
+
+  // Apply department filter
+  if (this.departmentFilter !== 'all') {
+      filtered = filtered.filter(user => user.department === this.departmentFilter);
+  }
+
+  this.filteredUsers = filtered;
+}
+
+private searchTimeout: any;
+onSearchChange(): void {
+    // Clear the existing timeout
+    if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout);
+    }
+
+    // Set a new timeout to prevent too many filter operations
+    this.searchTimeout = setTimeout(() => {
+        this.filterEmployees();
+    }, 300);
+}
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
@@ -240,5 +310,26 @@ export class EmployeesComponent {
     });
   }
   
-  
+  updateStatus(userId: number, newStatus: 'Active' | 'Inactive'): void {
+    this.dataService.updateUserStatus(userId, newStatus).subscribe({
+      next: (response) => {
+        if (response.success) {
+          const user = this.users.find(u => u.user_id === userId);
+          if (user) {
+            user.status = newStatus;
+          }
+          alert('Status updated successfully');
+        } else {
+          alert('Failed to update status');
+        }
+      },
+      error: (error) => {
+        console.error('Error updating status:', error);
+        alert('Error updating status');
+      }
+    });
+}
+getProfileImage(user: User): string {
+    return user.profile_picture || this.defaultProfileImage;
+  }
 }
