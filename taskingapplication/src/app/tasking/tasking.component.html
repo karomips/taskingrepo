@@ -1,69 +1,72 @@
-<div class="main-container">
-  <div class="floating-object floating-object-1"></div>
-  <div class="floating-object floating-object-2"></div>
-  <div class="floating-object floating-object-3"></div>
-  <div class="floating-object floating-object-4"></div>
-  <div class="floating-object floating-object-5"></div>
-  <div class="floating-object floating-object-6"></div>
-  <div class="floating-object floating-object-7"></div>
-  <div class="floating-object floating-object-8"></div>
-  <div class="floating-object floating-object-9"></div>
-  <div class="floating-object floating-object-10"></div>
-  <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
+  <div class="main-container">
+    <div class="floating-object floating-object-1"></div>
+    <div class="floating-object floating-object-2"></div>
+    <div class="floating-object floating-object-3"></div>
+    <div class="floating-object floating-object-4"></div>
+    <div class="floating-object floating-object-5"></div>
+    <div class="floating-object floating-object-6"></div>
+    <div class="floating-object floating-object-7"></div>
+    <div class="floating-object floating-object-8"></div>
+    <div class="floating-object floating-object-9"></div>
+    <div class="floating-object floating-object-10"></div>
+    <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
 
-  <div class="task-dashboard" [class.sidenav-hovered]="isSidenavHovered">
-    <header>
-      <h1>Task Dashboard</h1>
-      <div class="filters">
-        <label for="employeeFilter">Employee:</label>
-        <select id="employeeFilter">
-          <option value="all">All</option>
-          <!-- Dynamically populated with employee names -->
-        </select>
+    <div class="task-dashboard" [class.sidenav-hovered]="isSidenavHovered">
+      <header>
+        <h1>Task Dashboard</h1>
+        <div class="filters">
+          <label for="statusFilter">Status:</label>
+          <select id="statusFilter" [(ngModel)]="selectedFilter">
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </header>
+  
+      <button type="button" class="btn-assign-task" routerLink="/assigntask">Assign New Task</button>
+  
+      <table class="task-list">
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Instructions</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of tasks">
+            <td>{{ task.task_name }}</td>
+            <td>{{ task.task_description }}</td>
+            <td>{{ task.task_instructions }}</td>
+            <td>{{ formatDate(task.due_date) }}</td>
+            <td>
+              <span class="status-indicator" [ngClass]="getStatusClass(task.status)">
+                {{ task.status }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-view" (click)="viewTask(task)">View</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-        <label for="statusFilter">Status:</label>
-        <select id="statusFilter">
-          <option value="all">All</option>
-          <option value="pending">Pending</option>
-          <option value="in-progress">In Progress</option>
-          <option value="completed">Completed</option>
-        </select>
-      </div>
-    </header>
-
-    <button type="button" class="btn-assign-task" routerLink="/assigntask">Assign New Task</button>
-
-    <table class="task-list">
-      <thead>
-        <tr>
-          <th>Task Name</th>
-          <th>Description</th>
-          <th>Instructions</th>
-          <th>Due Date</th>
-          <th>Status</th>
-          <th>Assigned By</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let task of userTasks">
-          <td>{{ task.task_name }}</td>
-          <td>{{ task.task_description }}</td>
-          <td>{{ task.task_instructions }}</td>
-          <td>{{ formatDate(task.due_date) }}</td>
-          <td>{{ task.status }}</td>
-          <td>{{ task.created_by }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="modal" *ngIf="showModal">
-    <div class="modal-content">
-      <h2>Task Description</h2>
-      <p>{{ taskDescription }}</p>
-      <div class="modal-buttons">
-        <button class="btn-primary" (click)="closeModal()">Close</button>
+      <div class="modal-backdrop" *ngIf="showModal">
+        <div class="modal">
+          <h2>Assigned To:</h2>
+          <ul>
+            <li *ngFor="let user of selectedTask?.assigned_users">
+              {{ user.name }}
+            </li>
+          </ul>
+          <button class="btn-close" (click)="closeModal()">Close</button>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+    

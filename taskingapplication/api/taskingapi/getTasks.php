@@ -8,24 +8,30 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 header('Content-Type: application/json');
 
 try {
-    // For debugging
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     
-    $userId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
+    $query = "SELECT 
+    t.id,
+    t.task_name,
+    t.task_description,
+    t.task_instructions,
+    t.due_date,
+    t.status,
+    t.department,
+    t.created_by,
+    t.created_at,
+    t.updated_at,
+    t.progress,
+    t.file_attachment,
+    GROUP_CONCAT(DISTINCT u.user_id) as assigned_user_ids,
+    GROUP_CONCAT(DISTINCT u.fullname) as assigned_user_names
+FROM task_table t
+LEFT JOIN users u ON FIND_IN_SET(u.user_id, t.assigned_to)
+GROUP BY t.id
+ORDER BY t.created_at DESC";
     
-    $query = "SELECT t.*, u.fullname as assigned_to_name, a.admin_username as created_by_name 
-              FROM task_table t 
-              LEFT JOIN users u ON t.assigned_to = u.user_id 
-              LEFT JOIN admin a ON t.created_by = a.id";
-    
-    if ($userId) {
-        $query .= " WHERE t.assigned_to = :user_id";
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-    } else {
-        $stmt = $pdo->prepare($query);
-    }
+    $stmt = $pdo->prepare($query);
     
     if (!$stmt->execute()) {
         throw new Exception("Query execution failed");
@@ -33,20 +39,23 @@ try {
     
     $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Check if $tasks is null or empty
-    if ($tasks === false) {
-        echo json_encode([]);
-    } else {
-        echo json_encode($tasks);
+    foreach ($tasks as &$task) {
+        $userIds = $task['assigned_user_ids'] ? explode(',', $task['assigned_user_ids']) : [];
+        $userNames = $task['assigned_user_names'] ? explode(',', $task['assigned_user_names']) : [];
+        
+        $task['assigned_users'] = array_map(function($id, $name) {
+            return ['id' => (int)$id, 'name' => $name];
+        }, $userIds, $userNames);
+        
+        // Remove the concatenated strings
+        unset($task['assigned_user_ids']);
+        unset($task['assigned_user_names']);
     }
+    
+    echo json_encode($tasks);
     
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
-}
-
-// For debugging - log any errors to a file
-if (json_last_error() !== JSON_ERROR_NONE) {
-    error_log('JSON encoding error: ' . json_last_error_msg());
 }
 ?>

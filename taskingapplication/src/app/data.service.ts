@@ -20,7 +20,7 @@ export interface User {
   created_at: string;
   status: 'Active' | 'Inactive';
 }
-interface Task {
+export interface Task {
   id: number;
   task_name: string;
   task_description: string;
@@ -28,12 +28,17 @@ interface Task {
   due_date: string;
   status: string;
   assigned_to: number;
+  assigned_to_name: string;    // Added field
+  department: string;          // Added field
   created_by: number;
+  created_by_name: string;     // Added field
   created_at: string;
   updated_at: string;
-  progress?: string;  // Marking as optional
-  file_attachment?: string;  // Marking as optional
-  admin_comments?: string;  // Marking as optional
+  progress?: string;
+  file_attachment?: string;
+  admin_comments?: string;
+  current_time?: string;
+  current_user?: string;
 }
 
 interface TaskFile {
@@ -84,6 +89,7 @@ export interface ApplicantDocument {
   mime_type?: string;
 }
 
+<<<<<<< HEAD
 export interface Message {
   message_id: number;
   admin_id: number;
@@ -93,6 +99,17 @@ export interface Message {
   is_read: boolean;
   admin_username?: string;
   user_fullname?: string;
+=======
+export interface TaskAssignment {
+  taskName: string;
+  taskDescription: string;
+  taskInstructions: string;
+  dueDate: string;
+  assignedTo: number;  // This should be a number
+  createdBy: number;
+  department: string;
+  created_at?: string; // Optional since it's added during submission
+>>>>>>> 6a03020030a7c1365506a66e56db7db8a3876fe3
 }
 
 @Injectable({
@@ -129,20 +146,34 @@ export class DataService {
       );
   }
 
-  // Method to assign a task
-  public assignTask(task: { taskName: string, taskDescription: string, taskInstructions: string, dueDate: string, assignedTo: number, createdBy: number }): Observable<any> {
+  public assignTask(task: TaskAssignment): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}/assigntask.php`, task)
       .pipe(
         map(response => {
           if (response.success) {
-            return response;  // Return the response on success
+            return response;
           } else {
-            throw new Error(response.message);  // Throw error if assignment fails
+            throw new Error(response.message);
           }
         }),
-        catchError(this.handleError)  // Catch any errors
+        catchError(this.handleError)
       );
   }
+
+  // Method to assign a task
+  // public assignTask(task: { department: string, taskName: string, taskDescription: string, taskInstructions: string, dueDate: string, assignedTo: number, createdBy: number }): Observable<any> {
+  //   return this.httpClient.post<any>(`${this.baseUrl}/assigntask.php`, task)
+  //     .pipe(
+  //       map(response => {
+  //         if (response.success) {
+  //           return response;  // Return the response on success
+  //         } else {
+  //           throw new Error(response.message);  // Throw error if assignment fails
+  //         }
+  //       }),
+  //       catchError(this.handleError)  // Catch any errors
+  //     );
+  // }
 
   getEmployees(): Observable<any[]> {
     return this.httpClient.get<any[]>('/api/users');  // Endpoint to get users' data
@@ -218,7 +249,6 @@ fetchUserDocuments(userId: number): Observable<any[]> {
     return this.httpClient.get<Task[]>(`${this.baseUrl}/getTasks.php`)
       .pipe(
         map(response => {
-          // If response is empty or null, return empty array
           if (!response) return [];
           return response;
         }),

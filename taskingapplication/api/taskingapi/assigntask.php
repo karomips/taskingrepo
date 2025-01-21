@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (
         isset($input['taskName'], $input['taskDescription'], $input['dueDate'], 
-        $input['assignedTo'], $input['createdBy'], $input['taskInstructions'])
+        $input['assignedTo'], $input['createdBy'], $input['taskInstructions'],
+        $input['department']) // Add department check
     ) {
         $taskName = $input['taskName'];
         $taskDescription = $input['taskDescription'];
@@ -19,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dueDate = $input['dueDate'];
         $assignedTo = $input['assignedTo'];
         $createdBy = $input['createdBy'];
+        $department = $input['department']; // Add department
         $status = 'Pending';
 
         // Validate createdBy
@@ -30,19 +32,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Validate assignedTo
-        $stmt = $pdo->prepare("SELECT user_id FROM users WHERE user_id = :assignedTo");
+        // Validate assignedTo and department match
+        $stmt = $pdo->prepare("SELECT user_id FROM users WHERE user_id = :assignedTo AND department = :department");
         $stmt->bindParam(':assignedTo', $assignedTo);
+        $stmt->bindParam(':department', $department);
         $stmt->execute();
         if ($stmt->rowCount() === 0) {
-            echo json_encode(['error' => "Invalid assignedTo ID: $assignedTo. User does not exist."]);
+            echo json_encode(['error' => "Invalid assignedTo ID or department mismatch."]);
             exit;
         }
 
         // Insert the task
         $stmt = $pdo->prepare("
-            INSERT INTO task_table (task_name, task_description, task_instructions, due_date, assigned_to, created_by, status) 
-            VALUES (:taskName, :taskDescription, :taskInstructions, :dueDate, :assignedTo, :createdBy, :status)
+            INSERT INTO task_table (
+                task_name, 
+                task_description, 
+                task_instructions, 
+                due_date, 
+                assigned_to, 
+                created_by, 
+                status,
+                department
+            ) 
+            VALUES (
+                :taskName, 
+                :taskDescription, 
+                :taskInstructions, 
+                :dueDate, 
+                :assignedTo, 
+                :createdBy, 
+                :status,
+                :department
+            )
         ");
 
         $stmt->bindParam(':taskName', $taskName);
@@ -52,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':assignedTo', $assignedTo);
         $stmt->bindParam(':createdBy', $createdBy);
         $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':department', $department);
 
         try {
             $stmt->execute();

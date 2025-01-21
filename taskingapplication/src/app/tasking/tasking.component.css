@@ -33,6 +33,16 @@ th, td, label, button, select, h1{
   width: 4000px; /* Subtract the sidenav width */
 }
 
+.assigned-users-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.assigned-users-list li {
+  padding: 4px 0;
+}
+
 /* Ensure content shifts dynamically when sidenav expands */
 .sidenav:hover + .task-dashboard {
   margin-left: 250px; /* Matches the expanded sidenav width */

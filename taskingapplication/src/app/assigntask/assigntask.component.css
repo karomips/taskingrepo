@@ -242,6 +242,53 @@ button:hover {
   right: 5%;
   animation: float10 6s infinite alternate;
 }
+
+.multiple-select {
+  width: 100%;
+  min-height: 120px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.multiple-select option {
+  padding: 8px;
+  margin: 2px 0;
+  cursor: pointer;
+}
+
+.multiple-select option:hover {
+  background-color: #f5f5f5;
+}
+
+.helper-text {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+  font-size: 0.85em;
+  font-style: italic;
+}
+
+/* Selected option style */
+.multiple-select option:checked {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.assigned-employees-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.assigned-employees-list li {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.assigned-employees-list li:last-child {
+  border-bottom: none;
+}
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

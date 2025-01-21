@@ -10,8 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { EmployeesComponent } from './employees/employees.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { ApplicantsComponent } from './applicants/applicants.component';
+<<<<<<< HEAD
 import { TasklistComponent } from './tasklist/tasklist.component';
 import { MessageComponent } from './message/message.component';
+=======
+>>>>>>> 6a03020030a7c1365506a66e56db7db8a3876fe3
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -21,9 +24,12 @@ export const routes: Routes = [
   { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] },  // Protected route
   { path: 'employees', component: EmployeesComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'applicants', component: ApplicantsComponent, canActivate: [AuthGuard] }, // Protected route
+<<<<<<< HEAD
   { path: 'tasklist', component: TasklistComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'message', component: MessageComponent, canActivate: [AuthGuard] }, // Protected route
 
+=======
+>>>>>>> 6a03020030a7c1365506a66e56db7db8a3876fe3
 ];
 
 @NgModule({
