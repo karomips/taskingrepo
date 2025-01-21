@@ -1,72 +1,88 @@
-  <div class="main-container">
-    <div class="floating-object floating-object-1"></div>
-    <div class="floating-object floating-object-2"></div>
-    <div class="floating-object floating-object-3"></div>
-    <div class="floating-object floating-object-4"></div>
-    <div class="floating-object floating-object-5"></div>
-    <div class="floating-object floating-object-6"></div>
-    <div class="floating-object floating-object-7"></div>
-    <div class="floating-object floating-object-8"></div>
-    <div class="floating-object floating-object-9"></div>
-    <div class="floating-object floating-object-10"></div>
-    <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
+<div class="main-container">
+  <div class="floating-object floating-object-1"></div>
+  <div class="floating-object floating-object-2"></div>
+  <div class="floating-object floating-object-3"></div>
+  <div class="floating-object floating-object-4"></div>
+  <div class="floating-object floating-object-5"></div>
+  <div class="floating-object floating-object-6"></div>
+  <div class="floating-object floating-object-7"></div>
+  <div class="floating-object floating-object-8"></div>
+  <div class="floating-object floating-object-9"></div>
+  <div class="floating-object floating-object-10"></div>
+  <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
 
-    <div class="task-dashboard" [class.sidenav-hovered]="isSidenavHovered">
-      <header>
-        <h1>Task Dashboard</h1>
-        <div class="filters">
-          <label for="statusFilter">Status:</label>
-          <select id="statusFilter" [(ngModel)]="selectedFilter">
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="in-progress">In Progress</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
-      </header>
-  
-      <button type="button" class="btn-assign-task" routerLink="/assigntask">Assign New Task</button>
-  
-      <table class="task-list">
-        <thead>
-          <tr>
-            <th>Task Name</th>
-            <th>Description</th>
-            <th>Instructions</th>
-            <th>Due Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let task of tasks">
-            <td>{{ task.task_name }}</td>
-            <td>{{ task.task_description }}</td>
-            <td>{{ task.task_instructions }}</td>
-            <td>{{ formatDate(task.due_date) }}</td>
-            <td>
-              <span class="status-indicator" [ngClass]="getStatusClass(task.status)">
-                {{ task.status }}
-              </span>
-            </td>
-            <td>
-              <button class="btn-view" (click)="viewTask(task)">View</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="task-dashboard" [class.sidenav-hovered]="isSidenavHovered">
+    <header>
+      <h1>Task Dashboard</h1>
+      <div class="filters">
+        <label for="statusFilter">Status:</label>
+        <select id="statusFilter" [(ngModel)]="selectedFilter">
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+    </header>
 
-      <div class="modal-backdrop" *ngIf="showModal">
-        <div class="modal">
-          <h2>Assigned To:</h2>
+    <button type="button" class="btn-assign-task" routerLink="/assigntask">Assign New Task</button>
+
+    <table class="task-list">
+      <thead>
+        <tr>
+          <th>Task Name</th>
+          <th>Description</th>
+          <th>Instructions</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of getFilteredTasks()">
+          <td>{{ task.task_name }}</td>
+          <td class="description-cell">
+            <div class="truncate-text" [title]="task.task_description">
+              {{ task.task_description }}
+            </div>
+          </td>
+          <td class="instructions-cell">
+            <div class="truncate-text" [title]="task.task_instructions">
+              {{ task.task_instructions }}
+            </div>
+          </td>
+          <td>{{ formatDate(task.due_date) }}</td>
+          <td>
+            <span class="status-indicator" [ngClass]="getStatusClass(task.status)">
+              {{ task.status }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-view" (click)="viewTask(task)">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-backdrop" [ngClass]="{'show': showModal}">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Task Details</h2>
+        <button class="close-button" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-content">
+        <div *ngIf="selectedTask">
+          <h3>Assigned To:</h3>
           <ul>
-            <li *ngFor="let user of selectedTask?.assigned_users">
+            <li *ngFor="let user of selectedTask.assigned_users">
               {{ user.name }}
             </li>
           </ul>
-          <button class="btn-close" (click)="closeModal()">Close</button>
+          <h3>Progress</h3> <!-- Add Progress section -->
+          <p>{{ selectedTask.progress }}%</p>
         </div>
       </div>
     </div>
-    
+  </div>
+</div>

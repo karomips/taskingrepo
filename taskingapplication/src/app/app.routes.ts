@@ -1,39 +1,30 @@
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { TaskingComponent } from './tasking/tasking.component';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AuthGuard } from './auth.guard';  // Import the AuthGuard
 import { AssigntaskComponent } from './assigntask/assigntask.component';
-import { FormsModule } from '@angular/forms';
 import { EmployeesComponent } from './employees/employees.component';
-import { SidenavComponent } from './sidenav/sidenav.component';
 import { ApplicantsComponent } from './applicants/applicants.component';
-<<<<<<< HEAD
-import { TasklistComponent } from './tasklist/tasklist.component';
 import { MessageComponent } from './message/message.component';
-=======
->>>>>>> 6a03020030a7c1365506a66e56db7db8a3876fe3
+import { AuthGuard } from './auth.guard'; // Import the AuthGuard
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },  // Protected route
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'login', component: LoginComponent },
-  { path: 'tasking', component: TaskingComponent, canActivate: [AuthGuard] },  // Protected route
-  { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] },  // Protected route
+  { path: 'tasking', component: TaskingComponent, canActivate: [AuthGuard] }, // Protected route
+  { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'employees', component: EmployeesComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'applicants', component: ApplicantsComponent, canActivate: [AuthGuard] }, // Protected route
-<<<<<<< HEAD
-  { path: 'tasklist', component: TasklistComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'message', component: MessageComponent, canActivate: [AuthGuard] }, // Protected route
-
-=======
->>>>>>> 6a03020030a7c1365506a66e56db7db8a3876fe3
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes), CommonModule, FormsModule],
-  exports: [RouterModule, CommonModule]
+  exports: [RouterModule, CommonModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

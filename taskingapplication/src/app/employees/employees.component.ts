@@ -15,7 +15,7 @@ interface Task {
   created_by: number;
   created_at: string;
   updated_at: string;
-  progress?: string;  // Optional field
+  progress?: number;  // Optional field
   file_attachment?: string;  // Optional field
   admin_comments?: string;  // Optional field
 }

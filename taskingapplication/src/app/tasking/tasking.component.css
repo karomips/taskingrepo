@@ -181,28 +181,94 @@ button.view-details:active,
 }
 
 /* Modal Styling */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+.modal-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.modal {
+  background-color: white;
+  font-size: 0.5rem; /* Corrected font-size */
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-backdrop.show .modal {
+  transform: translateY(0);
+}
+
+.modal-header {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a2027;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #64748b;
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.close-button:hover {
+  color: #1a2027;
 }
 
 .modal-content {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
-  width: 90%;
-  animation: fadeInModal 0.3s;
+  font-family: 'Poppins', sans-serif;
+  font-size: medium;
+  max-height: 70vh;
+  overflow-y: auto;
 }
+
 
 @keyframes fadeInModal {
   from {
@@ -373,4 +439,132 @@ button.view-details:active,
 @keyframes float10 {
   0% { transform: translateX(0) rotate(0deg); }
   100% { transform: translateX(-70px) rotate(360deg); }
+}
+
+/* Progress Bar Styles */
+.progress-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 25px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #45a049);
+  transition: width 0.5s ease-in-out;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-text {
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Due Date Tracker Styles */
+.due-date-tracker {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+}
+
+.time-remaining {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Accomplishment Report Styles */
+.accomplishment-section {
+  margin-top: 20px;
+}
+
+.accomplishment-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.accomplishment-entry {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.accomplishment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.progress-increment {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.add-accomplishment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-accomplishment-form textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #333;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.form-actions input {
+  width: 100px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #333;
+}
+
+.form-actions button {
+  padding: 8px 16px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.form-actions button:hover {
+  background: #45a049;
+}
+
+.form-actions button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
 }

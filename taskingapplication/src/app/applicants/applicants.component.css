@@ -175,23 +175,26 @@ h2 {
 }
 
 .applicants-table {
+  font-family: 'Poppins', sans-serif;
   border-collapse: collapse;
   background: white;
   width: 100%; /* Use full width */
   margin-left: 0; /* Remove left margin for full width */
+  border: 1px solid #ddd; /* Add a border to the table */
+  font-family: Arial, sans-serif; /* Use a clean font */
 }
 
 .applicants-table th,
 .applicants-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
+  font-family: 'Poppins', sans-serif;
+  padding: 12px 15px; /* Add padding for better spacing */
+  border: 1px solid #ddd; /* Add borders to cells */
+  text-align: left; /* Align text to the left */
 }
 
 .applicants-table th {
-  background: #f8f9fa;
-  font-weight: 600;
-  color: #2d3748;
+  background-color: #f2f2f2; /* Light gray background for headers */
+  font-weight: bold; /* Bold text for headers */
 }
 
 .applicants-table tbody tr {
@@ -199,8 +202,12 @@ h2 {
   transition: background-color 0.2s;
 }
 
-.applicants-table tbody tr:hover {
-  background-color: #f8f9fa;
+.applicants-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* Alternating row colors */
+}
+
+.applicants-table tr:hover {
+  background-color: #f1f1f1; /* Highlight row on hover */
 }
 
 .applicants-table tr.selected {

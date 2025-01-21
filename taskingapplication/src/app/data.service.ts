@@ -34,7 +34,7 @@ export interface Task {
   created_by_name: string;     // Added field
   created_at: string;
   updated_at: string;
-  progress?: string;
+  progress?: number;
   file_attachment?: string;
   admin_comments?: string;
   current_time?: string;
@@ -89,7 +89,6 @@ export interface ApplicantDocument {
   mime_type?: string;
 }
 
-<<<<<<< HEAD
 export interface Message {
   message_id: number;
   admin_id: number;
@@ -99,7 +98,7 @@ export interface Message {
   is_read: boolean;
   admin_username?: string;
   user_fullname?: string;
-=======
+}
 export interface TaskAssignment {
   taskName: string;
   taskDescription: string;
@@ -109,13 +108,15 @@ export interface TaskAssignment {
   createdBy: number;
   department: string;
   created_at?: string; // Optional since it's added during submission
->>>>>>> 6a03020030a7c1365506a66e56db7db8a3876fe3
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+  updateTaskProgress(id: number, progress: string | undefined) {
+    throw new Error('Method not implemented.');
+  }
   
 
   public redirectUrl: string = '';  // Set a default empty string or any URL you'd like

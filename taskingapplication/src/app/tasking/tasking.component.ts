@@ -34,7 +34,9 @@ interface Task {
   created_by: number;
   created_at: string;
   updated_at: string;
-  progress?: string;
+  progress?: number; // Progress field as a percentage
+  completed_subtasks?: number; // Number of completed subtasks
+  total_subtasks?: number; // Total number of subtasks
   file_attachment?: string;
   assigned_users?: { id: number; name: string }[];
   current_time?: string;
@@ -58,7 +60,9 @@ export class TaskingComponent implements OnInit {
   searchQuery: string = '';
   userMap: { [key: number]: string } = {}; // Changed to store only fullname
   isSidenavHovered = false;
-
+detailsOpen: any;
+newAccomplishment: any;
+addAccomplishment: any;
 
   constructor(
     private router: Router,
@@ -114,6 +118,13 @@ export class TaskingComponent implements OnInit {
             // Initialize the task in the map
             taskMap[key] = { ...task, assigned_users: [...(task.assigned_users || [])] };
           }
+
+          // Calculate progress
+          if (task.completed_subtasks !== undefined && task.total_subtasks !== undefined) {
+            task.progress = (task.completed_subtasks / task.total_subtasks) * 100;
+          } else {
+            task.progress = 0;
+          }
         });
   
         // Convert the grouped tasks object back into an array
@@ -124,7 +135,6 @@ export class TaskingComponent implements OnInit {
       }
     });
   }
-  
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
@@ -167,6 +177,7 @@ export class TaskingComponent implements OnInit {
     this.selectedTask = task;
     this.showModal = true;
   }
+
   closeModal() {
     this.showModal = false;
     this.selectedTask = null;
