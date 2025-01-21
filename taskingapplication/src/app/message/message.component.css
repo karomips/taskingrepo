@@ -1,0 +1,554 @@
+/* message.component.css */
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Apply Poppins font globally */
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-container {
+    display: flex;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    /* Enhanced gradient background */
+    background: linear-gradient(135deg, #1a1c2e, #2d3748, #1a202c);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+    margin-left: 170px;
+    position: relative;
+    overflow: hidden;
+}
+.message-container {
+    display: flex;
+    flex: 0 1 1200px; /* Change from flex: 1 to fixed width with flex-shrink */
+    margin: 20px;
+    height: calc(100vh - 40px);
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.37),
+        inset 0 0 32px 0 rgba(255, 255, 255, 0.02);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1200px; /* Fixed width */
+    max-width: 90%; /* Responsive max-width */
+}
+
+/* User List Section Styles */
+/* Enhanced User List Section */
+.user-list-section {
+    width: 280px; /* Slightly narrower */
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.section-header {
+    padding: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.section-header h2 {
+    font-weight: 600;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.users-list {
+    overflow-y: auto;
+    flex: 1;
+}
+.user-card {
+    display: flex;
+    align-items: center;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.user-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.user-card.selected {
+    background: rgba(82, 156, 255, 0.15);
+    border-left: 4px solid #529cff;
+}
+
+.user-avatar img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
+    margin-left: 15px;
+    flex: 1;
+}
+
+.user-info h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.user-info p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.message-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.02);
+    position: relative;
+    height: 100%;
+}
+
+.messages-container {
+    height: 600px; /* Fixed height - you can adjust this value */
+    overflow-y: auto;
+    padding: 20px;
+    position: relative;
+}
+.chat-header {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 80px; /* Fixed height */
+}
+.selected-user-info {
+    display: flex;
+    align-items: center;
+}
+
+.selected-user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.message {
+    margin: 15px 0;
+    max-width: 75%;
+    animation: messageAppear 0.3s ease;
+}
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.admin-message {
+    margin-left: auto;
+    background: rgba(82, 156, 255, 0.15);
+    border: 1px solid rgba(82, 156, 255, 0.2);
+}
+
+.user-message {
+    margin-right: auto;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.message-header {
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.message-body {
+    padding: 15px;
+    border-radius: 15px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+}
+.message-compose {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: row-reverse; /* Change the direction of flex items */
+    gap: 15px;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10;
+    height: 70px;
+    width: 100%;
+    max-width: 96%;
+}
+
+/* Update the textarea styles to accommodate the new layout */
+.message-compose textarea {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    resize: none;
+    overflow-y: auto;
+    order: 2; /* Change the order to appear after the button */
+}
+
+.message-compose textarea:focus {
+    border-color: rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+.send-button {
+    order: 1; /* First element */
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #529cff, #396afc);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    height: 50px;
+}
+
+
+.send-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(82, 156, 255, 0.3);
+}
+
+.send-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+/* Loading Spinner */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* No Messages State */
+.no-messages {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+/* No Selection State */
+.no-selection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+}
+
+.placeholder-content i {
+    font-size: 54px;
+    margin-bottom: 20px;
+    color: #529cff;
+    opacity: 0.8;
+}
+
+.placeholder-content h3 {
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.search-box input {
+    width: 86%;
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: rgba(82, 156, 255, 0.5);
+    box-shadow: 0 0 20px rgba(82, 156, 255, 0.2);
+    outline: none;
+}
+
+
+::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.floating-object {
+    position: absolute;
+    opacity: 0.5;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Different sizes, positions, and animation speeds */
+  .floating-object-1 {
+    width: 50px;
+    height: 50px;
+    top: 10%;
+    left: 5%;
+    animation: float1 4s infinite alternate;
+  }
+  
+  .floating-object-2 {
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    right: 10%;
+    animation: float2 6s infinite alternate-reverse;
+  }
+  
+  .floating-object-3 {
+    width: 75px;
+    height: 75px;
+    bottom: 20%;
+    left: 50%;
+    animation: float3 5s infinite alternate;
+  }
+  
+  .floating-object-4 {
+    width: 30px;
+    height: 30px;
+    bottom: 5%;
+    right: 15%;
+    animation: float4 3s infinite alternate-reverse;
+  }
+  
+  .floating-object-5 {
+    width: 120px;
+    height: 120px;
+    top: 20%;
+    left: 30%;
+    animation: float5 8s infinite alternate;
+  }
+  
+  .floating-object-6 {
+    width: 60px;
+    height: 60px;
+    top: 70%;
+    right: 40%;
+    animation: float6 4s infinite alternate-reverse;
+  }
+  
+  .floating-object-7 {
+    width: 40px;
+    height: 40px;
+    top: 40%;
+    left: 10%;
+    animation: float7 2s infinite alternate;
+  }
+  
+  .floating-object-8 {
+    width: 90px;
+    height: 90px;
+    bottom: 10%;
+    right: 25%;
+    animation: float8 7s infinite alternate-reverse;
+  }
+  
+  .floating-object-9 {
+    width: 50px;
+    height: 50px;
+    top: 15%;
+    left: 70%;
+    animation: float9 5s infinite alternate;
+  }
+  
+  .floating-object-10 {
+    width: 110px;
+    height: 110px;
+    bottom: 30%;
+    right: 5%;
+    animation: float10 6s infinite alternate;
+  }
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes float1 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-50px) rotate(360deg); }
+  }
+  
+  @keyframes float2 {
+    0% { transform: translateX(0) rotate(0deg); }
+    100% { transform: translateX(-60px) rotate(-360deg); }
+  }
+  
+  @keyframes float3 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(70px) rotate(180deg); }
+  }
+  
+  @keyframes float4 {
+    0% { transform: translateX(0) rotate(0deg); }
+    100% { transform: translateX(-30px) rotate(-90deg); }
+  }
+  
+  @keyframes float5 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(90px) rotate(270deg); }
+  }
+  
+  @keyframes float6 {
+    0% { transform: translateX(0) rotate(0deg); }
+    100% { transform: translateX(-40px) rotate(90deg); }
+  }
+  
+  @keyframes float7 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-30px) rotate(180deg); }
+  }
+  
+  @keyframes float8 {
+    0% { transform: translateX(0) rotate(0deg); }
+    100% { transform: translateX(-50px) rotate(-360deg); }
+  }
+  
+  @keyframes float9 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(80px) rotate(360deg); }
+  }
+  
+  @keyframes float10 {
+    0% { transform: translateX(0) rotate(0deg); }
+    100% { transform: translateX(-70px) rotate(360deg); }
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+.messages-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+.department-filter {
+    margin-top: 10px;
+}
+
+.department-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.department-select:focus {
+    border-color: rgba(82, 156, 255, 0.5);
+    box-shadow: 0 0 20px rgba(82, 156, 255, 0.2);
+    outline: none;
+}
+
+.department-select option {
+    background: #1a1c2e;
+    color: white;
+}
+.send-button i {
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.placeholder-content i {
+    font-size: 54px;
+    margin-bottom: 20px;
+    color: #529cff;
+    opacity: 0.8;
+    display: block; /* Ensure proper display */
+}
+
+/* Ensure icons are properly colored */
+.fas {
+    color: inherit;
+}
+
+/* Specific styling for the send button icon */
+.send-button .fa-paper-plane {
+    color: white;
+}

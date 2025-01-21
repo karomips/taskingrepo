@@ -84,6 +84,17 @@ export interface ApplicantDocument {
   mime_type?: string;
 }
 
+export interface Message {
+  message_id: number;
+  admin_id: number;
+  user_id: number;
+  message_content: string;
+  sent_at: string;
+  is_read: boolean;
+  admin_username?: string;
+  user_fullname?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -406,4 +417,68 @@ fetchUserDocuments(userId: number): Observable<any[]> {
       catchError(this.handleError)
     );
   }
+
+  sendMessage(adminId: number, userId: number, content: string): Observable<any> {
+    const messageData = {
+      admin_id: adminId,
+      user_id: userId,
+      message_content: content
+    };
+  
+    return this.httpClient.post<any>(
+      `${this.baseUrl}/sendMessage.php`,
+      messageData,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        // Add observe: 'response' to get the full response
+        observe: 'response'
+      }
+    ).pipe(
+      map(response => {
+        // Check if we have a response body
+        if (response.body) {
+          return response.body;
+        }
+        // If no body but status is 200, consider it success
+        if (response.status === 200) {
+          return { success: true, message: 'Message sent successfully' };
+        }
+        throw new Error('Invalid response from server');
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Server error:', error);
+        if (error.status === 200 && error.statusText === 'OK') {
+          // If we got a 200 but parsing failed, still treat as success
+          return of({ success: true, message: 'Message sent successfully' });
+        }
+        return throwError(() => new Error(`Message sending failed: ${error.message}`));
+      })
+    );
+  }
+  getMessages(adminId: number, userId: number): Observable<Message[]> {
+    console.log(`Fetching messages for admin ${adminId} and user ${userId}`);
+    
+    return this.httpClient.get<any>(
+        `${this.baseUrl}/getMessages.php`,
+        {
+            params: {
+                admin_id: adminId.toString(),
+                user_id: userId.toString()
+            }
+        }
+    ).pipe(
+        map(response => {
+            if (response.success && Array.isArray(response.messages)) {
+                return response.messages;
+            }
+            throw new Error(response.error || 'Invalid response format');
+        }),
+        catchError(error => {
+            console.error('Error in getMessages:', error);
+            return throwError(() => new Error('Failed to fetch messages'));
+        })
+    );
+}
 }

@@ -1,0 +1,135 @@
+<div class="main-container">
+    <!-- Floating objects -->
+    <div class="floating-object floating-object-1"></div>
+    <div class="floating-object floating-object-2"></div>
+    <div class="floating-object floating-object-3"></div>
+    <div class="floating-object floating-object-4"></div>
+    <div class="floating-object floating-object-5"></div>
+    <div class="floating-object floating-object-6"></div>
+    <div class="floating-object floating-object-7"></div>
+    <div class="floating-object floating-object-8"></div>
+    <div class="floating-object floating-object-9"></div>
+    <div class="floating-object floating-object-10"></div>
+    
+    <!-- Sidenav -->
+    <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
+
+    <!-- Main Message Container -->
+    <div class="message-container">
+        <!-- Left Side - User List -->
+        <div class="user-list-section">
+            <div class="section-header">
+                <h2>Employees</h2>
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        [(ngModel)]="searchTerm" 
+                        (input)="filterUsers()"
+                        placeholder="Search users..."
+                    >
+                </div>
+                <div class="department-filter">
+                    <select 
+                        [(ngModel)]="selectedDepartment" 
+                        (change)="filterUsers()"
+                        class="department-select"
+                    >
+                        <option value="">All Departments</option>
+                        <option *ngFor="let dept of departments" [value]="dept">
+                            {{dept}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="users-list">
+                <div *ngFor="let user of filteredUsers" 
+                     class="user-card" 
+                     [class.selected]="selectedUser?.user_id === user.user_id"
+                     (click)="selectUser(user)">
+                    <div class="user-avatar">
+                        <img [src]="getProfileImage(user)" [alt]="user.fullname">
+                    </div>
+                    <div class="user-info">
+                        <h3 >{{user.fullname}}</h3>
+                        <p>{{user.email}}</p>
+                    </div>
+                    <div class="user-status" 
+                         [class.active]="user.status === 'Active'">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Message Content -->
+        <div class="message-content">
+            <!-- Show when no user is selected -->
+            <div class="no-selection" *ngIf="!selectedUser">
+                <div class="placeholder-content">
+                    <h3>Select a user to start messaging</h3>
+                </div>
+            </div>
+
+            <!-- Show when user is selected -->
+            <div class="chat-section" *ngIf="selectedUser">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="selected-user-info">
+                        <img [src]="getProfileImage(selectedUser)" [alt]="selectedUser.fullname">
+                        <h3 style="color:white;">{{selectedUser.fullname}}</h3>
+                    </div>
+                </div>
+
+                <!-- Messages Area -->
+                <div class="messages-container" #messagesContainer>
+                    <!-- Loading State -->
+                    <div *ngIf="loading" class="loading-spinner">
+                        <div class="spinner"></div>
+                        <span>Loading messages...</span>
+                    </div>
+
+                    <!-- No Messages State -->
+                    <div *ngIf="!loading && messages.length === 0" class="no-messages">
+                        <p style="color:white;">No messages yet. Start a conversation!</p>
+                    </div>
+
+                    <!-- Messages List -->
+                    <div *ngFor="let message of messages" 
+                         class="message" 
+                         [ngClass]="{
+                           'admin-message': message.admin_id === currentAdminId,
+                           'user-message': message.admin_id !== currentAdminId
+                         }">
+                        <div class="message-header">
+                            <span class="sender-name" style="color:white;">
+                                {{ message.admin_id === currentAdminId ? 'You' : message.user_fullname }}
+                            </span>
+                            <span class="message-time" style="color:white;">
+                                {{ message.sent_at | date:'short' }}
+                            </span>
+                        </div>
+                        <div class="message-body">
+                            {{ message.message_content }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Input Area -->
+                <div class="message-compose">
+                    <textarea 
+    [(ngModel)]="messageContent" 
+    placeholder="Type your message here..."
+    (keyup)="handleKeyPress($event)"
+    rows="3">
+</textarea>
+                  <button 
+    class="send-button" 
+    [disabled]="!messageContent.trim()"
+    (click)="sendMessage()">
+    Send
+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

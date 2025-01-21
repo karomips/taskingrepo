@@ -1,0 +1,21 @@
+[2025-01-21 14:08:43] Messages API Error: Incoming request parameters: {"admin_id":"1","user_id":"3"}
+[2025-01-21 14:08:43] Messages API Error: Validated parameters - user_id: 3, admin_id: 1
+[2025-01-21 14:08:43] Messages API Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a.admin_id' in 'on clause'
+[2025-01-21 14:08:48] Messages API Error: Incoming request parameters: {"admin_id":"1","user_id":"3"}
+[2025-01-21 14:08:48] Messages API Error: Validated parameters - user_id: 3, admin_id: 1
+[2025-01-21 14:08:48] Messages API Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a.admin_id' in 'on clause'
+[2025-01-21 14:08:58] Messages API Error: Incoming request parameters: {"admin_id":"1","user_id":"3"}
+[2025-01-21 14:08:58] Messages API Error: Validated parameters - user_id: 3, admin_id: 1
+[2025-01-21 14:08:58] Messages API Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a.admin_id' in 'on clause'
+[2025-01-21 14:09:08] Messages API Error: Incoming request parameters: {"admin_id":"1","user_id":"3"}
+[2025-01-21 14:09:08] Messages API Error: Validated parameters - user_id: 3, admin_id: 1
+[2025-01-21 14:09:08] Messages API Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a.admin_id' in 'on clause'
+[2025-01-21 14:10:07] Messages API Error: Incoming request parameters: {"admin_id":"1","user_id":"3"}
+[2025-01-21 14:10:07] Messages API Error: Validated parameters - user_id: 3, admin_id: 1
+[2025-01-21 14:10:07] Messages API Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a.admin_id' in 'on clause'
+[2025-01-21 14:13:20] Messages API Error: Incoming request parameters: {"admin_id":"1","user_id":"3"}
+[2025-01-21 14:13:20] Messages API Error: Validated parameters - user_id: 3, admin_id: 1
+[2025-01-21 14:13:20] Messages API Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a.admin_id' in 'on clause'
+[2025-01-21 14:13:31] Messages API Error: Incoming request parameters: {"admin_id":"1","user_id":"3"}
+[2025-01-21 14:13:31] Messages API Error: Validated parameters - user_id: 3, admin_id: 1
+[2025-01-21 14:13:31] Messages API Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a.admin_id' in 'on clause'
