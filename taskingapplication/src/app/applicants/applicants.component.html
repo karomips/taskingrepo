@@ -15,7 +15,7 @@
     <app-sidenav (hoverStateChanged)="onSidenavHover($event)"></app-sidenav>
 
     <div class="content-container">
-        <h2>Applicants List</h2>
+
         
         @if (loading) {
             <div class="loading">Loading applicants...</div>
@@ -26,6 +26,7 @@
         }
 
         <div class="table-container">
+            <h2>Applicants List</h2>
             <table class="applicants-table">
                 <thead>
                     <tr>
@@ -44,7 +45,6 @@
                     @for (applicant of applicants; track applicant.applicant_id) {
                         <tr [class.selected]="selectedApplicant?.applicant_id === applicant.applicant_id"
                             (click)="selectApplicant(applicant)">
-                        >
                             <td>{{ applicant.last_name }}, {{ applicant.first_name }} {{applicant.middle_name }}</td>
                             <td>{{ applicant.email }}</td>
                             <td>{{ applicant.contact_number }}</td>

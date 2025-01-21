@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import { of } from 'rxjs';
 
 export interface User {
+  id: any;
   user_id: number;
   fullname: string;
   email: string;
