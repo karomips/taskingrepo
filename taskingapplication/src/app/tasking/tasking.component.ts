@@ -5,14 +5,40 @@ import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+interface User {
+  user_id: number;
+  fullname: string;
+  email: string;
+  contact_number: string;
+  date_of_birth: string;
+  place_of_birth: string;
+  nationality: string;
+  civil_status: string;
+  gender: string;
+  department: string;
+  position: string;
+  profile_picture: string;
+  created_at: string;
+  status: string;
+}
+
 interface Task {
   id: number;
   task_name: string;
   task_description: string;
+  task_instructions: string;
   due_date: string;
   status: string;
   assigned_to: number;
+  department: string;
   created_by: number;
+  created_at: string;
+  updated_at: string;
+  progress?: string;
+  file_attachment?: string;
+  assigned_users?: { id: number; name: string }[];
+  current_time?: string;
+  current_user?: string;
 }
 
 @Component({
@@ -23,20 +49,16 @@ interface Task {
   styleUrls: ['./tasking.component.css']
 })
 export class TaskingComponent implements OnInit {
-taskDescription: any;
-formatDate(arg0: any) {
-throw new Error('Method not implemented.');
-}
-isSidenavHovered: any;
-userTasks: any;
-onSidenavHoverChanged($event: boolean) {
-throw new Error('Method not implemented.');
-}
+
   tasks: Task[] = [];
+  users: User[] = [];
   showModal = false;
+  selectedTask: Task | null = null;
   selectedFilter: string = 'all';
   searchQuery: string = '';
-  userMap: { [key: number]: string } = {};
+  userMap: { [key: number]: string } = {}; // Changed to store only fullname
+  isSidenavHovered = false;
+
 
   constructor(
     private router: Router,
@@ -48,11 +70,22 @@ throw new Error('Method not implemented.');
     this.loadUsers();
   }
 
+  formatDate(date: string): string {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+  }
+
+  onSidenavHoverChanged(isHovered: boolean): void {
+    this.isSidenavHovered = isHovered;
+  }
+
   loadUsers() {
     this.dataService.getUsers().subscribe({
-      next: (data) => {
-        this.userMap = data.reduce((map, user) => {
-          map[user.id] = user.fullname;
+      next: (users: any[]) => {
+        this.users = users;
+        this.userMap = users.reduce((map, user) => {
+          map[user.user_id] = user.fullname;
           return map;
         }, {} as { [key: number]: string });
       },
@@ -64,18 +97,34 @@ throw new Error('Method not implemented.');
 
   loadTasks() {
     this.dataService.getTasks().subscribe({
-      next: (data) => {
-        this.tasks = data;
+      next: (data: Task[]) => {
+        const taskMap: { [key: string]: Task } = {};
+  
+        data.forEach(task => {
+          // Generate a unique key based on common task properties
+          const key = `${task.task_name}-${task.task_description}-${task.task_instructions}-${task.due_date}-${task.status}`;
+  
+          if (taskMap[key]) {
+            // Merge assigned_users for tasks with the same key
+            taskMap[key].assigned_users = [
+              ...(taskMap[key].assigned_users || []),
+              ...(task.assigned_users || []),
+            ];
+          } else {
+            // Initialize the task in the map
+            taskMap[key] = { ...task, assigned_users: [...(task.assigned_users || [])] };
+          }
+        });
+  
+        // Convert the grouped tasks object back into an array
+        this.tasks = Object.values(taskMap);
       },
       error: (error) => {
         console.error('Error fetching tasks:', error);
       }
     });
   }
-
-  getAssigneeName(assigned_to: number): string {
-    return this.userMap[assigned_to] || 'Unknown';
-  }
+  
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
@@ -96,7 +145,7 @@ throw new Error('Method not implemented.');
 
   getFilteredTasks(): Task[] {
     let filtered = this.tasks;
-
+  
     if (this.searchQuery) {
       const query = this.searchQuery.toLowerCase();
       filtered = filtered.filter(task =>
@@ -110,15 +159,16 @@ throw new Error('Method not implemented.');
         task.status.toLowerCase() === this.selectedFilter.toLowerCase()
       );
     }
-
+  
     return filtered;
   }
 
-  openModal(task: Task) {
+  viewTask(task: Task) {
+    this.selectedTask = task;
     this.showModal = true;
   }
-
   closeModal() {
     this.showModal = false;
+    this.selectedTask = null;
   }
 }
