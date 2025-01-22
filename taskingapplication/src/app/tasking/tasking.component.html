@@ -25,9 +25,9 @@
       </div>
     </header>
 
-    <button type="button" class="btn-assign-task" routerLink="/assigntask">Assign New Task</button>
+    <button type="button" class="btn-assign-task" (click)="redirectToAssignTask()">Assign New Task</button>
 
-    <table class="task-list">
+    <table class="task-list"> 
       <thead>
         <tr>
           <th>Task Name</th>

@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'login', component: LoginComponent },
   { path: 'tasking', component: TaskingComponent, canActivate: [AuthGuard] }, // Protected route
-  { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] }, // Protected route
+  { path: 'assigntask', component: AssigntaskComponent, canActivate: [AuthGuard] },
   { path: 'employees', component: EmployeesComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'applicants', component: ApplicantsComponent, canActivate: [AuthGuard] }, // Protected route
   { path: 'message', component: MessageComponent, canActivate: [AuthGuard] }, // Protected route

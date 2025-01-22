@@ -173,6 +173,10 @@ addAccomplishment: any;
     return filtered;
   }
 
+  redirectToAssignTask() {
+    this.router.navigate(['/assigntask']);
+  }
+
   viewTask(task: Task) {
     this.selectedTask = task;
     this.showModal = true;
