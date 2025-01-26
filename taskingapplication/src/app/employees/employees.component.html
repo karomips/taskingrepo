@@ -52,11 +52,8 @@
                      (click)="selectEmployee(user)"
                      [class.active]="selectedUser?.user_id === user.user_id">
                     <div class="employee-avatar">
-                        <div class="employee-avatar">
-                            <img [src]="getProfileImage(user)" [alt]="user.fullname">
-                            <span class="status-indicator" [class.online]="user.status === 'Active'"></span>
-                        </div>
-                        
+                        <img [src]="getProfileImage(user)" [alt]="user.fullname">
+                        <span class="status-indicator" [class.online]="user.status === 'Active'"></span>
                     </div>
                     <div class="employee-info">
                         <p>{{ user.fullname }}</p>
@@ -69,18 +66,38 @@
         <!-- Right side with employee details -->
         <div class="employee-details" *ngIf="selectedUser">
             <div class="details-header">
-               <div class="employee-profile" *ngIf="selectedUser">
-    <img [src]="getProfileImage(selectedUser)" [alt]="selectedUser.fullname">
+                <div class="employee-profile" *ngIf="selectedUser">
+                    <img [src]="getProfileImage(selectedUser)" [alt]="selectedUser.fullname">
                     <div class="profile-text">
                         <h2>{{ selectedUser.fullname }}</h2>
                         <p>{{ selectedUser.position }} • {{ selectedUser.department }}</p>
                     </div>
                 </div>
                 <button class="status-toggle" 
-                        [class.active]="selectedUser.status === 'Active'"
-                        (click)="updateStatus(selectedUser.user_id, selectedUser.status === 'Active' ? 'Inactive' : 'Active')">
-                    {{ selectedUser.status }}
-                </button>
+                [class.active]="selectedUser.status === 'Active'"
+                (click)="updateStatus(selectedUser.user_id, selectedUser.status || 'Inactive')">
+          {{ selectedUser.status }}
+        </button>
+        
+        
+            </div>
+<!-- Reason Dropdown -->
+<div *ngIf="showReasonDropdown" class="reason-dropdown">
+    <p>Please select a reason for inactivation:</p>
+    <ul>
+      <li *ngFor="let reason of inactivityReasons" (click)="selectReason(reason)">
+        {{ reason }}
+      </li>
+    </ul>
+  </div>
+
+            <div *ngIf="showConfirmationModal" class="confirmation-modal">
+                <div class="modal-content">
+                    <h3>Confirm Status Change</h3>
+                    <p>Are you sure you want to set the status to Inactive for the reason: "{{ reason }}"?</p>
+                    <button (click)="confirmInactivation(selectedUser.user_id)">Yes, Confirm</button>
+                    <button (click)="closeReasonDropdown()">Cancel</button>
+                </div>
             </div>
 
             <div class="details-content">

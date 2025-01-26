@@ -64,7 +64,7 @@ detailsOpen: any;
 newAccomplishment: any;
 addAccomplishment: any;
 
-  constructor(
+  constructor(  
     private router: Router,
     private dataService: DataService
   ) {}
@@ -177,10 +177,10 @@ addAccomplishment: any;
     this.router.navigate(['/assigntask']);
   }
 
-  viewTask(task: Task) {
-    this.selectedTask = task;
-    this.showModal = true;
+  viewTask(task: any) {
+    this.router.navigate(['/task-details', task.id]); // Navigate to task-details page with task id
   }
+
 
   closeModal() {
     this.showModal = false;

@@ -260,10 +260,17 @@ fetchUserDocuments(userId: number): Observable<any[]> {
       );
   }
 
+  // getTaskById(taskId: string): Observable<Task> {
+  //   return this.httpClient.get<Task>(`${this.baseUrl}/getTasks.php?id=${taskId}`).pipe(
+  //     catchError(this.handleError)
+  //   );
+  // }
+  
 
-  fetchUserTaskFiles(userId: number): Observable<any[]> {
-    console.log(`Fetching task files for user_id: ${userId}`);
-    return this.httpClient.get<any[]>(`${this.baseUrl}/getTaskFiles.php?user_id=${userId}`).pipe(
+
+  fetchUserTaskFiles(taskId: number): Observable<any[]> {
+    console.log(`Fetching task files for task_id: ${taskId}`); // Log the task ID
+    return this.httpClient.get<any[]>(`${this.baseUrl}/getTaskFiles.php?task_id=${taskId}`).pipe(
       catchError(this.handleError),
       map((taskFiles) => {
         if (!taskFiles || taskFiles.length === 0) {
@@ -277,7 +284,7 @@ fetchUserDocuments(userId: number): Observable<any[]> {
         return taskFiles.map(file => {
           if (file.filepath) {
             // If the filepath is relative, adjust it to the correct path based on userId and file structure
-            file.filepath = `${taskFilesBaseUrl}task_${userId}/${file.filepath.replace(/^..\//, '')}`;
+            file.filepath = `${taskFilesBaseUrl}${file.filepath.replace(/^..\//, '')}`;
           } else {
             file.filepath = '';  // Handle missing filepath
           }
@@ -286,6 +293,8 @@ fetchUserDocuments(userId: number): Observable<any[]> {
       })
     );
   }
+  
+  
   
   
   updateTaskAdminComments(taskId: number, adminId: number, adminComment: string): Observable<any> {
@@ -440,14 +449,16 @@ fetchUserDocuments(userId: number): Observable<any[]> {
     // Return an observable that completes immediately
     return of(null);
   }
-  updateUserStatus(userId: number, status: 'Active' | 'Inactive'): Observable<any> {
+  updateUserStatus(userId: number, status: 'Active' | 'Inactive', reason?: string): Observable<any> {
     return this.httpClient.put<any>(`${this.baseUrl}/updateUserStatus.php`, {
       user_id: userId,
-      status: status
+      status: status,
+      reason: reason  // Send reason as part of the request if provided
     }).pipe(
       catchError(this.handleError)
     );
   }
+  
 
   sendMessage(adminId: number, userId: number, content: string): Observable<any> {
     const messageData = {

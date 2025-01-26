@@ -414,6 +414,64 @@ background-color: #00796b; /* Color of the scrollbar thumb */
 border-radius: 10px;
 }
 
+.reason-dropdown {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+.reason-dropdown ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.reason-dropdown li {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.reason-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+.confirmation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.confirmation-modal .modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.confirmation-modal button {
+  margin: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.confirmation-modal button:hover {
+  background-color: #ddd;
+}
+
+
 /* Individual Task Cards */
 .task-card {
   background-color: white;

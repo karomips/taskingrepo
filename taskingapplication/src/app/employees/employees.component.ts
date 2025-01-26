@@ -88,6 +88,20 @@ export class EmployeesComponent {
     'Sales'
 ];
 
+inactivityReasons: string[] = [
+  'Resignation/Termination',
+  'Long-term Absence',
+  'Retirement',
+  'Project Completion',
+  'Non-compliance/Violation',
+  'Departmental Restructuring',
+  'Leave of Absence'
+];
+
+reason: string = '';
+showReasonDropdown: boolean = false;  // To control the dropdown visibility
+showConfirmationModal: boolean = false;
+
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
@@ -309,26 +323,68 @@ onSearchChange(): void {
       }
     });
   }
+
   
-  updateStatus(userId: number, newStatus: 'Active' | 'Inactive'): void {
-    this.dataService.updateUserStatus(userId, newStatus).subscribe({
-      next: (response) => {
-        if (response.success) {
-          const user = this.users.find(u => u.user_id === userId);
-          if (user) {
-            user.status = newStatus;
+  
+  // Method to handle the status toggle
+  updateStatus(userId: number | undefined, currentStatus: 'Active' | 'Inactive'): void {
+    if (userId === undefined) {
+      console.error('User ID is undefined');
+      return; // Exit early if userId is undefined
+    }
+  
+    if (currentStatus === 'Active') {
+      this.showReasonDropdown = true;
+    } else if (currentStatus === 'Inactive') {
+      this.confirmInactivation(userId);
+    }
+  }
+  
+  
+
+  // Method to confirm the status change
+  confirmInactivation(userId: number): void {
+    if (this.reason) {
+      // Confirm inactivation with the selected reason
+      const confirmation = window.confirm(`Are you sure you want to set this employee's status to Inactive for the reason: "${this.reason}"?`);
+      if (confirmation) {
+        // Update the user's status to inactive along with the reason
+        this.dataService.updateUserStatus(userId, 'Inactive', this.reason).subscribe({
+          next: (response) => {
+            if (response.success) {
+              alert('Status updated successfully');
+              this.selectedUser!.status = 'Inactive';  // Update local status
+            } else {
+              alert('Failed to update status');
+            }
+          },
+          error: (error) => {
+            console.error('Error updating status:', error);   
+            alert('Error updating status');
           }
-          alert('Status updated successfully');
-        } else {
-          alert('Failed to update status');
-        }
-      },
-      error: (error) => {
-        console.error('Error updating status:', error);
-        alert('Error updating status');
+        });
       }
-    });
+    } else {
+      alert('Please select a reason for inactivation.');
+    }
+  }
+  
+  
+
+  closeReasonDropdown(): void {
+    this.showReasonDropdown = false;
+  }
+
+  // Method to handle reason selection
+// Method to handle reason selection
+selectReason(reason: string): void {
+  this.reason = reason;  // Store the selected reason
+  this.showReasonDropdown = false;  // Close the dropdown after selecting a reason
+  
+  // Now, change the status to "Inactive" with the selected reason
+  this.confirmInactivation(this.selectedUser!.user_id);  // Call the confirmation method with the selected user ID
 }
+
 getProfileImage(user: User): string {
     return user.profile_picture || this.defaultProfileImage;
   }

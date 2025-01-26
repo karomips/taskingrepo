@@ -18,16 +18,35 @@ try {
         throw new Exception('Missing required fields');
     }
 
-    $stmt = $pdo->prepare("
-        UPDATE users 
-        SET status = :status 
-        WHERE user_id = :user_id
-    ");
+    $status = $data->status;
+    $userId = $data->user_id;
+    $reason = isset($data->reason) ? $data->reason : null;  // Get reason if provided
 
-    $stmt->execute([
-        ':user_id' => $data->user_id,
-        ':status' => $data->status
-    ]);
+    // If reason is provided and status is 'Inactive', you can log it or update it in the database
+    if ($status === 'Inactive' && $reason) {
+        // Update status and save reason in a separate field (if needed)
+        $stmt = $pdo->prepare("
+            UPDATE users 
+            SET status = :status, inactivity_reason = :reason 
+            WHERE user_id = :user_id
+        ");
+        $stmt->execute([
+            ':user_id' => $userId,
+            ':status' => $status,
+            ':reason' => $reason  // Store the reason
+        ]);
+    } else {
+        // If no reason, just update the status
+        $stmt = $pdo->prepare("
+            UPDATE users 
+            SET status = :status 
+            WHERE user_id = :user_id
+        ");
+        $stmt->execute([
+            ':user_id' => $userId,
+            ':status' => $status
+        ]);
+    }
 
     if ($stmt->rowCount() > 0) {
         echo json_encode(['success' => true, 'message' => 'Status updated successfully']);
@@ -38,4 +57,5 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
+
 ?>

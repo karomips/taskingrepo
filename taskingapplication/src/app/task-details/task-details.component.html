@@ -1,0 +1,59 @@
+<div class="main-container">
+    <!-- Floating objects (unchanged) -->
+    <div class="floating-object floating-object-1"></div>
+    <div class="floating-object floating-object-2"></div>
+    <div class="floating-object floating-object-3"></div>
+    <div class="floating-object floating-object-4"></div>
+    <div class="floating-object floating-object-5"></div>
+    <div class="floating-object floating-object-6"></div>
+    <div class="floating-object floating-object-7"></div>
+    <div class="floating-object floating-object-8"></div>
+    <div class="floating-object floating-object-9"></div>
+    <div class="floating-object floating-object-10"></div>
+
+    <!-- Sidenav component (unchanged) -->
+    <app-sidenav (hoverStateChanged)="onSidenavHoverChanged($event)"></app-sidenav>
+
+    <!-- Task Details Container -->
+    <div class="task-details-container">
+        <header class="details-header">
+            <h1>Task Details</h1>
+            <button class="btn-back" (click)="goBack()">Back</button>
+        </header>
+
+        <!-- Task Details Content -->
+        <div *ngIf="selectedTask" class="details-content">
+            <h3>Assigned To:</h3>
+            <ul>
+                <li *ngFor="let user of selectedTask.assigned_users">
+                    {{ user.name }}
+                </li>
+            </ul>
+
+            <h3>Progress</h3>
+            <p>{{ selectedTask.progress }}%</p>
+
+
+<!-- Task Files -->
+<h3>Task Files</h3>
+<ul *ngIf="selectedTask?.task_files?.length">
+  <li *ngFor="let file of selectedTask.task_files">
+    <!-- Display file name and link to the file -->
+    <a [href]="file.filepath" target="_blank">{{ file.filename }}</a>
+    <br>
+    
+    <!-- Display the accomplishment report (if it exists) -->
+    <strong>Accomplishment Report:</strong>
+    <a *ngIf="file.accomplishment_report" [href]="file.accomplishment_report" target="_blank">View Report</a>
+    <span *ngIf="!file.accomplishment_report">No report available</span>
+    <br>
+    
+    <!-- Display the name of the user who submitted the file -->
+    <small>Submitted by: {{ getAssignedUserForFile(file)?.name || 'Unknown' }}</small>
+  </li>
+</ul>
+
+
+        </div>
+    </div>
+</div>
