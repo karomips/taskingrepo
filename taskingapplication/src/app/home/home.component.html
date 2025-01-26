@@ -15,6 +15,10 @@
     <header class="dashboard-header">
       <h1>Dashboard</h1>
       <div class="dashboard-stats">
+        <button class="stat-card">
+          <span class="stat-number">{{ applicants.length }}</span>
+          <span class="stat-label">Total Applicants</span>
+        </button>
       <button class="stat-card">
         <span class="stat-number">{{ users.length }}</span>
         <span class="stat-label">Total Employees</span>
@@ -27,24 +31,106 @@
         </button>
       </div>
     </header>
-    
-  <div class="charts-row">
-    <!-- Task Overview Chart -->
-    <div class="chart-section">
-      <h2>Tasks Overview</h2>
-      <div class="chart-container">
-        <canvas id="taskChart"></canvas>
+
+    <hr class="section-divider">
+
+<div class="section-header">
+  <h2>Applicants Data</h2>
+</div>
+
+     <!-- New applicant charts grid -->
+     <div class="applicant-charts-grid">
+      <!-- First row: Status, Demographics, and Civil Status -->
+      <div class="chart-section landscape">
+        <h2>Applicants by Status</h2>
+        <div class="chart-container">
+          <canvas id="applicantStatusChart" style="width: 60px;"></canvas>
+        </div>
       </div>
+    
+      <div class="chart-section landscape" >
+        <h2>Applicant Demographics</h2>
+        <div class="chart-container">
+          <canvas id="applicantDemographicsChart"></canvas>
+        </div>
+      </div>
+    
+      <div class="chart-section landscape">
+        <h2>Civil Status Distribution</h2>
+        <div class="chart-container">
+          <canvas id="civilStatusChart"></canvas>
+        </div>
+      </div>
+    
+      <!-- Second row: Department (full width) -->
+      <div class="chart-section department">
+        <h2>Applicants by Department</h2>
+        <div class="chart-container">
+          <canvas id="departmentChart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="section-divider">
+
+    <div class="section-header">
+      <h2>Tasks Data</h2>
     </div>
 
-    <!-- Timeline Chart -->
-    <div class="chart-section">
-      <h2>Tasks Timeline</h2>
-      <div class="chart-container">
-        <canvas id="tasksTimelineChart"></canvas>
-      </div>
+ <!-- Task Charts Section - Always visible -->
+ <div class="task-charts-grid">
+  <!-- Task Status Chart -->
+  <div class="chart-section landscape">
+    <h2>Tasks by Status</h2>
+    <div class="chart-container">
+      <canvas id="taskStatusChart"></canvas>
     </div>
   </div>
+
+  <!-- Tasks by Department Chart -->
+  <div class="chart-section department">
+    <h2>Tasks by Department</h2>
+    <div class="chart-container">
+      <canvas id="tasksByDepartmentChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<div class="section-header">
+  <h2>Employees Data</h2>
+</div>
+
+<div class="user-charts-grid">
+  <!-- User Status Chart -->
+  <div class="chart-section landscape">
+    <h2>Employee Status Distribution</h2>
+    <div class="chart-container">
+      <canvas id="userStatusChart"></canvas>
+    </div>
+  </div>
+
+  <!-- User Gender Chart -->
+  <div class="chart-section landscape">
+    <h2>Employees by Gender</h2>
+    <div class="chart-container">
+      <canvas id="userGenderChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Users by Department Chart -->
+  <div class="chart-section department">
+    <h2>Employees by Department and Position</h2>
+    <div class="chart-container">
+      <canvas id="userDepartmentChart"></canvas>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
 
     <!-- Modal Component -->
     <div class="modal-backdrop" [class.show]="showModal" (click)="closeModal()">

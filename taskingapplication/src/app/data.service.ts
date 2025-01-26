@@ -13,12 +13,12 @@ export interface User {
   place_of_birth: string;
   nationality: string;
   civil_status: 'Single' | 'Married' | 'Divorced' | 'Widowed';
-  gender: 'Male' | 'Female' | 'Other';
-  department: string;
-  position: string;
+  gender: 'Male' | 'Female' | 'Other';  // Added gender property
+  department: string;  // Added department property
+  position: string;   // Added position property
   profile_picture: string;
   created_at: string;
-  status: 'Active' | 'Inactive';
+  status: 'Active' | 'Inactive';  // Added status property
 }
 export interface Task {
   id: number;
@@ -26,15 +26,13 @@ export interface Task {
   task_description: string;
   task_instructions: string;
   due_date: string;
-  status: string;
+  status: 'Pending' | 'In Progress' | 'Completed';
   assigned_to: number;
-  assigned_to_name: string;    // Added field
-  department: string;          // Added field
   created_by: number;
-  created_by_name: string;     // Added field
   created_at: string;
   updated_at: string;
-  progress?: number;
+  progress: number;
+  department: string;
   file_attachment?: string;
   admin_comments?: string;
   current_time?: string;
