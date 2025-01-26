@@ -75,11 +75,9 @@
                 </div>
                 <button class="status-toggle" 
                 [class.active]="selectedUser.status === 'Active'"
-                (click)="updateStatus(selectedUser.user_id, selectedUser.status || 'Inactive')">
-          {{ selectedUser.status }}
+                (click)="updateStatus(selectedUser.user_id, selectedUser.status)">
+          {{ selectedUser.status === 'Active' ? 'Active' : 'Inactive' }}
         </button>
-        
-        
             </div>
 <!-- Reason Dropdown -->
 <div *ngIf="showReasonDropdown" class="reason-dropdown">

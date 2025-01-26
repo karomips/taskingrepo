@@ -334,13 +334,28 @@ onSearchChange(): void {
     }
   
     if (currentStatus === 'Active') {
+      // If the status is currently 'Active', ask for a reason before setting it to 'Inactive'
       this.showReasonDropdown = true;
     } else if (currentStatus === 'Inactive') {
-      this.confirmInactivation(userId);
+      // If the status is 'Inactive', update it to 'Active' without needing a reason
+      this.dataService.updateUserStatus(userId, 'Active').subscribe({
+        next: (response) => {
+          if (response.success) {
+            alert('Status updated to Active');
+            this.selectedUser!.status = 'Active';  // Update local status to Active
+          } else {
+            alert('Failed to update status');
+          }
+        },
+        error: (error) => {
+          console.error('Error updating status:', error);
+          alert('Error updating status');
+        }
+      });
     }
   }
   
-  
+
 
   // Method to confirm the status change
   confirmInactivation(userId: number): void {
@@ -353,7 +368,7 @@ onSearchChange(): void {
           next: (response) => {
             if (response.success) {
               alert('Status updated successfully');
-              this.selectedUser!.status = 'Inactive';  // Update local status
+              this.selectedUser!.status = 'Inactive';  // Update local status to Inactive
             } else {
               alert('Failed to update status');
             }
@@ -370,18 +385,18 @@ onSearchChange(): void {
   }
   
   
+  
 
   closeReasonDropdown(): void {
     this.showReasonDropdown = false;
   }
 
-  // Method to handle reason selection
 // Method to handle reason selection
 selectReason(reason: string): void {
   this.reason = reason;  // Store the selected reason
   this.showReasonDropdown = false;  // Close the dropdown after selecting a reason
   
-  // Now, change the status to "Inactive" with the selected reason
+  // Change the status to "Inactive" with the selected reason
   this.confirmInactivation(this.selectedUser!.user_id);  // Call the confirmation method with the selected user ID
 }
 
