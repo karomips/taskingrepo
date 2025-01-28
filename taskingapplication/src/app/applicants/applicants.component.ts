@@ -50,28 +50,32 @@ export class ApplicantsComponent implements OnInit {
     let data: any[] = [];
 
     switch (this.selectedReportType) {
-      case 'approved':
-        title = 'Approved Applicants Report';
-        data = this.applicants.filter(app => app.status === 'Approved');
-        break;
-      case 'pending':
-        title = 'Pending Applicants Report';
-        data = this.applicants.filter(app => app.status === 'Pending');
-        break;
-      case 'department':
-        title = 'Applicants by Department Report';
-        const departmentGroups = this.groupByDepartment(this.applicants);
-        data = this.formatDepartmentData(departmentGroups);
-        break;
-      case 'civilStatus':
-        title = 'Applicants by Civil Status Report';
-        const statusGroups = this.groupByCivilStatus(this.applicants);
-        data = this.formatCivilStatusData(statusGroups);
-        break;
+        case 'approved':
+            title = 'Approved Applicants Report';
+            data = this.applicants.filter(app => app.status === 'Approved');
+            break;
+        case 'pending':
+            title = 'Pending Applicants Report';
+            data = this.applicants.filter(app => app.status === 'Pending');
+            break;
+        case 'rejected':  // Add this case
+            title = 'Rejected Applicants Report';
+            data = this.applicants.filter(app => app.status === 'Rejected');
+            break;
+        case 'department':
+            title = 'Applicants by Department Report';
+            const departmentGroups = this.groupByDepartment(this.applicants);
+            data = this.formatDepartmentData(departmentGroups);
+            break;
+        case 'civilStatus':
+            title = 'Applicants by Civil Status Report';
+            const statusGroups = this.groupByCivilStatus(this.applicants);
+            data = this.formatCivilStatusData(statusGroups);
+            break;
     }
 
     this.generatePDFContent(doc, title, data, true);
-  }
+}
 
   private generatePDFContent(doc: jsPDF, title: string, data: any[], isPreview: boolean) {
     // Add header with logo or company name
@@ -139,23 +143,24 @@ export class ApplicantsComponent implements OnInit {
 
   private getTableData(data: any[]): any[][] {
     switch (this.selectedReportType) {
-      case 'approved':
-      case 'pending':
-        return data.map(app => [
-          `${app.last_name}, ${app.first_name} ${app.middle_name || ''}`.trim(),
-          app.email,
-          app.department,
-          app.position,
-          app.status
-        ]);
-      case 'department':
-        return data;
-      case 'civilStatus':
-        return data;
-      default:
-        return [];
+        case 'approved':
+        case 'pending':
+        case 'rejected':  // Add this case
+            return data.map(app => [
+                `${app.last_name}, ${app.first_name} ${app.middle_name || ''}`.trim(),
+                app.email,
+                app.department,
+                app.position,
+                app.status
+            ]);
+        case 'department':
+            return data;
+        case 'civilStatus':
+            return data;
+        default:
+            return [];
     }
-  }
+}
 
   generateReport() {
     if (!this.selectedReportType) return;
@@ -165,28 +170,32 @@ export class ApplicantsComponent implements OnInit {
     let data: any[] = [];
 
     switch (this.selectedReportType) {
-      case 'approved':
-        title = 'Approved Applicants Report';
-        data = this.applicants.filter(app => app.status === 'Approved');
-        break;
-      case 'pending':
-        title = 'Pending Applicants Report';
-        data = this.applicants.filter(app => app.status === 'Pending');
-        break;
-      case 'department':
-        title = 'Applicants by Department Report';
-        const departmentGroups = this.groupByDepartment(this.applicants);
-        data = this.formatDepartmentData(departmentGroups);
-        break;
-      case 'civilStatus':
-        title = 'Applicants by Civil Status Report';
-        const statusGroups = this.groupByCivilStatus(this.applicants);
-        data = this.formatCivilStatusData(statusGroups);
-        break;
+        case 'approved':
+            title = 'Approved Applicants Report';
+            data = this.applicants.filter(app => app.status === 'Approved');
+            break;
+        case 'pending':
+            title = 'Pending Applicants Report';
+            data = this.applicants.filter(app => app.status === 'Pending');
+            break;
+        case 'rejected':  // Add this case
+            title = 'Rejected Applicants Report';
+            data = this.applicants.filter(app => app.status === 'Rejected');
+            break;
+        case 'department':
+            title = 'Applicants by Department Report';
+            const departmentGroups = this.groupByDepartment(this.applicants);
+            data = this.formatDepartmentData(departmentGroups);
+            break;
+        case 'civilStatus':
+            title = 'Applicants by Civil Status Report';
+            const statusGroups = this.groupByCivilStatus(this.applicants);
+            data = this.formatCivilStatusData(statusGroups);
+            break;
     }
 
     this.generatePDFContent(doc, title, data, false);
-  }
+}
 
   private groupByDepartment(applicants: any[]) {
     return applicants.reduce((groups: any, app: any) => {
@@ -243,17 +252,18 @@ export class ApplicantsComponent implements OnInit {
 
   private getTableHeaders(): string[] {
     switch (this.selectedReportType) {
-      case 'approved':
-      case 'pending':
-        return ['Name', 'Email', 'Department', 'Position', 'Status'];
-      case 'department':
-        return ['Department', 'Name', 'Position', 'Status'];
-      case 'civilStatus':
-        return ['Civil Status', 'Name', 'Department', 'Status'];
-      default:
-        return [];
+        case 'approved':
+        case 'pending':
+        case 'rejected':  // Add this case
+            return ['Name', 'Email', 'Department', 'Position', 'Status'];
+        case 'department':
+            return ['Department', 'Name', 'Position', 'Status'];
+        case 'civilStatus':
+            return ['Civil Status', 'Name', 'Department', 'Status'];
+        default:
+            return [];
     }
-  }
+}
 
 
   private getTableBody(data: any[]): any[][] {

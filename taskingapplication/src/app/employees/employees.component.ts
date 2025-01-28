@@ -208,7 +208,7 @@ console.log('Formatted data:', data); // Debug log
     }
   
     // Current user and timestamp
-    const currentUser ='Admin';
+    const currentUser = 'Admin';
     const currentDateTime = new Date().toLocaleString();
   
     // Add report title
@@ -226,30 +226,34 @@ console.log('Formatted data:', data); // Debug log
   
     switch (this.selectedReportType) {
       case 'department':
-        columns = ['Department', 'Name', 'Position', 'Status'];
+        columns = ['Department', 'Name', 'Position', 'Status', 'Inactivity Reason'];
         formattedData = data.map(user => [
           user.department,
           user.fullname,
           user.position,
-          user.status
+          user.status,
+          user.status === 'Inactive' ? (user.inactivity_reason || 'N/A') : 'N/A'
         ]);
         break;
       case 'civilStatus':
-        columns = ['Civil Status', 'Name', 'Department', 'Position'];
+        columns = ['Civil Status', 'Name', 'Department', 'Position', 'Status', 'Inactivity Reason'];
         formattedData = data.map(user => [
           user.civil_status,
           user.fullname,
           user.department,
-          user.position
+          user.position,
+          user.status,
+          user.status === 'Inactive' ? (user.inactivity_reason || 'N/A') : 'N/A'
         ]);
         break;
       default:
-        columns = ['Name', 'Department', 'Position', 'Status'];
+        columns = ['Name', 'Department', 'Position', 'Status', 'Inactivity Reason'];
         formattedData = data.map(user => [
           user.fullname,
           user.department,
           user.position,
-          user.status
+          user.status,
+          user.status === 'Inactive' ? (user.inactivity_reason || 'N/A') : 'N/A'
         ]);
     }
   
@@ -493,19 +497,17 @@ onSearchChange(): void {
     );
   }
 
-  fetchTasksForUser(userId: number): void {
-    this.dataService.fetchUserTasks(userId).subscribe(
-      (tasks: Task[]) => {
-        // TypeScript will now correctly infer the types
-        this.selectedUserTasks = tasks;
-      },
-      (error) => {
-        console.error('Error fetching tasks:', error);
-        this.selectedUserTasks = [];
-      }
-    );
+ fetchTasksForUser(userId: number): void {
+  this.dataService.fetchUserTasks(userId).subscribe(
+    (tasks: Task[]) => {
+      this.selectedUserTasks = tasks;
+    },
+    error => {
+      console.error('Error fetching tasks:', error);
+      this.selectedUserTasks = [];
+    }
+  );
 }
-
 
   openTaskModal(task: Task): void {
     this.selectedTask = task;
@@ -611,19 +613,73 @@ onSearchChange(): void {
   updateStatus(userId: number | undefined, currentStatus: 'Active' | 'Inactive'): void {
     if (userId === undefined) {
       console.error('User ID is undefined');
-      return; // Exit early if userId is undefined
+      return;
     }
   
     if (currentStatus === 'Active') {
-      // If the status is currently 'Active', ask for a reason before setting it to 'Inactive'
+      // If changing from Active to Inactive, show reason dropdown
       this.showReasonDropdown = true;
-    } else if (currentStatus === 'Inactive') {
-      // If the status is 'Inactive', update it to 'Active' without needing a reason
-      this.dataService.updateUserStatus(userId, 'Active').subscribe({
+      this.reason = ''; // Reset the reason
+    } else {
+      // If changing from Inactive to Active
+      const confirmation = window.confirm('Are you sure you want to set this employee\'s status to Active?');
+      if (confirmation) {
+        this.dataService.updateUserStatus(userId, 'Active').subscribe({
+          next: (response) => {
+            if (response.success) {
+              // Update the local user object
+              if (this.selectedUser) {
+                this.selectedUser.status = 'Active';
+                this.selectedUser.inactivity_reason = undefined; // Clear the inactivity reason
+              }
+              // Find and update the user in the filtered list
+              const user = this.filteredUsers.find(u => u.user_id === userId);
+              if (user) {
+                user.status = 'Active';
+                user.inactivity_reason = undefined;
+              }
+              this.loadUsers(); // Reload the users to refresh the data
+              alert('Status updated successfully');
+            } else {
+              alert('Failed to update status');
+            }
+          },
+          error: (error) => {
+            console.error('Error updating status:', error);
+            alert('Error updating status');
+          }
+        });
+      }
+    }
+  }
+
+  // Method to confirm the status change
+  confirmInactivation(userId: number): void {
+    if (!this.reason) {
+      alert('Please select a reason for inactivation.');
+      return;
+    }
+  
+    const confirmation = window.confirm(`Are you sure you want to set this employee's status to Inactive for the reason: "${this.reason}"?`);
+    if (confirmation) {
+      this.dataService.updateUserStatus(userId, 'Inactive', this.reason).subscribe({
         next: (response) => {
           if (response.success) {
-            alert('Status updated to Active');
-            this.selectedUser!.status = 'Active';  // Update local status to Active
+            // Update the local user object
+            if (this.selectedUser) {
+              this.selectedUser.status = 'Inactive';
+              this.selectedUser.inactivity_reason = this.reason;
+            }
+            // Find and update the user in the filtered list
+            const user = this.filteredUsers.find(u => u.user_id === userId);
+            if (user) {
+              user.status = 'Inactive';
+              user.inactivity_reason = this.reason;
+            }
+            this.loadUsers(); // Reload the users to refresh the data
+            this.showReasonDropdown = false;
+            this.reason = '';
+            alert('Status updated successfully');
           } else {
             alert('Failed to update status');
           }
@@ -635,37 +691,6 @@ onSearchChange(): void {
       });
     }
   }
-  
-
-
-  // Method to confirm the status change
-  confirmInactivation(userId: number): void {
-    if (this.reason) {
-      // Confirm inactivation with the selected reason
-      const confirmation = window.confirm(`Are you sure you want to set this employee's status to Inactive for the reason: "${this.reason}"?`);
-      if (confirmation) {
-        // Update the user's status to inactive along with the reason
-        this.dataService.updateUserStatus(userId, 'Inactive', this.reason).subscribe({
-          next: (response) => {
-            if (response.success) {
-              alert('Status updated successfully');
-              this.selectedUser!.status = 'Inactive';  // Update local status to Inactive
-            } else {
-              alert('Failed to update status');
-            }
-          },
-          error: (error) => {
-            console.error('Error updating status:', error);   
-            alert('Error updating status');
-          }
-        });
-      }
-    } else {
-      alert('Please select a reason for inactivation.');
-    }
-  }
-  
-  
   
 
   closeReasonDropdown(): void {

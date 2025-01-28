@@ -315,7 +315,14 @@ fetchUserDocuments(userId: number): Observable<any[]> {
   fetchUserTasks(userId: number): Observable<Task[]> {
     return this.httpClient.get<Task[]>(`${this.baseUrl}/getTasks.php?user_id=${userId}`)
       .pipe(
-        catchError(this.handleError)
+        map(tasks => {
+          if (!tasks) return [];
+          return tasks;
+        }),
+        catchError(error => {
+          console.error('Error fetching user tasks:', error);
+          return throwError(() => error);
+        })
       );
   }
   getTasksByDate(): Observable<any[]> {
@@ -535,8 +542,8 @@ getApplicantsByCivilStatus(civilStatus: string): Observable<Applicant[]> {
 }
 
 getApplicantsByStatus(status: string): Observable<Applicant[]> {
-  return this.getApplicants().pipe(
-    map(applicants => applicants.filter(app => app.status === status))
-  );
+    return this.getApplicants().pipe(
+        map(applicants => applicants.filter(app => app.status === status))
+    );
 }
 }

@@ -1,4 +1,6 @@
 <?php
+// updateUserStatus.php
+
 require_once 'database.php';
 
 header("Access-Control-Allow-Origin: *");
@@ -20,26 +22,27 @@ try {
 
     $status = $data->status;
     $userId = $data->user_id;
-    $reason = isset($data->reason) ? $data->reason : null;  // Get reason if provided
+    $reason = isset($data->reason) ? $data->reason : null;
 
-    // If reason is provided and status is 'Inactive', you can log it or update it in the database
-    if ($status === 'Inactive' && $reason) {
-        // Update status and save reason in a separate field (if needed)
+    if ($status === 'Inactive') {
+        // Update status and inactivity reason
         $stmt = $pdo->prepare("
             UPDATE users 
-            SET status = :status, inactivity_reason = :reason 
+            SET status = :status, 
+                inactivity_reason = :reason 
             WHERE user_id = :user_id
         ");
         $stmt->execute([
             ':user_id' => $userId,
             ':status' => $status,
-            ':reason' => $reason  // Store the reason
+            ':reason' => $reason
         ]);
     } else {
-        // If no reason, just update the status
+        // If status is Active, clear the inactivity reason
         $stmt = $pdo->prepare("
             UPDATE users 
-            SET status = :status 
+            SET status = :status, 
+                inactivity_reason = NULL 
             WHERE user_id = :user_id
         ");
         $stmt->execute([
@@ -49,7 +52,14 @@ try {
     }
 
     if ($stmt->rowCount() > 0) {
-        echo json_encode(['success' => true, 'message' => 'Status updated successfully']);
+        echo json_encode([
+            'success' => true, 
+            'message' => 'Status updated successfully',
+            'data' => [
+                'status' => $status,
+                'inactivity_reason' => $reason
+            ]
+        ]);
     } else {
         echo json_encode(['success' => false, 'message' => 'No changes made']);
     }
@@ -57,5 +67,4 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
-
 ?>

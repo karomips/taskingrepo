@@ -27,11 +27,12 @@
 
         <div class="report-controls">
             <select [(ngModel)]="selectedReportType" class="report-select">
-              <option value="">Select Report Type</option>
-              <option value="approved">Approved Applicants</option>
-              <option value="pending">Pending Applicants</option>
-              <option value="department">Applicants by Department</option>
-              <option value="civilStatus">Applicants by Civil Status</option>
+                <option value="">Select Report Type</option>
+                <option value="approved">Approved Applicants</option>
+                <option value="pending">Pending Applicants</option>
+                <option value="rejected">Rejected Applicants</option>
+                <option value="department">Applicants by Department</option>
+                <option value="civilStatus">Applicants by Civil Status</option>
             </select>
             <button (click)="viewReport()" class="view-btn" [disabled]="!selectedReportType">
               <i class="fas fa-eye"></i> View Report
