@@ -22,7 +22,8 @@ try {
             position,
             profile_picture,
             created_at,
-            status
+            status,
+            inactivity_reason  -- Add this line
         FROM users
     ");
     $stmt->execute();

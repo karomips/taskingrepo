@@ -19,6 +19,7 @@ export interface User {
   profile_picture: string;
   created_at: string;
   status: 'Active' | 'Inactive';  // Added status property
+  inactivity_reason?: string; // Add this line
 }
 export interface Task {
   id: number;
