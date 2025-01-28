@@ -11,21 +11,22 @@
     <div class="floating-object floating-object-10"></div>
     <app-sidenav (hoverStateChanged)="onSidenavHover($event)"></app-sidenav>
 
-    <div class="report-controls">
-        <select [(ngModel)]="selectedReportType" class="report-select">
-          <option value="">Select Report Type</option>
-          <option value="active">Active Employees</option>
-          <option value="inactive">Inactive Employees</option>
-          <option value="department">Employees by Department</option>
-          <option value="civilStatus">Employees by Civil Status</option>
-        </select>
-        <button (click)="viewReport()" class="view-btn" [disabled]="!selectedReportType">
-          <i class="fas fa-eye"></i> View Report
-        </button>
-        <button (click)="generateReport()" class="generate-btn" [disabled]="!selectedReportType">
-          <i class="fas fa-download"></i> Download Report
-        </button>
-      </div>
+    <div class="content-wrapper">
+        <div class="report-controls">
+            <select [(ngModel)]="selectedReportType" class="report-select">
+                <option value="">Select Report Type</option>
+                <option value="active">Active Employees</option>
+                <option value="inactive">Inactive Employees</option>
+                <option value="department">Employees by Department</option>
+                <option value="civilStatus">Employees by Civil Status</option>
+            </select>
+            <button (click)="viewReport()" class="view-btn" [disabled]="!selectedReportType">
+                <i class="fas fa-eye"></i> View Report
+            </button>
+            <button (click)="generateReport()" class="generate-btn" [disabled]="!selectedReportType">
+                <i class="fas fa-download"></i> Download Report
+            </button>
+        </div>
 
     <div class="messenger-layout">
         <!-- Left sidebar with employee list -->

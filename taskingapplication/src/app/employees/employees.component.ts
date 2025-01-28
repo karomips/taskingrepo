@@ -208,13 +208,9 @@ console.log('Formatted data:', data); // Debug log
     }
   
     // Current user and timestamp
-    const currentUser = 'j3yey';
+    const currentUser ='Admin';
     const currentDateTime = new Date().toLocaleString();
   
-    // Add header
-    doc.setFontSize(20);
-    doc.text('4Ward Employee Report', 105, 15, { align: 'center' });
-    
     // Add report title
     doc.setFontSize(16);
     doc.text(title, 105, 25, { align: 'center' });
