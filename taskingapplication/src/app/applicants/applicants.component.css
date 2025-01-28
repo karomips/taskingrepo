@@ -427,3 +427,54 @@ h2 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.report-controls {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.report-select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  min-width: 200px;
+}
+
+.generate-btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.generate-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.generate-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+.view-btn {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.view-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.view-btn:hover:not(:disabled) {
+  background-color: #218838;
+}

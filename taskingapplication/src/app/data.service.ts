@@ -521,4 +521,21 @@ fetchUserDocuments(userId: number): Observable<any[]> {
         })
     );
 }
+getApplicantsByDepartment(department: string): Observable<Applicant[]> {
+  return this.getApplicants().pipe(
+    map(applicants => applicants.filter(app => app.department === department))
+  );
+}
+
+getApplicantsByCivilStatus(civilStatus: string): Observable<Applicant[]> {
+  return this.getApplicants().pipe(
+    map(applicants => applicants.filter(app => app.civil_status === civilStatus))
+  );
+}
+
+getApplicantsByStatus(status: string): Observable<Applicant[]> {
+  return this.getApplicants().pipe(
+    map(applicants => applicants.filter(app => app.status === status))
+  );
+}
 }
