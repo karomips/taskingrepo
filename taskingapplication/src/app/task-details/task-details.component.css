@@ -1,48 +1,23 @@
 /* Main container */
 .main-container {
     display: flex;
-    justify-content: space-between;
-    position: relative;
-}
-
-/* Floating objects */
-.floating-object {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(0, 0, 255, 0.1);
-    animation: float 10s infinite ease-in-out;
-}
-
-.floating-object-1 { top: 10%; left: 10%; width: 50px; height: 50px; }
-.floating-object-2 { top: 30%; left: 20%; width: 60px; height: 60px; }
-.floating-object-3 { top: 50%; left: 30%; width: 70px; height: 70px; }
-.floating-object-4 { top: 70%; left: 40%; width: 80px; height: 80px; }
-.floating-object-5 { top: 20%; left: 50%; width: 90px; height: 90px; }
-.floating-object-6 { top: 40%; left: 60%; width: 100px; height: 100px; }
-.floating-object-7 { top: 60%; left: 70%; width: 110px; height: 110px; }
-.floating-object-8 { top: 80%; left: 80%; width: 120px; height: 120px; }
-.floating-object-9 { top: 10%; left: 90%; width: 130px; height: 130px; }
-.floating-object-10 { top: 90%; left: 20%; width: 140px; height: 140px; }
-
-/* Sidenav */
-app-sidenav {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 250px; /* Adjust width as per your design */
-    height: 100vh;
-    background-color: #343a40;
-    color: white;
-    z-index: 10;
+    min-height: 100vh;
+    margin-left: 150px; /* Further reduced margin for smaller space between sidenav and task details */
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    background: linear-gradient(135deg, #1a202c, #2d3748); /* Gradient background */
 }
 
 /* Task Details Container */
 .task-details-container {
     flex-grow: 1;
-    margin-left: 260px; /* To avoid content being hidden behind sidenav */
+    margin-left: 230px; /* Reduced margin to make space smaller */
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
     position: relative;
+    transition: background-color 0.3s ease;
 }
 
 /* Header for task details */
@@ -51,7 +26,7 @@ app-sidenav {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    color: #333; /* Darker color for header text */
+    color: #fff;
 }
 
 .btn-back {
@@ -71,14 +46,14 @@ app-sidenav {
 /* Content styling */
 .details-content {
     padding: 20px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .details-content h3 {
     margin-bottom: 10px;
-    color: #333; /* Darker color for headings */
+    color: #fff;
 }
 
 .details-content ul {
@@ -88,18 +63,44 @@ app-sidenav {
 
 .details-content li {
     margin-bottom: 5px;
-    color: #555; /* Slightly lighter gray for list items */
+    color: #f1f1f1;
 }
 
 .details-content p {
     font-size: 18px;
-    color: #333; /* Dark text for progress */
+    color: #fff;
+}
+
+/* Separator styling */
+.separator {
+    margin: 20px 0;
+    border-bottom: 2px solid #f1f1f1; /* Thin line separator */
+}
+
+/* Accomplishment Report Styling */
+.accomplishment-report {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Accomplishment Report Header */
+.accomplishment-report h4 {
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.accomplishment-report p {
+    color: #f1f1f1;
+    font-size: 16px;
 }
 
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {
     .task-details-container {
-        margin-left: 0;
+        margin-left: 0; /* Reset margin for small screens */
     }
 
     app-sidenav {
@@ -110,4 +111,55 @@ app-sidenav {
     .main-container {
         flex-direction: column;
     }
+}
+
+/* Keyframe animations for floating objects */
+@keyframes float1 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-50px) rotate(360deg); }
+}
+
+@keyframes float2 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-60px) rotate(-360deg); }
+}
+
+@keyframes float3 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(70px) rotate(180deg); }
+}
+
+@keyframes float4 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-30px) rotate(-90deg); }
+}
+
+@keyframes float5 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(90px) rotate(270deg); }
+}
+
+@keyframes float6 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-40px) rotate(90deg); }
+}
+
+@keyframes float7 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-30px) rotate(180deg); }
+}
+
+@keyframes float8 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-50px) rotate(-360deg); }
+}
+
+@keyframes float9 {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(80px) rotate(360deg); }
+}
+
+@keyframes float10 {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(-70px) rotate(360deg); }
 }

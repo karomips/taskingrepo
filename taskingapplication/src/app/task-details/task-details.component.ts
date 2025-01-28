@@ -78,13 +78,18 @@ fetchTaskFiles(taskId: number): void {
   });
 }
 
+getReportUrl(report: string): string {
+  // Ensure the URL is valid and absolute
+  return report.startsWith('/') ? report : `/${report}`;
+}
+
 getAssignedUserForFile(file: any): User | undefined {
   if (this.selectedTask?.assigned_users) {
-    return this.selectedTask.assigned_users.find(user => user.user_id === file.task_id);
+    // Assuming `assigned_users` in the task array has user IDs that match the submitted file's user_id
+    return this.selectedTask.assigned_users.find(user => user.user_id === file.submitted_by); 
   }
   return undefined;
 }
-
 
     onSidenavHoverChanged(isHovered: boolean): void {
       this.isSidenavHovered = isHovered;
