@@ -33,27 +33,26 @@
             <h3>Progress</h3>
             <p>{{ selectedTask.progress }}%</p>
 
+            <!-- Separator between Progress and Accomplishment Reports -->
+            <div class="separator"></div>
 
-<!-- Task Files -->
-<h3>Task Files</h3>
-<ul *ngIf="selectedTask?.task_files?.length">
-  <li *ngFor="let file of selectedTask.task_files">
-    <!-- Display file name and link to the file -->
-    <a [href]="file.filepath" target="_blank">{{ file.filename }}</a>
-    <br>
-    
-    <!-- Display the accomplishment report (if it exists) -->
-    <strong>Accomplishment Report:</strong>
-    <a *ngIf="file.accomplishment_report" [href]="file.accomplishment_report" target="_blank">View Report</a>
-    <span *ngIf="!file.accomplishment_report">No report available</span>
-    <br>
-    
-    <!-- Display the name of the user who submitted the file -->
-    <small>Submitted by: {{ getAssignedUserForFile(file)?.name || 'Unknown' }}</small>
-  </li>
-</ul>
+            <!-- Accomplishment Reports Section -->
+            <h3>Accomplishment Reports</h3>
+            <ul *ngIf="selectedTask?.task_files?.length">
+                <li *ngFor="let file of selectedTask.task_files">
+                    <!-- Display file name and link to the file -->
+                    <a [href]="file.filepath" target="_blank">{{ file.filename }}</a>
+                    <br>
 
+                    <!-- Display the accomplishment report (if it exists) -->
+                    <strong>Accomplishment Report:</strong>
+                    <p>{{ file.accomplishment_report || 'No report available' }}</p>
+                    <br>
 
-        </div>
+                    <!-- Display the name of the user who submitted the file -->
+                    <small>Submitted by: {{ getAssignedUserForFile(file)?.name || 'Unknown' }}</small>
+                </li>
+            </ul>
+        </div>  
     </div>
 </div>
