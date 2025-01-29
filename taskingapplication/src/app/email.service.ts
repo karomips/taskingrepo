@@ -12,6 +12,9 @@ interface EmailData {
   providedIn: 'root'
 })
 export class EmailService {
+  sendEmail(emailData: { to: string; subject: string; body: string; }) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost/4ward/taskingrepo/taskingapplication/api/taskingapi';
 
   constructor(private http: HttpClient) { }
@@ -53,6 +56,27 @@ Administrator`
       body: `Dear ${applicant.first_name} ${applicant.last_name},
 
 Thank you for your interest in joining our organization. After careful consideration of your application, we regret to inform you that we will not be moving forward with your application at this time.${customMessage ? '\n\n' + customMessage : ''}
+
+We appreciate the time you took to apply and wish you the best in your future endeavors.
+
+Best regards,
+Administrator`
+    };
+
+    return this.http.post(`${this.apiUrl}/send-email.php`, emailData);
+  }
+
+  sendInactiveEmail(selectedUser: {
+    email: string;
+    first_name: string;
+    last_name: string;
+  }, customMessage?: string): Observable<any> {
+    const emailData: EmailData = {
+      to: selectedUser.email,
+      subject: 'Status Update',
+      body: `Dear ${selectedUser.first_name} ${selectedUser.last_name},
+
+Thank you for your interest in joining our organization. After careful consideration of your application, we regret to inform you that your status has been marked as 'Inactive'.${customMessage ? '\n\n' + customMessage : ''}
 
 We appreciate the time you took to apply and wish you the best in your future endeavors.
 

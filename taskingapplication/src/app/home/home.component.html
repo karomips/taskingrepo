@@ -16,18 +16,18 @@
       <div class="dropdown">
         <button class="dropdown-button">Select Charts to Generate</button>
         <div class="dropdown-content">
-          <label><input type="checkbox" (change)="onChartSelectionChange('Applicants by Status', $event)"> Applicants by Status</label>
-          <label><input type="checkbox" (change)="onChartSelectionChange('Applicant Demographics', $event)"> Applicant Demographics</label>
-          <label><input type="checkbox" (change)="onChartSelectionChange('Civil Status Distribution', $event)"> Civil Status Distribution</label>
-          <label><input type="checkbox" (change)="onChartSelectionChange('Applicants by Department', $event)"> Applicants by Department</label>
-          <label><input type="checkbox" (change)="onChartSelectionChange('Tasks by Status', $event)"> Tasks by Status</label>
-          <label><input type="checkbox" (change)="onChartSelectionChange('Tasks by Department', $event)"> Tasks by Department</label>
-          <label><input type="checkbox" (change)="onChartSelectionChange('Employee Status Distribution', $event)"> Employee Status Distribution</label>
-          <label><input type="checkbox" (change)="onChartSelectionChange('Employees by Gender', $event)"> Employees by Gender</label>
-          <label><input type="checkbox" (change)="onChartSelectionChange('Employees by Department and Position', $event)"> Employees by Department and Position</label>
+          <label>
+            <input type="checkbox" (change)="toggleAllCharts($event)" #selectAllCheckbox>
+            Select All
+          </label>
+          <label *ngFor="let chart of chartOptions">
+            <input type="checkbox" [checked]="selectedCharts.includes(chart)" 
+                   (change)="onChartSelectionChange(chart, $event)" #chartCheckbox>
+            {{ chart }}
+          </label>
         </div>
       </div>
-      <button (click)="generateSelectedChartsPdf()">Generate PDF for Selected Charts</button>
+      <button (click)="generateSelectedChartsPdf()">Generate PDF for Selected Charts</button>      
       <h1>Dashboard</h1>
       <div class="dashboard-stats">
         <button class="stat-card">

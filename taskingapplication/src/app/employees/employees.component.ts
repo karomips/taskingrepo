@@ -3,6 +3,7 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { EmailService } from '../email.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -111,7 +112,10 @@ selectedReportType: string = '';
 currentUser: string = 'admin';
 currentDateTime: string = new Date().toLocaleString();
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private emailService: EmailService,
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -659,7 +663,7 @@ onSearchChange(): void {
       alert('Please select a reason for inactivation.');
       return;
     }
-  
+
     const confirmation = window.confirm(`Are you sure you want to set this employee's status to Inactive for the reason: "${this.reason}"?`);
     if (confirmation) {
       this.dataService.updateUserStatus(userId, 'Inactive', this.reason).subscribe({
@@ -680,6 +684,9 @@ onSearchChange(): void {
             this.showReasonDropdown = false;
             this.reason = '';
             alert('Status updated successfully');
+
+            // Send email notification
+            this.sendInactivationEmail(this.selectedUser);
           } else {
             alert('Failed to update status');
           }
@@ -691,8 +698,23 @@ onSearchChange(): void {
       });
     }
   }
-  
 
+  sendInactivationEmail(user: any): void {
+    const customMessage = `Reason for inactivation: ${this.reason}`;
+    this.emailService.sendInactiveEmail({
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name
+    }, customMessage).subscribe({
+      next: () => {
+        console.log('Email sent successfully');
+      },
+      error: (error) => {
+        console.error('Error sending email:', error);
+      }
+    });
+  }
+  
   closeReasonDropdown(): void {
     this.showReasonDropdown = false;
   }

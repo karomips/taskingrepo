@@ -113,6 +113,7 @@ export interface TaskAssignment {
   providedIn: 'root'
 })
 export class DataService {
+  updateUser: any;
   updateTaskProgress(id: number, progress: string | undefined) {
     throw new Error('Method not implemented.');
   }

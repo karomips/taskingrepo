@@ -71,6 +71,28 @@ interface CivilStatusCounts {
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+  chartOptions: string[] = [
+    'Applicants by Status',
+    'Applicant Demographics',
+    'Civil Status Distribution',
+    'Applicants by Department',
+    'Tasks by Status',
+    'Tasks by Department',
+    'Employee Status Distribution',
+    'Employees by Gender',
+    'Employees by Department and Position'
+  ];
+
+toggleAllCharts(event: Event) {
+  const checkbox = event.target as HTMLInputElement;
+  if (checkbox.checked) {
+    this.selectedCharts = [...this.chartOptions]; // Select all
+  } else {
+    this.selectedCharts = []; // Deselect all
+  }
+}
+
   onChartSelectionChange(chartTitle: string, event: Event) {
     const checkbox = event.target as HTMLInputElement;
     if (checkbox.checked) {
@@ -84,27 +106,22 @@ export class HomeComponent implements OnInit {
   }
 
   generateSelectedChartsPdf() {
-    const doc = new jsPDF('p', 'mm', 'a4'); // Create a new jsPDF instance
-
-    let currentY = 10; // Start position for the content
-
-    this.selectedCharts.forEach((chartTitle: string) => {
+    const doc = new jsPDF('p', 'mm', 'a4');
+  
+    this.selectedCharts.forEach((chartTitle: string, index) => {
       const chartData = this.getChartDataByTitle(chartTitle);
-      doc.text(chartTitle, 10, currentY);
-      currentY += 10;
-
-      chartData.forEach(item => {
-        if (currentY > doc.internal.pageSize.getHeight() - 10) {
-          doc.addPage(); // Add new page if the content exceeds the page height
-          currentY = 10;
-        }
-        doc.text(`${item.label}: ${item.value}`, 10, currentY);
-        currentY += 10;
+      
+      if (index > 0) doc.addPage(); // Add a new page for each chart if needed
+      
+      doc.text(chartTitle, 10, 10);
+      
+      autoTable(doc, {
+        startY: 20,
+        head: [['Label', 'Value']],
+        body: chartData.map(item => [item.label, item.value.toString()])
       });
-
-      currentY += 10; // Add some space between sections
     });
-
+  
     doc.save('Selected_Charts_Report.pdf');
   }
 

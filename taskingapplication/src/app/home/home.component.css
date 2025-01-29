@@ -530,41 +530,79 @@ p, h2, h3, span, button{
   background-color: #2980b9;
 }
 
+/* Dropdown container */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
+/* Dropdown button */
 .dropdown-button {
-  padding: 10px 20px;
+  padding: 12px 25px;
   font-size: 16px;
   cursor: pointer;
   background-color: #246624; /* Dark Green */
   color: white;
-  border: none;
-  border-radius: 5px;
+  border: 1px solid #1a4d1a; /* Darker Green Border */
+  border-radius: 8px; /* Rounded corners */
+  transition: background-color 0.3s, transform 0.3s;
 }
 
+.dropdown-button:hover {
+  background-color: #1a4d1a; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+/* Dropdown content */
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
+  background-color: #fff; /* White background */
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-top: 10px; /* Slight gap below the button */
+  opacity: 0;
+  transition: opacity 0.3s ease;
   z-index: 1;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.dropdown-content a {
-  padding: 12px 16px;
-  text-decoration: none;
+.dropdown-content label {
   display: block;
-  color: black;
+  padding: 10px 20px;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-bottom: 1px solid #eee; /* Border between items */
 }
 
-.dropdown-content a:hover {
-  background-color: #ddd;
+.dropdown-content label:last-child {
+  border-bottom: none; /* Remove border for last item */
 }
 
+.dropdown-content label:hover {
+  background-color: #f1f1f1; /* Light grey on hover */
+}
+
+/* Show dropdown content when hovering over the dropdown button */
 .dropdown:hover .dropdown-content {
   display: block;
+  opacity: 1; /* Fade-in effect */
+}
+
+/* Optional - Add a subtle animation to dropdown items */
+@keyframes dropdown-slide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-content label {
+  animation: dropdown-slide 0.3s ease-out;
 }
