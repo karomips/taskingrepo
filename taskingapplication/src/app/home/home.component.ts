@@ -5,6 +5,8 @@ import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 Chart.register(...registerables);
 
@@ -69,6 +71,192 @@ interface CivilStatusCounts {
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  generatePdfForChart(chartTitle: string) {
+    const doc = new jsPDF('p', 'mm', 'a4'); // Create a new jsPDF instance
+    const chartData = this.getChartDataByTitle(chartTitle); // Fetch data based on chart title
+    
+    let currentY = 10; // Start position for the content
+  
+    if (chartData) {
+      doc.text(chartTitle, 10, currentY);
+      currentY += 10;
+  
+      chartData.forEach(item => {
+        if (currentY > doc.internal.pageSize.getHeight() - 10) {
+          doc.addPage(); // Add new page if the content exceeds the page height
+          currentY = 10;
+        }
+        doc.text(`${item.label}: ${item.value}`, 10, currentY);
+        currentY += 10;
+      });
+    }
+  
+    doc.save(`${chartTitle}_Report.pdf`);
+  }
+  
+  getChartDataByTitle(title: string) {
+    switch (title) {
+      case 'Applicants by Status':
+        return this.getApplicantStatusData();
+      case 'Applicant Demographics':
+        return this.getApplicantDemographicsData();
+      case 'Civil Status Distribution':
+        return this.getCivilStatusData();
+      case 'Applicants by Department':
+        return this.getDepartmentData();
+      case 'Tasks by Status':
+        return this.getTaskStatusData();
+      case 'Tasks by Department':
+        return this.getTasksByDepartmentData();
+      case 'Employee Status Distribution':
+        return this.getUserStatusData();
+      case 'Employees by Gender':
+        return this.getUserGenderData();
+      case 'Employees by Department and Position':
+        return this.getUserDepartmentData();
+      default:
+        return [];
+    }
+}
+
+  generatePdfReport() {
+    const doc = new jsPDF('p', 'mm', 'a4'); // Create a new jsPDF instance
+    
+    const charts = [
+      { title: 'Applicants by Status', getData: this.getApplicantStatusData.bind(this) },
+      { title: 'Applicant Demographics', getData: this.getApplicantDemographicsData.bind(this) },
+      { title: 'Civil Status Distribution', getData: this.getCivilStatusData.bind(this) },
+      { title: 'Applicants by Department', getData: this.getDepartmentData.bind(this) },
+      { title: 'Tasks by Status', getData: this.getTaskStatusData.bind(this) },
+      { title: 'Tasks by Department', getData: this.getTasksByDepartmentData.bind(this) },
+      { title: 'Employee Status Distribution', getData: this.getUserStatusData.bind(this) },
+      { title: 'Employees by Gender', getData: this.getUserGenderData.bind(this) },
+      { title: 'Employees by Department and Position', getData: this.getUserDepartmentData.bind(this) }
+    ];
+
+    let currentY = 10; // Start position for the content
+
+    charts.forEach(chart => {
+      const chartData = chart.getData();
+      doc.text(chart.title, 10, currentY);
+      currentY += 10;
+
+      chartData.forEach(item => {
+        if (currentY > doc.internal.pageSize.getHeight() - 10) {
+          doc.addPage(); // Add new page if the content exceeds the page height
+          currentY = 10;
+        }
+        doc.text(`${item.label}: ${item.value}`, 10, currentY);
+        currentY += 10;
+      });
+
+      currentY += 10; // Add some space between sections
+    });
+
+    doc.save('Dashboard_Report.pdf');
+  }
+
+  // Example methods to get data from charts
+  getApplicantStatusData() {
+    return [
+      { label: 'Pending', value: this.applicants.filter(applicant => applicant.status === 'Pending').length },
+      { label: 'Under Review', value: this.applicants.filter(applicant => applicant.status === 'Under Review').length },
+      { label: 'Approved', value: this.applicants.filter(applicant => applicant.status === 'Approved').length },
+      { label: 'Rejected', value: this.applicants.filter(applicant => applicant.status === 'Rejected').length }
+    ];
+  }
+
+  getApplicantDemographicsData() {
+    return [
+      { label: 'Male', value: this.applicants.filter(applicant => applicant.gender === 'Male').length },
+      { label: 'Female', value: this.applicants.filter(applicant => applicant.gender === 'Female').length },
+      { label: 'Other', value: this.applicants.filter(applicant => applicant.gender === 'Other').length }
+    ];
+  }
+
+  getCivilStatusData() {
+    return [
+      { label: 'Single', value: this.applicants.filter(applicant => applicant.civil_status === 'Single').length },
+      { label: 'Married', value: this.applicants.filter(applicant => applicant.civil_status === 'Married').length },
+      { label: 'Divorced', value: this.applicants.filter(applicant => applicant.civil_status === 'Divorced').length },
+      { label: 'Widowed', value: this.applicants.filter(applicant => applicant.civil_status === 'Widowed').length }
+    ];
+  }
+
+  getDepartmentData() {
+    const departmentCounts: { [key: string]: number } = {};
+    this.applicants.forEach(applicant => {
+      departmentCounts[applicant.department] = (departmentCounts[applicant.department] || 0) + 1;
+    });
+    return Object.entries(departmentCounts).map(([label, value]) => ({ label, value }));
+  }
+
+  getTaskStatusData() {
+    const statusCounts: { [key in Task['status']]: number } = {
+      'Pending': 0,
+      'In Progress': 0,
+      'Completed': 0
+    };
+    this.tasks.forEach(task => {
+      statusCounts[task.status]++;
+    });
+    return Object.entries(statusCounts).map(([label, value]) => ({ label, value }));
+  }
+
+  getTasksByDepartmentData() {
+    const departmentCounts: { [key: string]: number } = {};
+    this.tasks.forEach(task => {
+      departmentCounts[task.department] = (departmentCounts[task.department] || 0) + 1;
+    });
+    return Object.entries(departmentCounts).map(([label, value]) => ({ label, value }));
+  }
+
+  getUserStatusData() {
+    const statusCounts = {
+      Active: this.users.filter(user => user.status === 'Active').length,
+      Inactive: this.users.filter(user => user.status === 'Inactive').length
+    };
+    return Object.entries(statusCounts).map(([label, value]) => ({ label, value }));
+  }
+
+  getUserGenderData() {
+    const genderCounts = {
+      Male: this.users.filter(user => user.gender === 'Male').length,
+      Female: this.users.filter(user => user.gender === 'Female').length,
+      Other: this.users.filter(user => user.gender === 'Other').length
+    };
+    return Object.entries(genderCounts).map(([label, value]) => ({ label, value }));
+  }
+
+  getUserDepartmentData() {
+    const departmentData = this.users.reduce((acc, user) => {
+      if (!acc[user.department]) {
+        acc[user.department] = {};
+      }
+      if (!acc[user.department][user.position]) {
+        acc[user.department][user.position] = 0;
+      }
+      acc[user.department][user.position]++;
+      return acc;
+    }, {} as { [key: string]: { [key: string]: number } });
+
+    const departments = Object.keys(departmentData);
+    const positions = [...new Set(this.users.map(user => user.position))];
+    const datasets = positions.map(position => ({
+      label: position,
+      data: departments.map(dept => departmentData[dept][position] || 0)
+    }));
+
+    // Flatten the datasets into a single array of { label, value } objects
+    const result: { label: string, value: number }[] = [];
+    datasets.forEach(dataset => {
+      dataset.data.forEach((value, index) => {
+        result.push({ label: `${dataset.label} in ${departments[index]}`, value });
+      });
+    });
+
+    return result;
+  }
 openEmployeeTaskModal() {
 throw new Error('Method not implemented.');
 }

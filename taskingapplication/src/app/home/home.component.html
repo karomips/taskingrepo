@@ -13,6 +13,20 @@
 
   <div class="dashboard-container" [class.sidenav-hovered]="isSidenavHovered">
     <header class="dashboard-header">
+      <div class="dropdown">
+        <button class="dropdown-button">Select Chart to Generate</button>
+        <div class="dropdown-content">
+          <a href="#" (click)="generatePdfForChart('Applicants by Status')">Applicants by Status</a>
+          <a href="#" (click)="generatePdfForChart('Applicant Demographics')">Applicant Demographics</a>
+          <a href="#" (click)="generatePdfForChart('Civil Status Distribution')">Civil Status Distribution</a>
+          <a href="#" (click)="generatePdfForChart('Applicants by Department')">Applicants by Department</a>
+          <a href="#" (click)="generatePdfForChart('Tasks by Status')">Tasks by Status</a>
+          <a href="#" (click)="generatePdfForChart('Tasks by Department')">Tasks by Department</a>
+          <a href="#" (click)="generatePdfForChart('Employee Status Distribution')">Employee Status Distribution</a>
+          <a href="#" (click)="generatePdfForChart('Employees by Gender')">Employees by Gender</a>
+          <a href="#" (click)="generatePdfForChart('Employees by Department and Position')">Employees by Department and Position</a>
+        </div>
+      </div>
       <h1>Dashboard</h1>
       <div class="dashboard-stats">
         <button class="stat-card">
