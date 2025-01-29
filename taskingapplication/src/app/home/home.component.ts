@@ -71,6 +71,43 @@ interface CivilStatusCounts {
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  onChartSelectionChange(chartTitle: string, event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked) {
+      this.selectedCharts.push(chartTitle);
+    } else {
+      const index = this.selectedCharts.indexOf(chartTitle);
+      if (index > -1) {
+        this.selectedCharts.splice(index, 1);
+      }
+    }
+  }
+
+  generateSelectedChartsPdf() {
+    const doc = new jsPDF('p', 'mm', 'a4'); // Create a new jsPDF instance
+
+    let currentY = 10; // Start position for the content
+
+    this.selectedCharts.forEach((chartTitle: string) => {
+      const chartData = this.getChartDataByTitle(chartTitle);
+      doc.text(chartTitle, 10, currentY);
+      currentY += 10;
+
+      chartData.forEach(item => {
+        if (currentY > doc.internal.pageSize.getHeight() - 10) {
+          doc.addPage(); // Add new page if the content exceeds the page height
+          currentY = 10;
+        }
+        doc.text(`${item.label}: ${item.value}`, 10, currentY);
+        currentY += 10;
+      });
+
+      currentY += 10; // Add some space between sections
+    });
+
+    doc.save('Selected_Charts_Report.pdf');
+  }
+
   generatePdfForChart(chartTitle: string) {
     const doc = new jsPDF('p', 'mm', 'a4'); // Create a new jsPDF instance
     const chartData = this.getChartDataByTitle(chartTitle); // Fetch data based on chart title
@@ -263,6 +300,7 @@ throw new Error('Method not implemented.');
 onSidenavHoverChanged($event: boolean) {
 throw new Error('Method not implemented.');
 }
+  selectedCharts: string[] = [];
   tasks: Task[] = [];
   users: User[] = [];
   searchQuery: string = '';
