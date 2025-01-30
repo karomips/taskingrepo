@@ -658,53 +658,70 @@ onSearchChange(): void {
   }
 
   // Method to confirm the status change
-  confirmInactivation(userId: number): void {
-    if (!this.reason) {
-      alert('Please select a reason for inactivation.');
-      return;
-    }
-
-    const confirmation = window.confirm(`Are you sure you want to set this employee's status to Inactive for the reason: "${this.reason}"?`);
-    if (confirmation) {
-      this.dataService.updateUserStatus(userId, 'Inactive', this.reason).subscribe({
-        next: (response) => {
-          if (response.success) {
-            // Update the local user object
-            if (this.selectedUser) {
-              this.selectedUser.status = 'Inactive';
-              this.selectedUser.inactivity_reason = this.reason;
-            }
-            // Find and update the user in the filtered list
-            const user = this.filteredUsers.find(u => u.user_id === userId);
-            if (user) {
-              user.status = 'Inactive';
-              user.inactivity_reason = this.reason;
-            }
-            this.loadUsers(); // Reload the users to refresh the data
-            this.showReasonDropdown = false;
-            this.reason = '';
-            alert('Status updated successfully');
-
-            // Send email notification
-            this.sendInactivationEmail(this.selectedUser);
-          } else {
-            alert('Failed to update status');
-          }
-        },
-        error: (error) => {
-          console.error('Error updating status:', error);
-          alert('Error updating status');
-        }
-      });
-    }
+confirmInactivation(userId: number): void {
+  if (!this.reason) {
+    alert('Please select a reason for inactivation.');
+    return;
   }
+
+  const confirmation = window.confirm(
+    `Are you sure you want to set this employee's status to Inactive for the reason: "${this.reason}"?`
+  );
+
+  if (confirmation) {
+    this.dataService.updateUserStatus(userId, 'Inactive', this.reason).subscribe({
+      next: (response) => {
+        if (response.success) {
+          // Update the local user object
+          if (this.selectedUser) {
+            this.selectedUser.status = 'Inactive';
+            this.selectedUser.inactivity_reason = this.reason;
+          }
+          // Find and update the user in the filtered list
+          const user = this.filteredUsers.find(u => u.user_id === userId);
+          if (user) {
+            user.status = 'Inactive';
+            user.inactivity_reason = this.reason;
+          }
+
+          // Move user data to 'inactive_acc' table
+          this.dataService.transferToInactiveTable(userId, this.reason).subscribe({
+            next: (transferResponse) => {
+              if (transferResponse.success) {
+                alert('Status updated successfully and user moved to inactive accounts');
+                this.loadUsers(); // Reload active users
+                this.showReasonDropdown = false;
+                this.reason = '';
+              } else {
+                alert('Failed to move user data to inactive accounts');
+              }
+            },
+            error: (error) => {
+              console.error('Error moving user data:', error);
+              alert('Error moving user data');
+            }
+          });          
+
+          // Send email notification
+          this.sendInactivationEmail(this.selectedUser);
+        } else {
+          alert('Failed to update status');
+        }
+      },
+      error: (error) => {
+        console.error('Error updating status:', error);
+        alert('Error updating status');
+      }
+    });
+  }
+}
+
 
   sendInactivationEmail(user: any): void {
     const customMessage = `Reason for inactivation: ${this.reason}`;
     this.emailService.sendInactiveEmail({
       email: user.email,
-      first_name: user.first_name,
-      last_name: user.last_name
+      fullname: user.fullname,
     }, customMessage).subscribe({
       next: () => {
         console.log('Email sent successfully');

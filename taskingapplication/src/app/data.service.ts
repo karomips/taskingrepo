@@ -113,6 +113,13 @@ export interface TaskAssignment {
   providedIn: 'root'
 })
 export class DataService {
+  reason: any;
+  transferToInactiveTable(userId: number, reason: string): Observable<any> {
+    return this.httpClient.post<any>('http://localhost/4ward/taskingrepo/taskingapplication/api/taskingapi', {
+      user_id: userId,
+      inactivity_reason: reason,
+    });
+  }  
   updateUser: any;
   updateTaskProgress(id: number, progress: string | undefined) {
     throw new Error('Method not implemented.');
